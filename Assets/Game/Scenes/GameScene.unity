@@ -1245,7 +1245,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 12
+  orthographic size: 11
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3585,8 +3585,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7c88a6e8135fd491198a7ef38abd39b0, type: 2}
   - {fileID: 11400000, guid: 8f118cc58053c4854aa4b9cb6b928fa7, type: 2}
   - {fileID: 11400000, guid: 1c2c9103005254e2096a71428bc94070, type: 2}
-  - {fileID: 11400000, guid: 210c16a27f4614f9cbf0daa3685d375c, type: 2}
-  - {fileID: 11400000, guid: 86917fe706b784b23bc81550a31b3a3c, type: 2}
   - {fileID: 11400000, guid: 81a74ab6b5b314aa5a95260481a734d8, type: 2}
   - {fileID: 11400000, guid: 8546a0373cc304100bf54c76c1fc19b5, type: 2}
   - {fileID: 11400000, guid: 3ccefb67db54445738c227c18048a98a, type: 2}
@@ -4518,8 +4516,6 @@ MonoBehaviour:
     _amount: 1
   - _ingredient: {fileID: 11400000, guid: 1c2c9103005254e2096a71428bc94070, type: 2}
     _amount: 999
-  - _ingredient: {fileID: 11400000, guid: 86917fe706b784b23bc81550a31b3a3c, type: 2}
-    _amount: 1
 --- !u!114 &1178486984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4755,7 +4751,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.Player
   <InteractRange>k__BackingField: 3
   <WalkingBoxColliderSize>k__BackingField: {x: 0.75, y: 1.75}
-  <MinJumpSpeed>k__BackingField: 7
+  <MinJumpSpeed>k__BackingField: 5.5
   <MaxJumpHoldDuration>k__BackingField: 0.3
   <AirborneMoveSpeedMultiplier>k__BackingField: 0.65
   <JumpBufferDuration>k__BackingField: 0.15

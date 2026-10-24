@@ -18,9 +18,9 @@ MonoBehaviour:
   <BaseDamage>k__BackingField: 0
   <KnockbackForce>k__BackingField: 0
   <BaseKbResist>k__BackingField: 0
-  <BaseSpeed>k__BackingField: 7
+  <BaseSpeed>k__BackingField: 5
   <BaseIFrameDuration>k__BackingField: 0.67
-  <BaseTurnSharpness>k__BackingField: 4
+  <BaseTurnSharpness>k__BackingField: 10
   <CanBeKnockedBacked>k__BackingField: 1
   <CanDie>k__BackingField: 1
   <CanDamagePlayerOnTouch>k__BackingField: 0

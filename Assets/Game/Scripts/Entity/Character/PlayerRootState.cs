@@ -262,7 +262,12 @@ namespace SketchLand
         {
             _ctx.Velocity.y = 0f;
         }
-        
+
+        protected override void OnExit()
+        {
+
+        }
+
         protected override void OnFixedUpdate(float fixedDeltaTime)
         {
             if (_ctx.IsKnockedBack)
@@ -270,6 +275,8 @@ namespace SketchLand
 
             var currentSpeed = _ctx.Data.BaseSpeed; // For player, only allow speed buffs to change swim speed
             _ctx.Velocity = Vector2.Lerp(_ctx.Velocity, _ctx.DesiredDirection * currentSpeed, fixedDeltaTime * _ctx.Data.BaseTurnSharpness);
+
+            _ctx.Animator.SetFloat("Velocity", _ctx.Velocity.sqrMagnitude);
         }
     }
 
@@ -308,6 +315,7 @@ namespace SketchLand
 
             var currentSpeed = _ctx.Data.BaseSpeed; // For player, only allow speed buffs to change swim speed
             _ctx.Velocity = Vector2.Lerp(_ctx.Velocity, _ctx.DesiredDirection * currentSpeed, fixedDeltaTime * _ctx.Data.BaseTurnSharpness);
+            _ctx.Animator.SetFloat("Velocity", _ctx.Velocity.sqrMagnitude);
         }
     }
 

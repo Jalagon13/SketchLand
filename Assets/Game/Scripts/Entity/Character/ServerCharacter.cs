@@ -13,10 +13,11 @@ namespace SketchLand
         [SerializeField] private CharacterSO _data;
         public CharacterSO Data => _data;
         
-        [SerializeField] private GameObject _visualsGO;
-        public GameObject VisualsGO => _visualsGO;
-        
         [SerializeField] private bool _debugStateOn;
+
+        [Header("Visuals")]
+        [SerializeField] private Animator _animator;
+        public Animator Animator => _animator;
 
         [HideInInspector] public Vector2 DesiredDirection;
         [HideInInspector] public Vector2 KnockbackVelocity;

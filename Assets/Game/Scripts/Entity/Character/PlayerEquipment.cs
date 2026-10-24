@@ -8,10 +8,6 @@ namespace SketchLand
     {
         public event Action OnEquipmentChanged;
 
-        // Oxygen
-        public InventorySlot EquippedOxygenTank { get; private set; } = new();
-        public OxygenTankItemSO CurrentOxygenTank => EquippedOxygenTank.IsEmpty ? null : GameDataRegistry.Instance.GetItemSOFromItemId(EquippedOxygenTank.ItemId) as OxygenTankItemSO;
-
         // Armor
         public InventorySlot EquippedHelmet { get; private set; } = new();
         public InventorySlot EquippedChestplate { get; private set; } = new();
