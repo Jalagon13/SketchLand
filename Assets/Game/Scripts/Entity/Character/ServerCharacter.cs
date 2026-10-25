@@ -16,6 +16,7 @@ namespace SketchLand
         [SerializeField] private bool _debugStateOn;
 
         [Header("Visuals")]
+        [SerializeField] private Transform _visuals;
         [SerializeField] private Animator _animator;
         public Animator Animator => _animator;
 
@@ -94,6 +95,10 @@ namespace SketchLand
                 Velocity = KnockbackVelocity;
                 DesiredDirection = Vector2.zero;
             }
+            else
+            {
+                SetFacing(DesiredDirection.x);
+            }
 
             Machine.FixedTick(fixedDeltaTime);
 
@@ -121,6 +126,16 @@ namespace SketchLand
             var hitData = new SyncHitData(_data.BaseDamage, _data.KnockbackForce, transform.position);
             
             receiver.ReceiveHit(hitData);
+        }
+
+        public void SetFacing(float horizontal)
+        {
+            if (_visuals == null || Mathf.Abs(horizontal) < 0.01f)
+                return;
+
+            Vector3 scale = _visuals.localScale;
+            scale.x = Mathf.Abs(scale.x) * (horizontal > 0f ? 1f : -1f);
+            _visuals.localScale = scale;
         }
 
         public void ApplyKnockback(Vector2 velocity)

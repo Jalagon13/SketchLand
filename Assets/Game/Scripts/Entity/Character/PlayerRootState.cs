@@ -132,6 +132,7 @@ namespace SketchLand
             _coyoteTimer = _ctx.Velocity.y <= 0f ? _player.CoyoteTimeBufferDuration : 0f;
             _coyoteJumpRequested = false;
             _topTouchedFlag = false;
+            _ctx.Animator.SetBool("IsAirborne", true);
 
             // On Jump Animation set here
             if (GameInput.Instance.JumpHold && _ctx.Velocity.y > 0)
@@ -150,6 +151,8 @@ namespace SketchLand
             _coyoteTimer = 0;
             _coyoteJumpRequested = false;
             _topTouchedFlag = false;
+            _ctx.Animator.SetBool("IsAirborne", false);
+            _ctx.Animator.SetFloat("Velocity", _ctx.Velocity.x * _ctx.Velocity.x);
 
             GameInput.Instance.OnJumpPressed -= OnJumpPressed;
         }
