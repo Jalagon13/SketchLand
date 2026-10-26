@@ -19,9 +19,12 @@ namespace SketchLand
         private readonly HashSet<Entity> _hitEntitiesThisSwing = new();
         private bool _isHitboxActive;
         private ToolItemSO _currentTool;
+        private ServerCharacter _character;
+        private static readonly int LocomotionPlayback = Animator.StringToHash("LocomotionPlayback");
 
         private void Awake() 
         {
+            _character = GetComponent<ServerCharacter>();
             _armPivot.gameObject.SetActive(false);
         }
 
@@ -30,13 +33,26 @@ namespace SketchLand
             _swingSequence?.Kill();
             EndSwing();
             IsActionHeld = false;
+            if (_character != null && _character.Animator != null)
+                _character.Animator.SetFloat(LocomotionPlayback, 1f);
         }
 
         private void Update()
         {
+            UpdateLocomotionPlayback();
+
             if (!_isHitboxActive || _currentTool == null) return;
             
             CheckWeaponHits();
+        }
+
+        private void UpdateLocomotionPlayback()
+        {
+            // Use actual motion so reversing input does not reverse the
+            // footsteps before the character has changed travel direction.
+            bool isMovingBackwards = IsSwinging && _character.Velocity.x * _character.FacingDirection < -0.05f;
+            
+            _character.Animator.SetFloat(LocomotionPlayback, isMovingBackwards ? -1f : 1f);
         }
 
         private void OnDrawGizmos()
@@ -81,6 +97,11 @@ namespace SketchLand
             // Convert world-space aim into the mirrored Visuals local space.
             Vector3 worldAim = (Vector3)WorldManager.MouseWorldPosition - transform.position;
             worldAim.z = 0f;
+
+            // Turn before converting aim into the mirrored local space.
+            // Keep this facing through the swing and its IK transitions.
+            _character.SetFacingOverride(worldAim.x);
+            UpdateLocomotionPlayback();
 
             Vector3 localAim = _armPivot.parent.InverseTransformVector(worldAim);
 
@@ -148,15 +169,14 @@ namespace SketchLand
 
         private void EndSwing()
         {
+            _character.ClearFacingOverride();
+
             _isHitboxActive = false;
             _currentTool = null;
             _hitEntitiesThisSwing.Clear();
 
-            if (_handGripIK != null)
-                _handGripIK.ResetGrip();
-
-            if (_armPivot != null)
-                _armPivot.gameObject.SetActive(false);
+            _handGripIK.ResetGrip();
+            _armPivot.gameObject.SetActive(false);
 
             IsSwinging = false;
             _swingSequence = null;

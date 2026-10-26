@@ -19,6 +19,7 @@ namespace SketchLand
         [SerializeField] private Transform _visuals;
         [SerializeField] private Animator _animator;
         public Animator Animator => _animator;
+        public float FacingDirection => _visuals != null && _visuals.localScale.x < 0f ? -1f : 1f;
 
         [HideInInspector] public Vector2 DesiredDirection;
         [HideInInspector] public Vector2 KnockbackVelocity;
@@ -32,6 +33,7 @@ namespace SketchLand
 
         private const float KnockbackThreshold = 1.5f;
         private const float KnockbackDecay = 2f;
+        private float? _facingOverride;
 
         private void Awake()
         {
@@ -130,12 +132,33 @@ namespace SketchLand
 
         public void SetFacing(float horizontal)
         {
+            horizontal = _facingOverride ?? horizontal;
+
             if (_visuals == null || Mathf.Abs(horizontal) < 0.01f)
                 return;
 
             Vector3 scale = _visuals.localScale;
             scale.x = Mathf.Abs(scale.x) * (horizontal > 0f ? 1f : -1f);
             _visuals.localScale = scale;
+        }
+
+        public void SetFacingOverride(float horizontal)
+        {
+            if (_visuals == null) return;
+
+            // A vertical swing keeps the current facing, but still locks it
+            // against movement until the swing finishes.
+            _facingOverride = Mathf.Abs(horizontal) < 0.01f
+                ? Mathf.Sign(_visuals.localScale.x)
+                : Mathf.Sign(horizontal);
+            SetFacing(horizontal);
+        }
+
+        public void ClearFacingOverride()
+        {
+            // Leave the visual orientation in place. Movement can change it
+            // on a later tick when there is horizontal input again.
+            _facingOverride = null;
         }
 
         public void ApplyKnockback(Vector2 velocity)
