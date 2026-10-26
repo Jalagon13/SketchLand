@@ -4538,6 +4538,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.Player
   <InteractRange>k__BackingField: 3
   <WalkingBoxColliderSize>k__BackingField: {x: 0.75, y: 1.75}
+  <SprintSpeed>k__BackingField: 6.25
+  <SprintTransitionSharpness>k__BackingField: 7
   <MinJumpSpeed>k__BackingField: 5.5
   <MaxJumpHoldDuration>k__BackingField: 0.3
   <AirborneMoveSpeedMultiplier>k__BackingField: 0.65

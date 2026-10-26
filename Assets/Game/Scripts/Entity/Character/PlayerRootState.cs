@@ -10,6 +10,7 @@ namespace SketchLand
     {
         public PlayerGroundedState Grounded { get; private set; }
         public PlayerAirborneState Airborne { get; private set; }
+        public float MovementSpeed { get; private set; }
 
         // Parameterless constructor for Unity serialization
         public PlayerRootState() : base() { }
@@ -24,6 +25,19 @@ namespace SketchLand
         }
 
         protected override State GetInitialState() => Grounded;
+
+        protected override void OnEnter()
+        {
+            MovementSpeed = _ctx.Data.BaseSpeed;
+        }
+
+        protected override void OnFixedUpdate(float fixedDeltaTime)
+        {
+            var player = Player.Instance;
+            float targetSpeed = GameInput.Instance.SprintHeld ? player.SprintSpeed : _ctx.Data.BaseSpeed;
+            float blend = 1f - Mathf.Exp(-player.SprintTransitionSharpness * fixedDeltaTime);
+            MovementSpeed = Mathf.Lerp(MovementSpeed, targetSpeed, blend);
+        }
     }
 
     #endregion
@@ -216,7 +230,7 @@ namespace SketchLand
             }
         
             // Allow horizontal movement while airborne
-            var currentSpeed = _ctx.Data.BaseSpeed * _player.AirborneMoveSpeedMultiplier;
+            var currentSpeed = ((PlayerRootState)Parent).MovementSpeed * _player.AirborneMoveSpeedMultiplier;
             _ctx.Velocity.x = Mathf.Lerp(_ctx.Velocity.x, _ctx.DesiredDirection.x * currentSpeed, fixedDeltaTime * _ctx.Data.BaseTurnSharpness);
         }
 
@@ -276,7 +290,7 @@ namespace SketchLand
             if (_ctx.IsKnockedBack)
                 return;
 
-            var currentSpeed = _ctx.Data.BaseSpeed; // For player, only allow speed buffs to change swim speed
+            var currentSpeed = ((PlayerRootState)Parent.Parent).MovementSpeed;
             _ctx.Velocity = Vector2.Lerp(_ctx.Velocity, _ctx.DesiredDirection * currentSpeed, fixedDeltaTime * _ctx.Data.BaseTurnSharpness);
 
             _ctx.Animator.SetFloat("Velocity", _ctx.Velocity.sqrMagnitude);
@@ -316,7 +330,7 @@ namespace SketchLand
             if (_ctx.IsKnockedBack)
                 return;
 
-            var currentSpeed = _ctx.Data.BaseSpeed; // For player, only allow speed buffs to change swim speed
+            var currentSpeed = ((PlayerRootState)Parent.Parent).MovementSpeed;
             _ctx.Velocity = Vector2.Lerp(_ctx.Velocity, _ctx.DesiredDirection * currentSpeed, fixedDeltaTime * _ctx.Data.BaseTurnSharpness);
             _ctx.Animator.SetFloat("Velocity", _ctx.Velocity.sqrMagnitude);
         }

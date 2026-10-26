@@ -17,9 +17,11 @@ namespace SketchLand
         public event Action<InputAction.CallbackContext> OnTogglePauseMenu;
         public event Action OnToggleInventory;
         public event Action OnToggleBuildLayer;
+        public event Action OnSprintPressed;
 
         public Vector2 MoveInput { get; private set; }
         public bool JumpHold { get; private set; }
+        public bool SprintHeld { get; private set; }
         public bool PrimaryActionHeld { get; private set; }
         public bool SecondaryActionHeld { get; private set; }
 
@@ -42,6 +44,8 @@ namespace SketchLand
             _playerInput.Player.SecondaryAction.started += GameInput_OnSecondaryAction;
             _playerInput.Player.SecondaryAction.canceled += GameInput_OnSecondaryAction;
             _playerInput.Player.ToggleBuildLayer.started += GameInput_OnToggleBuildLayer;
+            _playerInput.Player.Sprint.started += GameInput_OnSprintAction;
+            _playerInput.Player.Sprint.canceled += GameInput_OnSprintAction;
             
             _playerInput.UI.ScrollWheel.performed += PlayerInput_OnScrollWheel;
             _playerInput.UI.SelectSlot.started += PlayerInput_OnSelectSlot;
@@ -66,6 +70,8 @@ namespace SketchLand
             _playerInput.Player.SecondaryAction.started -= GameInput_OnSecondaryAction;
             _playerInput.Player.SecondaryAction.canceled -= GameInput_OnSecondaryAction;
             _playerInput.Player.ToggleBuildLayer.started -= GameInput_OnToggleBuildLayer;
+            _playerInput.Player.Sprint.started -= GameInput_OnSprintAction;
+            _playerInput.Player.Sprint.canceled -= GameInput_OnSprintAction;
 
             _playerInput.UI.ScrollWheel.performed -= PlayerInput_OnScrollWheel;
             _playerInput.UI.SelectSlot.started -= PlayerInput_OnSelectSlot;
@@ -73,6 +79,12 @@ namespace SketchLand
             _playerInput.UI.TogglePauseMenu.started -= PlayerInput_OnTogglePauseMenu;
 
             _playerInput.Disable();
+        }
+
+        private void GameInput_OnSprintAction(InputAction.CallbackContext context)
+        {
+            SprintHeld = context.phase == InputActionPhase.Started;
+            OnSprintPressed?.Invoke();
         }
 
         private void PlayerInput_OnTogglePauseMenu(InputAction.CallbackContext context)
