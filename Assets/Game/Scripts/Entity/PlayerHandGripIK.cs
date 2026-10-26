@@ -13,6 +13,7 @@ namespace SketchLand
         [SerializeField, Min(0f)] private float _blendDuration = 0.08f;
 
         public float BlendDuration => _blendDuration;
+        public Transform AnimatedTarget => _animatedTarget;
 
         private Transform _animatedTarget;
         private Transform _blendTarget;

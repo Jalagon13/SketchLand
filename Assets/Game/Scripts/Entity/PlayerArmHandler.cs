@@ -9,7 +9,6 @@ namespace SketchLand
         [SerializeField] private Transform _armPivot;
         [SerializeField] private Transform _hitboxPoint;
         [SerializeField] private Transform _arm;
-        [SerializeField] private SpriteRenderer _swingToolSr;
         [SerializeField] private PlayerHandGripIK _handGripIK;
 
         public bool IsSwinging { get; private set; }
@@ -20,11 +19,13 @@ namespace SketchLand
         private bool _isHitboxActive;
         private ToolItemSO _currentTool;
         private ServerCharacter _character;
+        private PlayerHeldItemDisplay _heldItemDisplay;
         private static readonly int LocomotionPlayback = Animator.StringToHash("LocomotionPlayback");
 
         private void Awake() 
         {
             _character = GetComponent<ServerCharacter>();
+            _heldItemDisplay = GetComponent<PlayerHeldItemDisplay>();
             _armPivot.gameObject.SetActive(false);
         }
 
@@ -80,6 +81,13 @@ namespace SketchLand
             IsActionHeld = false;
         }
 
+        public void CancelSwing()
+        {
+            _swingSequence?.Kill();
+            EndSwing();
+            IsActionHeld = false;
+        }
+
         private void ExecuteSwing(ToolItemSO tool)
         {
             if (IsSwinging || tool == null)
@@ -114,8 +122,6 @@ namespace SketchLand
             float endAngle = centerAngle - halfArc;
             float recoveryAngle = endAngle - tool.SwingEndArcAngle;
 
-            _swingToolSr.sprite = tool.DisplayIcon;
-
             _hitboxPoint.localPosition = new Vector3(tool.HitboxOffset, 0f, 0f);
 
             // Keep the old working RIGHT-facing art orientation constant.
@@ -126,6 +132,8 @@ namespace SketchLand
             _armPivot.localRotation = Quaternion.Euler(0f, 0f, startAngle);
             _armPivot.gameObject.SetActive(true);
 
+            _heldItemDisplay.BeginSwing(tool);
+
             _hitEntitiesThisSwing.Clear();
             _isHitboxActive = false;
 
@@ -133,11 +141,16 @@ namespace SketchLand
 
             _swingSequence = DOTween.Sequence();
 
-            // Hold the tool still while the hand moves onto its handle.
-            _swingSequence.AppendInterval(_handGripIK.BlendDuration);
+            // Lift the visible held item into the windup while IK takes over.
+            _swingSequence.Append(DOVirtual.Float(0f, 1f,
+                _handGripIK.BlendDuration, _heldItemDisplay.SetTransitionProgress).SetEase(Ease.Linear));
 
             // Damage begins only once the hand has reached the grip.
-            _swingSequence.AppendCallback(() => _isHitboxActive = true);
+            _swingSequence.AppendCallback(() =>
+            {
+                _heldItemDisplay.FinishRaise();
+                _isHitboxActive = true;
+            });
 
             _swingSequence.Append(
             DOVirtual.Float(
@@ -159,9 +172,14 @@ namespace SketchLand
                     Quaternion.Euler(0f, 0f, angle))
             .SetEase(Ease.Linear));
 
-            // Keep the tool visible while the hand returns to locomotion.
-            _swingSequence.AppendCallback(() => _handGripIK.ReleaseGrip());
-            _swingSequence.AppendInterval(_handGripIK.BlendDuration);
+            // Bring the same item back to the animated hand before reattaching.
+            _swingSequence.AppendCallback(() =>
+            {
+                _heldItemDisplay.BeginReturn();
+                _handGripIK.ReleaseGrip();
+            });
+            _swingSequence.Append(DOVirtual.Float(0f, 1f,
+                _handGripIK.BlendDuration, _heldItemDisplay.SetTransitionProgress).SetEase(Ease.Linear));
 
             _swingSequence.OnComplete(EndSwing);
             _swingSequence.OnKill(EndSwing);
@@ -169,14 +187,19 @@ namespace SketchLand
 
         private void EndSwing()
         {
-            _character.ClearFacingOverride();
+            if (_character != null)
+                _character.ClearFacingOverride();
 
             _isHitboxActive = false;
             _currentTool = null;
             _hitEntitiesThisSwing.Clear();
 
-            _handGripIK.ResetGrip();
-            _armPivot.gameObject.SetActive(false);
+            if (_handGripIK != null)
+                _handGripIK.ResetGrip();
+            if (_heldItemDisplay != null)
+                _heldItemDisplay.EndSwing();
+            if (_armPivot != null)
+                _armPivot.gameObject.SetActive(false);
 
             IsSwinging = false;
             _swingSequence = null;

@@ -343,6 +343,7 @@ GameObject:
   - component: {fileID: 6954809910114446498}
   - component: {fileID: 1260414927922091770}
   - component: {fileID: 8607429953159819184}
+  - component: {fileID: 6867802400311796069}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -533,7 +534,6 @@ MonoBehaviour:
   _armPivot: {fileID: 6889074860058788524}
   _hitboxPoint: {fileID: 2786607778504804567}
   _arm: {fileID: 664098095062183281}
-  _swingToolSr: {fileID: 3499107727543684731}
   _handGripIK: {fileID: 6954809910114446498}
 --- !u!114 &6954809910114446498
 MonoBehaviour:
@@ -574,6 +574,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14559271611c64fed924242256413626, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.PlayerRangedHandler
+--- !u!114 &6867802400311796069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2708704097900981217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abcd18fcc548b467da03ec25081ab90f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.PlayerHeldItemDisplay
+  _itemRoot: {fileID: 4929472780235366128}
+  _heldItemSprite: {fileID: 3499107727543684731}
+  _handMount: {fileID: 8808445867423110963}
 --- !u!1 &2781334829163201463
 GameObject:
   m_ObjectHideFlags: 0
@@ -671,6 +686,37 @@ MonoBehaviour:
     - {x: 0, y: 0, z: 0, w: 0}
     - {x: 0, y: 0, z: 0, w: 0}
   m_Flip: 0
+--- !u!1 &3310853682219214015
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8808445867423110963}
+  m_Layer: 0
+  m_Name: HeldItemMount
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8808445867423110963
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3310853682219214015}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1188320858223890551}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!1 &3697729150346544265
 GameObject:
   m_ObjectHideFlags: 0
@@ -1126,7 +1172,7 @@ GameObject:
   - component: {fileID: 4784938679167895081}
   - component: {fileID: 3499107727543684731}
   m_Layer: 0
-  m_Name: ToolSprite
+  m_Name: HeldItemSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1155,7 +1201,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6599308077465748602}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -1196,7 +1242,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 3
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -5995761749628158258, guid: 2f87ce7e588154a76acbf2c4eda5fff0, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1204,7 +1250,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1 &6925313100002721580
 GameObject:
@@ -1514,7 +1560,8 @@ Transform:
   m_LocalPosition: {x: 0.2856, y: 0.0013, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8808445867423110963}
   m_Father: {fileID: 7250740620273752644}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8979481976212115070

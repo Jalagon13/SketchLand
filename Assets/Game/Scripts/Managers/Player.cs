@@ -14,6 +14,7 @@ namespace SketchLand
         [field: Header("Player Settings")]
         [field: SerializeField] public float InteractRange { get; private set; } = 4.5f;
         [field: SerializeField] public Vector2 WalkingBoxColliderSize { get; private set; }
+        [field: SerializeField] public float SprintSpeed { get; private set; } = 6;
 
         [field: Header("Jump Settings")]
         [field: SerializeField] public float MinJumpSpeed { get; private set; }
