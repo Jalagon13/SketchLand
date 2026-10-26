@@ -29,6 +29,21 @@ namespace SketchLand
         protected override void OnEnter()
         {
             MovementSpeed = _ctx.Data.BaseSpeed;
+            _ctx.Animator.SetBool("IsSprinting", false);
+        }
+
+        protected override void OnExit()
+        {
+            _ctx.Animator.SetBool("IsSprinting", false);
+        }
+
+        public void UpdateLocomotionAnimation(bool isGrounded)
+        {
+            float horizontalSpeedSquared = _ctx.Velocity.x * _ctx.Velocity.x;
+            _ctx.Animator.SetFloat("Velocity", horizontalSpeedSquared);
+            _ctx.Animator.SetBool("IsSprinting", isGrounded && !_ctx.IsKnockedBack
+                && GameInput.Instance.SprintHeld && Mathf.Abs(_ctx.DesiredDirection.x) > 0.01f
+                && horizontalSpeedSquared > 0.8f);
         }
 
         protected override void OnFixedUpdate(float fixedDeltaTime)
@@ -37,6 +52,7 @@ namespace SketchLand
             float targetSpeed = GameInput.Instance.SprintHeld ? player.SprintSpeed : _ctx.Data.BaseSpeed;
             float blend = 1f - Mathf.Exp(-player.SprintTransitionSharpness * fixedDeltaTime);
             MovementSpeed = Mathf.Lerp(MovementSpeed, targetSpeed, blend);
+            UpdateLocomotionAnimation(ActiveChild == Grounded);
         }
     }
 
@@ -85,6 +101,7 @@ namespace SketchLand
             // On Grounded Animation set here
             _player = Player.Instance;
             _ctx.ColliderSize = Player.Instance.WalkingBoxColliderSize;
+            ((PlayerRootState)Parent).UpdateLocomotionAnimation(true);
         }
 
         protected override void OnExit()
@@ -147,6 +164,7 @@ namespace SketchLand
             _coyoteJumpRequested = false;
             _topTouchedFlag = false;
             _ctx.Animator.SetBool("IsAirborne", true);
+            ((PlayerRootState)Parent).UpdateLocomotionAnimation(false);
 
             // On Jump Animation set here
             if (GameInput.Instance.JumpHold && _ctx.Velocity.y > 0)
@@ -166,7 +184,6 @@ namespace SketchLand
             _coyoteJumpRequested = false;
             _topTouchedFlag = false;
             _ctx.Animator.SetBool("IsAirborne", false);
-            _ctx.Animator.SetFloat("Velocity", _ctx.Velocity.x * _ctx.Velocity.x);
 
             GameInput.Instance.OnJumpPressed -= OnJumpPressed;
         }
@@ -293,7 +310,6 @@ namespace SketchLand
             var currentSpeed = ((PlayerRootState)Parent.Parent).MovementSpeed;
             _ctx.Velocity = Vector2.Lerp(_ctx.Velocity, _ctx.DesiredDirection * currentSpeed, fixedDeltaTime * _ctx.Data.BaseTurnSharpness);
 
-            _ctx.Animator.SetFloat("Velocity", _ctx.Velocity.sqrMagnitude);
         }
     }
 
@@ -332,7 +348,6 @@ namespace SketchLand
 
             var currentSpeed = ((PlayerRootState)Parent.Parent).MovementSpeed;
             _ctx.Velocity = Vector2.Lerp(_ctx.Velocity, _ctx.DesiredDirection * currentSpeed, fixedDeltaTime * _ctx.Data.BaseTurnSharpness);
-            _ctx.Animator.SetFloat("Velocity", _ctx.Velocity.sqrMagnitude);
         }
     }
 
