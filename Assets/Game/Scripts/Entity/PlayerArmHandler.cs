@@ -10,6 +10,7 @@ namespace SketchLand
         [SerializeField] private Transform _hitboxPoint;
         [SerializeField] private Transform _arm;
         [SerializeField] private SpriteRenderer _swingToolSr;
+        [SerializeField] private PlayerHandGripIK _handGripIK;
 
         public bool IsSwinging { get; private set; }
         public bool IsActionHeld { get; private set; }
@@ -27,6 +28,8 @@ namespace SketchLand
         private void OnDisable()
         {
             _swingSequence?.Kill();
+            EndSwing();
+            IsActionHeld = false;
         }
 
         private void Update()
@@ -60,55 +63,87 @@ namespace SketchLand
         {
             IsActionHeld = false;
         }
-        
+
         private void ExecuteSwing(ToolItemSO tool)
         {
-            if (IsSwinging) return;
-            
+            if (IsSwinging || tool == null)
+                return;
+
+            // Clean up any previous sequence before initializing this swing.
+            _swingSequence?.Kill();
+            _swingSequence = null;
+
             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PlayerAirThrustSFX, transform.position);
-            
+
             IsSwinging = true;
-
-            // Swing Initializaitons
-            Vector2 aimDirection = (WorldManager.MouseWorldPosition - (Vector2)transform.position).normalized;
-            bool isAimingRight = aimDirection.x > 0;
-            float centerAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
-            float halfArc = tool.SwingArcAngle * 0.5f;
-            float startAngle = isAimingRight ? centerAngle + halfArc : centerAngle - halfArc;
-            float endAngle = isAimingRight ? centerAngle - halfArc : centerAngle + halfArc;
-            float swingEndAngle = isAimingRight ? -tool.SwingEndArcAngle : tool.SwingEndArcAngle;
-
-            // Setup
-            _swingToolSr.sprite = tool.DisplayIcon;
-            _hitboxPoint.localPosition = new Vector2(tool.HitboxOffset, 0);
-            Vector3 armScale = _arm.localScale;
-            armScale.x = isAimingRight ? -1f : 1f;
-            _arm.localScale = armScale;
-            _arm.localRotation = Quaternion.Euler(0f, 0f, isAimingRight ? 180f : 0f);
-            _armPivot.rotation = Quaternion.Euler(0f, 0f, startAngle);
-            _armPivot.gameObject.SetActive(true);
             _currentTool = tool;
 
-            // Entity Detection
+            // Convert world-space aim into the mirrored Visuals local space.
+            Vector3 worldAim = (Vector3)WorldManager.MouseWorldPosition - transform.position;
+            worldAim.z = 0f;
+
+            Vector3 localAim = _armPivot.parent.InverseTransformVector(worldAim);
+
+            if (localAim.sqrMagnitude < 0.0001f)
+                localAim = Vector3.right;
+
+            float centerAngle = Mathf.Atan2(localAim.y, localAim.x) * Mathf.Rad2Deg;
+            float halfArc = tool.SwingArcAngle * 0.5f;
+            float startAngle = centerAngle + halfArc;
+            float endAngle = centerAngle - halfArc;
+            float recoveryAngle = endAngle - tool.SwingEndArcAngle;
+
+            _swingToolSr.sprite = tool.DisplayIcon;
+
+            _hitboxPoint.localPosition = new Vector3(tool.HitboxOffset, 0f, 0f);
+
+            // Keep the old working RIGHT-facing art orientation constant.
+            // Visuals now supplies the character's left/right reflection.
+            _arm.localScale = new Vector3(-1f, 1f, 1f);
+            _arm.localRotation = Quaternion.Euler(0f, 0f, 180f);
+
+            _armPivot.localRotation = Quaternion.Euler(0f, 0f, startAngle);
+            _armPivot.gameObject.SetActive(true);
+
             _hitEntitiesThisSwing.Clear();
-            _isHitboxActive = true;
+            _isHitboxActive = false;
 
-            // Start sequence
-            _swingSequence?.Kill();
+            _handGripIK.BeginGrip();
+
             _swingSequence = DOTween.Sequence();
-            _swingSequence.Append(_armPivot.DORotate(new Vector3(0f, 0f, endAngle), tool.SwingDuration).SetEase(Ease.InOutCubic));
-            _swingSequence.AppendCallback(() => _isHitboxActive = false); // Stop damage during recovery
-            _swingSequence.Append(_armPivot.DORotate(new Vector3(0f, 0f, swingEndAngle), tool.SwingEndDuration).SetRelative().SetEase(Ease.Linear));
 
-            _swingSequence.OnComplete(() =>
-            {
-                EndSwing();
-            });
+            // Hold the tool still while the hand moves onto its handle.
+            _swingSequence.AppendInterval(_handGripIK.BlendDuration);
 
-            _swingSequence.OnKill(() =>
-            {
-                EndSwing();
-            });
+            // Damage begins only once the hand has reached the grip.
+            _swingSequence.AppendCallback(() => _isHitboxActive = true);
+
+            _swingSequence.Append(
+            DOVirtual.Float(
+                startAngle,
+                endAngle,
+                tool.SwingDuration,
+                angle => _armPivot.localRotation =
+                    Quaternion.Euler(0f, 0f, angle))
+            .SetEase(Ease.InOutCubic));
+
+            _swingSequence.AppendCallback(() => _isHitboxActive = false);
+
+            _swingSequence.Append(
+            DOVirtual.Float(
+                endAngle,
+                recoveryAngle,
+                tool.SwingEndDuration,
+                angle => _armPivot.localRotation =
+                    Quaternion.Euler(0f, 0f, angle))
+            .SetEase(Ease.Linear));
+
+            // Keep the tool visible while the hand returns to locomotion.
+            _swingSequence.AppendCallback(() => _handGripIK.ReleaseGrip());
+            _swingSequence.AppendInterval(_handGripIK.BlendDuration);
+
+            _swingSequence.OnComplete(EndSwing);
+            _swingSequence.OnKill(EndSwing);
         }
 
         private void EndSwing()
@@ -116,10 +151,15 @@ namespace SketchLand
             _isHitboxActive = false;
             _currentTool = null;
             _hitEntitiesThisSwing.Clear();
-            _armPivot.gameObject.SetActive(false);
-            
+
+            if (_handGripIK != null)
+                _handGripIK.ResetGrip();
+
+            if (_armPivot != null)
+                _armPivot.gameObject.SetActive(false);
+
             IsSwinging = false;
-            // Debug.Log($"Swing completed");
+            _swingSequence = null;
         }
 
         private void CheckWeaponHits()

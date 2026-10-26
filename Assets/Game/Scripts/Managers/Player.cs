@@ -36,7 +36,6 @@ namespace SketchLand
         public PlayerRangedHandler RangedHandler { get; private set; }
         public ServerCharacter Character { get; private set; }
         public PlayerEquipment Equipment { get; private set; }
-        public PlayerDepthTracker DepthTracker { get; private set; }
 
         private bool _hasInitialSpawn;
         private Coroutine _healthRegenerationRoutine;
@@ -125,7 +124,6 @@ namespace SketchLand
             Equipment = Character.GetComponent<PlayerEquipment>();
             ArmHandler = Character.GetComponent<PlayerArmHandler>();
             RangedHandler = Character.GetComponent<PlayerRangedHandler>();
-            DepthTracker = Character.GetComponent<PlayerDepthTracker>();
 
             InitializeSpawn();
 
