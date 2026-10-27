@@ -49,12 +49,12 @@ MonoBehaviour:
         RunStep: 1
         _oreConfigs:
         - OreTile: {fileID: 11400000, guid: 75d3adf13369b426cbdbcc99aabd6f3d, type: 2}
-          StartingDepth: 20
+          StartingDepth: 3
           ChunkSize: 25
           VeinsPerChunk: 6
           VeinMinDistance: 6
           MaxAttemptsPerVein: 15
-          MinVeinSize: 2
+          MinVeinSize: 3
           MaxVeinSize: 8
     - rid: 2783294373672517733
       type: {class: TreeGenStep, ns: SketchLand, asm: Assembly-CSharp}

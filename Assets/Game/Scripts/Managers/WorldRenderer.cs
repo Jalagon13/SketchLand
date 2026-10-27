@@ -69,7 +69,12 @@ namespace SketchLand
                     var bgTd = world.BgGrid.GetTileData(x, y);
                     Vector3Int tilePos3D = (Vector3Int)tilePos;
 
-                    if (fgTd.HasTile)
+                    if (TerrainChunkRenderer.ShouldRender(fgTd))
+                    {
+                        // The new renderer owns this terrain cell's appearance.
+                        world.FgGrid.Tilemap.SetTile(tilePos3D, null);
+                    }
+                    else if (fgTd.HasTile)
                     {
                         var fgtc = fgTd.TileConfig;
                         
@@ -130,7 +135,11 @@ namespace SketchLand
                     }
 
                     // Process Background Layer
-                    if (bgTd.HasTile)
+                    if (TerrainChunkRenderer.ShouldRender(bgTd))
+                    {
+                        world.BgGrid.Tilemap.SetTile(tilePos3D, null);
+                    }
+                    else if (bgTd.HasTile)
                     {
                         var bgtc = bgTd.TileConfig;
                         

@@ -19,6 +19,16 @@ MonoBehaviour:
   <IsSolid>k__BackingField: 1
   <Size>k__BackingField: {x: 1, y: 1}
   <DrawTile>k__BackingField: {fileID: 11400000, guid: 4acdf8bdeeadb4fc1986f895489c236f, type: 2}
+  UseIllustratedRendering: 1
+  FillTexture: {fileID: 0}
+  FillTint: {r: 0.62411004, g: 0.68150675, b: 0.7075472, a: 1}
+  TextureWorldSize: {x: 4, y: 4}
+  TextureOffset: {x: 0, y: 0}
+  OutlineColor: {r: 0.06, g: 0.05, b: 0.04, a: 1}
+  OutlineWidth: 0.08
+  OutlineWobble: 0.05
+  OutlineWavelength: 1.65
+  CornerSoftness: 0.08
   <TileHitSFX>k__BackingField:
     Guid:
       Data1: 385692146

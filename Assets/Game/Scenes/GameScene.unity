@@ -4035,6 +4035,55 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1132728922
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1132728924}
+  - component: {fileID: 1132728923}
+  m_Layer: 0
+  m_Name: TerrainRendering
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1132728923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1132728922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03200e4ea939f45ac94bc1f0a3a4bd03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.TerrainChunkRenderer
+  UseIllustratedRendering: 1
+  _camera: {fileID: 330585545}
+  _terrainShader: {fileID: 4800000, guid: 35d73e86d717b45fab240059019cb08a, type: 3}
+  _paddingCells: 2
+  _prefetchChunks: 1
+--- !u!4 &1132728924
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1132728922}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1172065390
 GameObject:
   m_ObjectHideFlags: 0
@@ -4302,6 +4351,8 @@ MonoBehaviour:
   - _ingredient: {fileID: 11400000, guid: 2e6df84076b2b454a9e50fd441cb468c, type: 2}
     _amount: 1
   - _ingredient: {fileID: 11400000, guid: 1c2c9103005254e2096a71428bc94070, type: 2}
+    _amount: 999
+  - _ingredient: {fileID: 11400000, guid: 81a74ab6b5b314aa5a95260481a734d8, type: 2}
     _amount: 999
 --- !u!114 &1178486984
 MonoBehaviour:
@@ -6886,7 +6937,7 @@ MonoBehaviour:
   _backgroundLightmapFilterMode: 1
   _foregroundOverlay: {fileID: 328273112}
   _foregroundLightOverlay: {fileID: 328273110}
-  _foregroundLightmapFilterMode: 0
+  _foregroundLightmapFilterMode: 1
 --- !u!114 &2043979321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9247,3 +9298,4 @@ SceneRoots:
   - {fileID: 285757409}
   - {fileID: 759830593}
   - {fileID: 4297005443430499605}
+  - {fileID: 1132728924}

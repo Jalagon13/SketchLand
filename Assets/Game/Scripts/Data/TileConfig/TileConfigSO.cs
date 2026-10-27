@@ -17,6 +17,38 @@ namespace SketchLand
         [field: SerializeField] public Vector2Int Size { get; private set; } = new(1, 1);
         [field: SerializeField] public TileBase DrawTile { get; private set; }
 
+        [Header("Illustrated Rendering — 1x1 terrain")]
+        public bool UseIllustratedRendering = false;
+
+        public Texture2D FillTexture;
+        public Color FillTint = Color.white;
+
+        [Tooltip("World units covered by one complete texture repeat.")]
+        public Vector2 TextureWorldSize = new(4f, 4f);
+
+        public Vector2 TextureOffset = Vector2.zero;
+
+        public Color OutlineColor = new(0.06f, 0.05f, 0.04f, 1f);
+
+        [Range(0.005f, 0.12f)]
+        public float OutlineWidth = 0.04f;
+
+        [Range(0f, 0.08f)]
+        public float OutlineWobble = 0.025f;
+
+        [Range(0.1f, 3f)]
+        public float OutlineWavelength = 0.65f;
+
+        [Range(0f, 0.2f)]
+        public float CornerSoftness = 0.1f;
+
+        public static event System.Action VisualsChanged; // Lets the renderer refresh when an asset is edited in the Inspector.
+
+        private void OnValidate()
+        {
+            VisualsChanged?.Invoke();
+        }
+
         [field: Header("Game Feel")]
         [field: SerializeField] public EventReference TileHitSFX { get; private set; }
         [field: SerializeField] public EventReference TileDestroyedSFX { get; private set; }

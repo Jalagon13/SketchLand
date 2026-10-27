@@ -18,8 +18,8 @@ MonoBehaviour:
   <IsStackable>k__BackingField: 0
   <HarvestType>k__BackingField: 1
   <TargetLayer>k__BackingField: 0
-  <MiningDamage>k__BackingField: 20
-  <MineTicksPerSecond>k__BackingField: 3
+  <MiningDamage>k__BackingField: 60
+  <MineTicksPerSecond>k__BackingField: 4
   <MeleeDamage>k__BackingField: 3
   <KnockbackForce>k__BackingField: 3
   <HitboxOffset>k__BackingField: 1.25

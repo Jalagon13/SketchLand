@@ -9,7 +9,8 @@ namespace SketchLand
     {
         public event Action<Vector2Int> OnTileDestroyed;
         public event Action<Vector2Int> OnTilePlaced;
-    
+        public event Action<Vector2Int> OnTileDataChanged;
+
         private readonly TileData[] _tiles;
         private readonly int _width;
         private readonly int _height;
@@ -153,7 +154,7 @@ namespace SketchLand
             else
             {
                 // Fallback for tiles without config
-                _tiles[y * _width + x] = TileData.Air;
+                WriteTile(x, y, TileData.Air);
                 ClearDamage(x, y);
             }
 
@@ -170,9 +171,9 @@ namespace SketchLand
         {
             if (!IsInBounds(x, y)) return;
 
-            _tiles[y * _width + x] = newTileData;
-            
-            if(manualyPlaced)
+            WriteTile(x, y, newTileData);
+
+            if (manualyPlaced)
             {
                 OnTilePlaced?.Invoke(new(x, y));
             }
@@ -186,7 +187,7 @@ namespace SketchLand
         public void SetTileDataDirect(int x, int y, TileData newTileData)
         {
             if (!IsInBounds(x, y)) return;
-            _tiles[y * _width + x] = newTileData;
+            WriteTile(x, y, newTileData);
         }
 
         public void ChangeMultiTileData(int x, int y, TileData newTileData, bool refreshCurrentBounds = false)
@@ -214,7 +215,7 @@ namespace SketchLand
                     {
                         newTileData.OffsetX = (byte)ox;
                         newTileData.OffsetY = (byte)oy;
-                        _tiles[targetY * _width + targetX] = newTileData;
+                        WriteTile(targetX, targetY, newTileData);
                     }
                 }
             }
@@ -248,7 +249,7 @@ namespace SketchLand
                     {
                         newTileData.OffsetX = (byte)ox;
                         newTileData.OffsetY = (byte)oy;
-                        _tiles[targetY * _width + targetX] = newTileData;
+                        WriteTile(targetX, targetY, newTileData);
                     }
                 }
             }
@@ -301,6 +302,26 @@ namespace SketchLand
         {
             DamagedTiles.Remove(new Vector2Int(x, y));
         }
+
+        private void WriteTile(int x, int y, TileData value)
+        {
+            int index = y * _width + x;
+            TileData previous = _tiles[index];
+
+            _tiles[index] = value;
+
+            bool visualChanged =
+                previous.TileId != value.TileId ||
+                previous.State != value.State ||
+                previous.OffsetX != value.OffsetX ||
+                previous.OffsetY != value.OffsetY;
+
+            if (visualChanged)
+            {
+                OnTileDataChanged?.Invoke(new Vector2Int(x, y));
+            }
+        }
+
     }
 
     public readonly struct TileDamageState
