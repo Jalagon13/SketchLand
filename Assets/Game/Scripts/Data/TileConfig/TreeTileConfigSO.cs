@@ -1,189 +1,104 @@
-using System;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 namespace SketchLand
 {
     [CreateAssetMenu(fileName = "New TreeTileConfigSO", menuName = "OceanGame/TileConfig/TreeTileConfigSO")]
     public class TreeTileConfigSO : TileConfigSO
     {
-        [Header("Segment Visuals (TileBase for each segment)")]
-        [SerializeField] private TileBase _baseTile;
-        [SerializeField] private TileBase _trunkTile;
-        [SerializeField] private TileBase _branchLeftTile;
-        [SerializeField] private TileBase _branchRightTile;
-        [SerializeField] private TileBase _topTile;
-
-        [Header("Tree Generation Settings")]
-        [field: SerializeField] public int MinHeight { get; private set; } = 5;
-        [field: SerializeField] public int MaxHeight { get; private set; } = 10;
-        [SerializeField, Range(0f, 1f)] private float _branchChance = 0.25f;
-
-        // Selects the proper sprite/tile according to TileData.State.
-        public override TileBase GetStateInterpretedTileForRendering(byte state)
+        public override void OnTileDestroyed(TileGrid grid, int x, int y, TileData tileData, bool refreshCurrentBounds = false)
         {
-            TreeSegmentType segmentType = (TreeSegmentType)state;
+            // Any cell can identify the tree's bottom-left root.
+            int rootX = x - tileData.OffsetX;
+            int rootY = y - tileData.OffsetY;
 
-            switch (segmentType)
+            for (int ox = 0; ox < Size.x; ox++)
             {
-                case TreeSegmentType.Base:
-                    return _baseTile != null ? _baseTile : DrawTile;
-
-                case TreeSegmentType.Trunk:
-                    return _trunkTile != null ? _trunkTile : DrawTile;
-
-                case TreeSegmentType.BranchLeft:
-                    return _branchLeftTile != null ? _branchLeftTile : DrawTile;
-
-                case TreeSegmentType.BranchRight:
-                    return _branchRightTile != null ? _branchRightTile : DrawTile;
-
-                case TreeSegmentType.Top:
-                    return _topTile != null ? _topTile : DrawTile;
-
-                default:
-                    return DrawTile;
-            }
-        }
-
-        // Terraria-style tree destruction: severs the tree at (startX, startY) and destroys everything connected upwards, leaving lower segments intact.
-        public override void OnTileDestroyed(TileGrid grid, int startX, int startY, TileData tileData, bool refreshCurrentBounds = false)
-        {
-            ushort myTreeId = GetId();
-
-            Stack<Vector2Int> toProcess = new();
-            HashSet<Vector2Int> visited = new();
-
-            Vector2Int startPos = new(startX, startY);
-            toProcess.Push(startPos);
-            visited.Add(startPos);
-
-            while (toProcess.Count > 0)
-            {
-                Vector2Int curr = toProcess.Pop();
-                TileData currData = grid.GetTileData(curr.x, curr.y);
-
-                // Wipe this tile from the grid
-                grid.SetTileDataDirect(curr.x, curr.y, TileData.Air);
-                grid.ClearDamage(curr.x, curr.y);
-                
-                SpawnLootAt(curr, currData);
-
-                if (currData.State == (byte)TreeSegmentType.BranchLeft || currData.State == (byte)TreeSegmentType.BranchRight)
+                for (int oy = 0; oy < Size.y; oy++)
                 {
-                    continue; // Don't check candidates for a branch, just move to the next tile
-                }
+                    int targetX = rootX + ox;
+                    int targetY = rootY + oy;
 
-                // Scan for dependent segments:
-                // check UP and SIDES (for branches). NEVER check (curr.x, curr.y - 1).
-                Vector2Int[] candidates = new Vector2Int[]
-                {
-                    new(curr.x, curr.y + 1), // Directly above
-                    new(curr.x - 1, curr.y), // Left branch tile
-                    new(curr.x + 1, curr.y), // Right branch tile
-                };
+                    if (!grid.IsInBounds(targetX, targetY))
+                        continue;
 
-                foreach (var next in candidates)
-                {
-                    if (!grid.IsInBounds(next.x, next.y) || visited.Contains(next)) continue;
-                    TileData neighbor = grid.GetTileData(next.x, next.y);
+                    TileData current = grid.GetTileData(targetX, targetY);
 
-                    if (neighbor.TileId != myTreeId) continue;
-
-                    // Only accept directly above (any trunk/top tile), OR side tiles if they are actually branches:
-                    bool isValidNeighbor = false;
-
-                    if (next.x == curr.x && next.y == curr.y + 1)
+                    // Only remove cells belonging to this tree instance.
+                    if (current.TileId != tileData.TileId || current.OffsetX != ox || current.OffsetY != oy)
                     {
-                        isValidNeighbor = true; // Directly above on the trunk
-                    }
-                    else if (next.x == curr.x - 1 && neighbor.State == (byte)TreeSegmentType.BranchLeft)
-                    {
-                        isValidNeighbor = true; // Left branch
-                    }
-                    else if (next.x == curr.x + 1 && neighbor.State == (byte)TreeSegmentType.BranchRight)
-                    {
-                        isValidNeighbor = true; // Right branch
+                        continue;
                     }
 
-                    if (isValidNeighbor)
-                    {
-                        visited.Add(next);
-                        toProcess.Push(next);
-                    }
+                    grid.SetTileDataDirect(targetX, targetY, TileData.Air);
+                    grid.ClearDamage(targetX, targetY);
+
+                    // Roll the loot table once at each occupied cell.
+                    DropLoot(new Vector2(targetX + 0.5f, targetY + 0.5f));
                 }
             }
         }
-        
-        private void SpawnLootAt(Vector2Int curr, TileData currentData) // WIP, will get to this when i create a dedicated loot system later
-        {
-            Vector2 tileCenterPos = new Vector2(curr.x + 0.5f, curr.y + 0.5f);
 
-            DropLoot(tileCenterPos);
-        }
-
-        // Attempts to grow a tree at (groundX, groundY). groundY is the soil/ground block the tree stands on.
         public bool TryGrowTree(WorldGenContext ctx, int groundX, int groundY)
         {
-            // Keep existing callers, including surface trees, using the world's top as their limit.
             return TryGrowTree(ctx, groundX, groundY, ctx.Height - 1);
         }
 
         public bool TryGrowTree(WorldGenContext ctx, int groundX, int groundY, int maxGrowthY)
         {
-            ushort treeId = GetId();
+            Vector2Int size = Size;
 
-            // Clamp the inclusive tile-coordinate limit to the world bounds.
+            // Offsets are stored as bytes: valid offsets are 0–255.
+            if (size.x < 1 || size.y < 1 || size.x > 256 || size.y > 256)
+            {
+                return false;
+            }
+
+            int rootX = groundX;
+            int rootY = groundY + 1;
+
             maxGrowthY = Mathf.Min(maxGrowthY, ctx.Height - 1);
 
-            // Choose a height within the config range that also fits below the ceiling.
-            int maxHeightThatFits = Mathf.Min(MaxHeight, maxGrowthY - groundY);
-            if (maxHeightThatFits < MinHeight) return false;
-
-            int height = ctx.Random.Next(MinHeight, maxHeightThatFits + 1);
-
-            // Check vertical clearance before placing any part of the tree.
-            for (int y = 1; y <= height; y++)
+            // Check the entire footprint fits inside the world/ceiling.
+            if (rootX < 0 || groundY < 0 || rootX + size.x > ctx.Width || rootY + size.y - 1 > maxGrowthY)
             {
-                int checkY = groundY + y;
-                if (checkY > maxGrowthY || checkY >= ctx.Height || ctx.FgGrid[groundX, checkY].HasTile)
-                {
+                return false;
+            }
+
+            // Require solid support beneath the footprint.
+            for (int ox = 0; ox < size.x; ox++)
+            {
+                TileData ground = ctx.FgGrid[rootX + ox, groundY];
+
+                if (!ground.HasTile || !ground.IsSolid)
                     return false;
-                }
             }
 
-            // Generate the base.
-            ctx.FgGrid[groundX, groundY + 1] = new TileData(treeId, state: (byte)TreeSegmentType.Base);
-
-            // Generate the trunk and any branches.
-            for (int y = 2; y < height; y++)
+            // Check every cell before placing anything.
+            for (int ox = 0; ox < size.x; ox++)
             {
-                TreeSegmentType segment = TreeSegmentType.Trunk;
-
-                if (ctx.Random.NextDouble() < _branchChance)
+                for (int oy = 0; oy < size.y; oy++)
                 {
-                    TreeSegmentType branchType = ctx.Random.NextDouble() < 0.5 ? TreeSegmentType.BranchLeft : TreeSegmentType.BranchRight;
-
-                    int offset = branchType == TreeSegmentType.BranchLeft ? -1 : 1;
-                    int branchX = groundX + offset;
-
-                    if (branchX >= 0 && branchX < ctx.Width && !ctx.FgGrid[branchX, groundY + y].HasTile)
-                    {
-                        ctx.FgGrid[branchX, groundY + y] = new TileData(treeId, state: (byte)branchType);
-                    }
+                    if (ctx.FgGrid[rootX + ox, rootY + oy].HasTile)
+                        return false;
                 }
-
-                ctx.FgGrid[groundX, groundY + y] = new TileData(treeId, state: (byte)segment);
             }
 
-            // Generate the top.
-            ctx.FgGrid[groundX, groundY + height] = new TileData(treeId, state: (byte)TreeSegmentType.Top);
+            ushort treeId = GetId();
+
+            // Place one multi-tile instance, with offsets to its root.
+            for (int ox = 0; ox < size.x; ox++)
+            {
+                for (int oy = 0; oy < size.y; oy++)
+                {
+                    ctx.FgGrid[rootX + ox, rootY + oy] =
+                        new TileData(
+                            treeId,
+                            offsetX: (byte)ox,
+                            offsetY: (byte)oy);
+                }
+            }
 
             return true;
         }
-
-
     }
 }

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a420d73f53b79404f9078d4ebe9d53e7, type: 3}
-  m_Name: Tile_Radio
+  m_Name: Tile_Dirt
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.TileItemSO
-  <ItemName>k__BackingField: Radio
-  <Description>k__BackingField: Used to call for help
-  <DisplayIcon>k__BackingField: {fileID: 1815987740814738295, guid: 2f87ce7e588154a76acbf2c4eda5fff0, type: 3}
+  <ItemName>k__BackingField: Dirt
+  <Description>k__BackingField: 
+  <DisplayIcon>k__BackingField: {fileID: 1366788342255239845, guid: 2f87ce7e588154a76acbf2c4eda5fff0, type: 3}
   <IsStackable>k__BackingField: 1
-  <PlaceTileDataSO>k__BackingField: {fileID: 11400000, guid: fa3b8050d4c75406399b053799376928, type: 2}
+  <PlaceTileDataSO>k__BackingField: {fileID: 11400000, guid: d927e8dc6d24d465b9dcd9aae0e08c71, type: 2}

@@ -17,8 +17,18 @@ MonoBehaviour:
   <LightLevel>k__BackingField: 0
   <Indestructible>k__BackingField: 0
   <IsSolid>k__BackingField: 0
-  <Size>k__BackingField: {x: 1, y: 1}
-  <DrawTile>k__BackingField: {fileID: 0}
+  <Size>k__BackingField: {x: 1, y: 6}
+  <DrawTile>k__BackingField: {fileID: 11400000, guid: db9af0ae5bd824755a35ec9dcf9b0fa5, type: 2}
+  UseIllustratedRendering: 0
+  FillTexture: {fileID: 0}
+  FillTint: {r: 1, g: 1, b: 1, a: 1}
+  TextureWorldSize: {x: 4, y: 4}
+  TextureOffset: {x: 0, y: 0}
+  OutlineColor: {r: 0.06, g: 0.05, b: 0.04, a: 1}
+  OutlineWidth: 0.04
+  OutlineWobble: 0.025
+  OutlineWavelength: 0.65
+  CornerSoftness: 0.1
   <TileHitSFX>k__BackingField:
     Guid:
       Data1: 663265361
@@ -40,14 +50,6 @@ MonoBehaviour:
     _minAmount: 1
     _maxAmount: 2
     _dropChance: 1
-  _baseTile: {fileID: 11400000, guid: db9af0ae5bd824755a35ec9dcf9b0fa5, type: 2}
-  _trunkTile: {fileID: 11400000, guid: 439d13a6f845f49a7a65bb2c5b8fa366, type: 2}
-  _branchLeftTile: {fileID: 0}
-  _branchRightTile: {fileID: 0}
-  _topTile: {fileID: 11400000, guid: 38046957f6cee4639878c78189ad9315, type: 2}
-  <MinHeight>k__BackingField: 4
-  <MaxHeight>k__BackingField: 8
-  _branchChance: 0.25
   references:
     version: 2
     RefIds:

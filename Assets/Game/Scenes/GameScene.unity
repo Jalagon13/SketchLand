@@ -3499,8 +3499,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 22d5dfd214b844b8e8ab2fc5e6b48082, type: 2}
   - {fileID: 11400000, guid: f8b02718570c243b186ea8aeea3efd1c, type: 2}
   - {fileID: 11400000, guid: e42bdd7cb272843519e112e3a25d0ee9, type: 2}
-  - {fileID: 11400000, guid: fa3b8050d4c75406399b053799376928, type: 2}
-  - {fileID: 11400000, guid: e7b35e8f4d4be47e784aa3e4bb7295a2, type: 2}
   _itemDatabase:
   - {fileID: 11400000, guid: a8ba4590c8abf433dbe1aa7470e8b094, type: 2}
   - {fileID: 11400000, guid: b424afe4dee6641ca97d9b23d029ab30, type: 2}
@@ -3520,14 +3518,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dbcbcd20bffa749e2920a1db8a6a1792, type: 2}
   - {fileID: 11400000, guid: 2e6df84076b2b454a9e50fd441cb468c, type: 2}
   - {fileID: 11400000, guid: 7bf33d186c10b416c8333f3b3665a663, type: 2}
-  - {fileID: 11400000, guid: 278c74882f6fb40319f2f4c99b2f71ff, type: 2}
   - {fileID: 11400000, guid: 6f393675a7658455ca34e97ac758ccee, type: 2}
   - {fileID: 11400000, guid: d6e5e2bab9b7347208c312146e82e2e3, type: 2}
   - {fileID: 11400000, guid: e6f149573fb6a4cd982a6c0ffd4a1075, type: 2}
-  - {fileID: 11400000, guid: a11d2d4f5ee1445f4ad21729b66b04a3, type: 2}
   - {fileID: 11400000, guid: 8d66a3e045bd243edaf2a0a22cec58f5, type: 2}
-  - {fileID: 11400000, guid: e71b7b29d69234d63a18460009d27738, type: 2}
-  - {fileID: 11400000, guid: f685d39f31fd6476b8213124cd5013fa, type: 2}
 --- !u!114 &970924661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6268,7 +6262,6 @@ MonoBehaviour:
   _defaultCraftingRecipes:
   - {fileID: 11400000, guid: 32f2a8d6efd894ce7a9cd6e0ac408b05, type: 2}
   - {fileID: 11400000, guid: 9db2f3b32a9ec45c395e98ce94eb0fee, type: 2}
-  - {fileID: 11400000, guid: 112f8ac7795254ea582c3e7c52232416, type: 2}
 --- !u!114 &1672959641
 MonoBehaviour:
   m_ObjectHideFlags: 0

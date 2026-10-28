@@ -39,15 +39,6 @@ namespace SketchLand
         public override int GetHashCode() => HashCode.Combine(Type, Value);
     }
 
-    public enum TreeSegmentType : byte
-    {
-        Base = 0, // Roots sitting on dirt
-        Trunk = 1, // Straight trunk segment
-        BranchLeft = 2, // Trunk with branch to the left
-        BranchRight = 3, // Trunk with branch to the right
-        Top = 4, // Top trunk block that holds the canopy
-    }
-
     public enum ArmorType
     {
         Helmet,

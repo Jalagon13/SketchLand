@@ -78,7 +78,7 @@ ScriptedImporter:
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
-    mosaicPadding: 4
+    mosaicPadding: 16
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
@@ -93,7 +93,7 @@ ScriptedImporter:
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
-    mosaicPadding: 4
+    mosaicPadding: 16
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
@@ -102,7 +102,7 @@ ScriptedImporter:
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   importFileNodeState: 1
-  platformSettingsDirtyTick: 639260255301281840
+  platformSettingsDirtyTick: 639287228883993530
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -129,7 +129,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: AS_Tree
     originalName: 
-    pivot: {x: 0.5254237, y: 0}
+    pivot: {x: 0.48648646, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -137,9 +137,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 59
-      height: 32
-    spriteID: f0a0ca566491f45469bdfbf0db8d75ea
+      width: 37
+      height: 95
+    spriteID: c76f88947de724a18b2a77100359c402
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -149,103 +149,19 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
   spriteSheetImportData:
-  - name: tile_tree_base
+  - name: tile_tree
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 3
-      y: 4
-      width: 16
-      height: 16
-    spriteID: 3efbfc98a3a0a4797bfe40c4ab9f2d88
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: tile_tree_trunk
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0.0833333}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
-      x: 3
-      y: 20
-      width: 16
-      height: 16
-    spriteID: 62f261252dec64e7d93adcfb2a104744
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: tile_tree_canopy
-    originalName: 
-    pivot: {x: 0.5, y: 0.25}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 19
-      y: 4
+      x: 10
+      y: 16
       width: 48
-      height: 32
-    spriteID: ce3b4778286de443685d88e83bfc650c
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: tile_kelp_trunk
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 67
-      y: 4
-      width: 16
-      height: 16
-    spriteID: dc30cb0c3b0c548f58c321a772f0c2e7
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 0, y: 0}
-  - name: tile_kelp_canopy
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 67
-      y: 20
-      width: 16
-      height: 16
-    spriteID: adcc1ab052a0749eda8c16fbd54a888f
+      height: 96
+    spriteID: 0bfc4300d6be04c598bf8fb9732eec2f
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -272,11 +188,11 @@ ScriptedImporter:
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 1
+        x: 22
         y: 0
-        width: 79
-        height: 33
-      spriteId: f0a0ca566491f45469bdfbf0db8d75ea
+        width: 37
+        height: 95
+      spriteId: c76f88947de724a18b2a77100359c402
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -322,5 +238,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 80, y: 48}
-  previousTextureSize: {x: 128, y: 64}
+  canvasSize: {x: 80, y: 112}
+  previousTextureSize: {x: 128, y: 128}

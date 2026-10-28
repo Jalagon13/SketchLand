@@ -13,7 +13,7 @@ namespace SketchLand
         {
             for (int x = 0; x < ctx.Width; x++)
             {
-                int startY = ctx.Height - _tree.MaxHeight - 1;
+                int startY = ctx.Height - 2;
 
                 // Travel from the top of the mpa to sea level
                 for (int y = startY; y >= ctx.RoughSurfaceHeight; y--)
