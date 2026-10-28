@@ -15,8 +15,6 @@ namespace SketchLand
 
         [Header("World References")]
         [field: SerializeField] public WorldGenerator WorldGen { get; private set; }
-        [SerializeField] private Tilemap _foregroundTilemap;
-        [SerializeField] private Tilemap _backgroundTilemap;
         [SerializeField] private ParallaxBackground _surfaceBg;
 
         [Header("Tile Repair")]
@@ -92,8 +90,8 @@ namespace SketchLand
             SeaLevel = context.RoughSurfaceHeight;
 
             // Create fresh layers matching generated dimensions
-            FgGrid = new TileGrid(width, height, _foregroundTilemap);
-            BgGrid = new TileGrid(width, height, _backgroundTilemap);
+            FgGrid = new TileGrid(width, height);
+            BgGrid = new TileGrid(width, height);
 
             // Copy generated 2D tile arrays into layers
             for (int x = 0; x < width; x++)

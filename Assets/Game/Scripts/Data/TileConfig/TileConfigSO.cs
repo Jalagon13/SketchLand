@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using FMODUnity;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 namespace SketchLand
 {
@@ -36,11 +35,6 @@ namespace SketchLand
         public ushort GetId()
         {
             return GameDataRegistry.Instance.GetTileIdFromTileDataSO(this);
-        }
-
-        public virtual TileBase GetStateInterpretedTileForRendering(byte state)
-        {
-            return null;
         }
 
         public virtual void OnTileDestroyed(TileGrid grid, int x, int y, TileData tileData, bool refreshCurrentBounds = false)

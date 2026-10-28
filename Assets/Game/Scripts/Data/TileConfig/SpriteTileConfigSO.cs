@@ -9,7 +9,7 @@ namespace SketchLand
         [field: Header("Sprite Rendering")]
         [field: SerializeField] public TileBase DrawTile { get; private set; }
 
-        public override TileBase GetStateInterpretedTileForRendering(byte state)
+        public virtual TileBase GetStateInterpretedTileForRendering(byte state)
         {
             return DrawTile;
         }

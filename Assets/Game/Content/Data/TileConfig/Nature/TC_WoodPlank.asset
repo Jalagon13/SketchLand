@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2b0488c44e6342c98721959b16e8839, type: 3}
   m_Name: TC_WoodPlank
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.TerrainTileConfigSO
-  <RequiredHarvestType>k__BackingField: 1
+  <RequiredHarvestType>k__BackingField: 2
   <MaxHP>k__BackingField: 50
   <LightLevel>k__BackingField: 0
   <Indestructible>k__BackingField: 0
@@ -48,7 +48,6 @@ MonoBehaviour:
   OutlineWobble: 0.0617
   OutlineWavelength: 2.05
   CornerSoftness: 0.0846
-  <DrawTile>k__BackingField: {fileID: 0}
   references:
     version: 2
     RefIds:

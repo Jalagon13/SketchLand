@@ -18,7 +18,6 @@ MonoBehaviour:
   <Indestructible>k__BackingField: 0
   <IsSolid>k__BackingField: 0
   <Size>k__BackingField: {x: 1, y: 1}
-  <DrawTile>k__BackingField: {fileID: 11400000, guid: c40fe86a3db0d486f96e97d809dd3899, type: 2}
   <TileHitSFX>k__BackingField:
     Guid:
       Data1: 663265361
@@ -40,9 +39,11 @@ MonoBehaviour:
     _minAmount: 1
     _maxAmount: 1
     _dropChance: 1
+  <DrawTile>k__BackingField: {fileID: 11400000, guid: c40fe86a3db0d486f96e97d809dd3899, type: 2}
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 2895664574932451429
       type: {class: ChestIB, ns: OceanGame, asm: Assembly-CSharp}
-      data: 

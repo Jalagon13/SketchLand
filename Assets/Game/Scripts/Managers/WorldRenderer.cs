@@ -1,182 +1,151 @@
-using System;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 namespace SketchLand
 {
-    public class WorldRenderer : MonoBehaviour
+    [DefaultExecutionOrder(10000)]
+    public sealed class WorldRenderer : MonoBehaviour
     {
-        public static WorldRenderer Instance { get; private set; }
-        
-        [SerializeField] private Camera _mainCamera;
+        [SerializeField] private TerrainChunkRenderer _terrain;
 
-        [Header("Decal Overlay References")]
-        [SerializeField] private Tilemap _damageOverlayTilemap;
-        [SerializeField] private TileBase[] _crackTiles; // Array of crack stage tiles (e.g. 3 stages: 25%, 50%, 75%)
+        [Header("Foreground")]
+        [SerializeField] private SpriteTileRenderer _foregroundObjects;
+        [SerializeField] private DamageOverlayRenderer _foregroundDamage;
 
-        private void Awake()
+        [Header("Background")]
+        [SerializeField] private SpriteTileRenderer _backgroundObjects;
+        [SerializeField] private DamageOverlayRenderer _backgroundDamage;
+
+        private TileGrid _foreground;
+        private TileGrid _background;
+        private PlayerCamera _view;
+
+        private bool _refreshRequested = true;
+
+        private void OnEnable()
         {
-            Instance = this;
+            TileConfigSO.VisualsChanged += RequestRefresh;
+            _refreshRequested = true;
         }
-        
-        private void Start() 
+
+        public void RequestRefresh()
         {
-            PlayerCamera.Instance.OnVisibleTileBoundsChanged += OnTileBoundsChanged;
-        }
-        
-        private void OnDestroy() 
-        {
-            PlayerCamera.Instance.OnVisibleTileBoundsChanged -= OnTileBoundsChanged;
+            _refreshRequested = true;
         }
 
-        private void OnTileBoundsChanged(RectInt oldBounds, RectInt newBounds)
+        private void OnTileChanged(Vector2Int position)
         {
-            var world = WorldManager.Instance;
-            var registry = GameDataRegistry.Instance;
+            RequestRefresh();
+        }
 
-            if (world == null || !world.IsWorldReady || registry == null) return;
+        private void OnBoundsChanged(RectInt oldBounds, RectInt newBounds)
+        {
+            RequestRefresh();
+        }
 
-            // Find out if there are any old tiles left form the last visible bounds, if so clear the rendering of them
-            if (oldBounds.width > 0 && oldBounds.height > 0)
+        private void LateUpdate()
+        {
+            WorldManager world = WorldManager.Instance;
+            PlayerCamera view = PlayerCamera.Instance;
+
+            if (world == null || !world.IsWorldReady || view == null)
             {
-                for (int x = oldBounds.xMin; x < oldBounds.xMax; x++)
+                if (_foreground != null)
                 {
-                    for (int y = oldBounds.yMin; y < oldBounds.yMax; y++)
-                    {
-                        Vector2Int oldPos2D = new Vector2Int(x, y);
-
-                        // If this old tile position is NO LONGER inside the new view box, wipe it
-                        if (!newBounds.Contains(oldPos2D))
-                        {
-                            Vector3Int tilePos = new Vector3Int(x, y, 0);
-                            world.FgGrid.Tilemap.SetTile(tilePos, null);
-                            world.BgGrid.Tilemap.SetTile(tilePos, null);
-                            _damageOverlayTilemap.SetTile(tilePos, null);
-                        }
-                    }
+                    Disconnect();
+                    ClearViews();
                 }
+
+                return;
             }
 
-            // Next draw the new tiles
-            for (int x = newBounds.xMin; x < newBounds.xMax; x++)
+            if (_foreground != world.FgGrid || _background != world.BgGrid || _view != view)
             {
-                for (int y = newBounds.yMin; y < newBounds.yMax; y++)
-                {
-                    Vector2Int tilePos = new(x, y);
+                Disconnect();
+                ClearViews();
 
-                    // Process Foreground Layer
-                    var fgTd = world.FgGrid.GetTileData(x, y);
-                    var bgTd = world.BgGrid.GetTileData(x, y);
-                    Vector3Int tilePos3D = (Vector3Int)tilePos;
+                _foreground = world.FgGrid;
+                _background = world.BgGrid;
+                _view = view;
 
-                    if (TerrainChunkRenderer.ShouldRender(fgTd))
-                    {
-                        // The new renderer owns this terrain cell's appearance.
-                        world.FgGrid.Tilemap.SetTile(tilePos3D, null);
-                    }
-                    else if (fgTd.HasTile)
-                    {
-                        var fgtc = fgTd.TileConfig;
-                        
-                        if (fgtc != null)
-                        {
-                            if (fgtc.IsMultiTile)
-                            {
-                                // Render the sprite ONLY on the root cell.
-                                // Non-root cells set 'null' to ensure old tiles underneath are cleared.
-                                if (fgTd.IsMultiTileRoot)
-                                {
-                                    // Before it draws the multi tile, it needs to fetch the interpretation of the tile depending on the state
-                                    byte state = fgTd.State;
-                                    TileBase interpretedTile = fgtc.GetStateInterpretedTileForRendering(state);
+                _foreground.OnTileDataChanged += OnTileChanged;
+                _background.OnTileDataChanged += OnTileChanged;
 
-                                    world.FgGrid.Tilemap.SetTile(tilePos3D, interpretedTile);
-                                }
-                                else
-                                {
-                                    world.FgGrid.Tilemap.SetTile(tilePos3D, null);
-                                }
-                            }
-                            else
-                            {
-                                // Standard 1x1 tile
-                                // Before it draws the tile, it needs to fetch the interpretation of the tile depending on the state
-                                byte state = fgTd.State;
-                                TileBase interpretedTile = fgtc.GetStateInterpretedTileForRendering(state);
+                _foreground.OnDamageChanged += RequestRefresh;
+                _background.OnDamageChanged += RequestRefresh;
 
-                                world.FgGrid.Tilemap.SetTile(tilePos3D, interpretedTile);
-                            }
-                        }
-                    }
-                    else if(fgTd.IsAir) // If we are setting it to air
-                    {
-                        world.FgGrid.Tilemap.SetTile(tilePos3D, null);
-                    }
+                _view.OnVisibleTileBoundsChanged += OnBoundsChanged;
 
-                    // Process cracked tile decals
-                    // Check if the foreground has damage first; if empty or undamaged, check background damage
-                    int currentDamage = 0;
-                    int maxHp = 0;
-
-                    if (!TryGetTileDamage(world.FgGrid, tilePos, fgTd, out currentDamage, out maxHp))
-                    {
-                        TryGetTileDamage(world.BgGrid, tilePos, bgTd, out currentDamage, out maxHp);
-                    }
-
-                    if (currentDamage > 0 && maxHp > 0 && _crackTiles != null && _crackTiles.Length > 0)
-                    {
-                        float damageRatio = Mathf.Clamp01((float)currentDamage / maxHp);
-                        int stageIndex = Mathf.Clamp(Mathf.FloorToInt(damageRatio * _crackTiles.Length), 0, _crackTiles.Length - 1);
-                        _damageOverlayTilemap.SetTile(tilePos3D, _crackTiles[stageIndex]);
-                    }
-                    else
-                    {
-                        _damageOverlayTilemap.SetTile(tilePos3D, null);
-                    }
-
-                    // Process Background Layer
-                    if (TerrainChunkRenderer.ShouldRender(bgTd))
-                    {
-                        world.BgGrid.Tilemap.SetTile(tilePos3D, null);
-                    }
-                    else if (bgTd.HasTile)
-                    {
-                        var bgtc = bgTd.TileConfig;
-                        
-                        if (bgtc != null)
-                        {
-                            // Use state interpretation so variations/connections match foreground logic
-                            TileBase interpretedTile = bgtc.GetStateInterpretedTileForRendering(bgTd.State);
-                            world.BgGrid.Tilemap.SetTile(tilePos3D, interpretedTile);
-                        }
-                    }
-                    else if (bgTd.IsAir)
-                    {
-                        world.BgGrid.Tilemap.SetTile(tilePos3D, null);
-                    }
-                }
+                RequestRefresh();
             }
+
+            // Terrain checks its visible chunks each frame.
+            // Only dirty chunks rebuild their meshes.
+            _terrain.Render(world);
+
+            if (!_refreshRequested)
+                return;
+
+            _refreshRequested = false;
+
+            RectInt bounds = _view.CurrentVisibleTileBounds;
+
+            _backgroundObjects.Render(_background, bounds);
+            _foregroundObjects.Render(_foreground, bounds);
+
+            _backgroundDamage.Render(_background, bounds);
+            _foregroundDamage.Render(_foreground, bounds);
         }
 
-        private static bool TryGetTileDamage(TileGrid grid, Vector2Int tilePos, TileData tileData, out int damage, out int maxHp)
+        private void Disconnect()
         {
-            damage = 0;
-            maxHp = 0;
+            if (_foreground != null)
+            {
+                _foreground.OnTileDataChanged -= OnTileChanged;
+                _foreground.OnDamageChanged -= RequestRefresh;
+            }
 
-            if (!tileData.HasTile) return false;
+            if (_background != null)
+            {
+                _background.OnTileDataChanged -= OnTileChanged;
+                _background.OnDamageChanged -= RequestRefresh;
+            }
 
-            TileConfigSO tileConfig = tileData.TileConfig;
-            if (tileConfig == null) return false;
+            if (_view != null)
+            {
+                _view.OnVisibleTileBoundsChanged -= OnBoundsChanged;
+            }
 
-            Vector2Int damagePosition = tileConfig.IsMultiTile
-                ? new Vector2Int(tilePos.x - tileData.OffsetX, tilePos.y - tileData.OffsetY)
-                : tilePos;
+            _foreground = null;
+            _background = null;
+            _view = null;
+        }
 
-            if (!grid.DamagedTiles.TryGetValue(damagePosition, out TileDamageState damageState)) return false;
+        private void ClearViews()
+        {
+            if (_terrain != null)
+                _terrain.Clear();
 
-            damage = damageState.Damage;
-            maxHp = tileConfig.MaxHP;
-            return true;
+            if (_foregroundObjects != null)
+                _foregroundObjects.Clear();
+
+            if (_backgroundObjects != null)
+                _backgroundObjects.Clear();
+
+            if (_foregroundDamage != null)
+                _foregroundDamage.Clear();
+
+            if (_backgroundDamage != null)
+                _backgroundDamage.Clear();
+        }
+
+        private void OnDisable()
+        {
+            TileConfigSO.VisualsChanged -= RequestRefresh;
+
+            Disconnect();
+            ClearViews();
+
+            _refreshRequested = true;
         }
     }
 }

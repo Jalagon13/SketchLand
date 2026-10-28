@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 namespace SketchLand
 {
@@ -29,15 +28,5 @@ namespace SketchLand
 
         [Range(0f, 0.2f)]
         public float CornerSoftness = 0.1f;
-
-        [field: Header("Legacy Tilemap Fallback")]
-        [field: Tooltip("Used when the terrain mesh renderer is disabled or unavailable.")]
-        [field: SerializeField]
-        public TileBase DrawTile { get; private set; }
-
-        public override TileBase GetStateInterpretedTileForRendering(byte state)
-        {
-            return DrawTile;
-        }
     }
 }

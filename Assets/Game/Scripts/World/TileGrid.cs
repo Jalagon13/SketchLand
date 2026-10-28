@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 namespace SketchLand
 {
@@ -10,6 +9,7 @@ namespace SketchLand
         public event Action<Vector2Int> OnTileDestroyed;
         public event Action<Vector2Int> OnTilePlaced;
         public event Action<Vector2Int> OnTileDataChanged;
+        public event Action OnDamageChanged;
 
         private readonly TileData[] _tiles;
         private readonly int _width;
@@ -20,17 +20,15 @@ namespace SketchLand
         public int Height => _height;
 
         public Dictionary<Vector2Int, TileDamageState> DamagedTiles { get; } = new();
-        public Tilemap Tilemap { get; }
 
-        public TileGrid(int width, int height, Tilemap tilemap)
+        public TileGrid(int width, int height)
         {
             _width = width;
             _height = height;
-            Tilemap = tilemap;
 
             _tiles = new TileData[width * height];
         }
-        
+
         public TileData GetTileData(int x, int y)
         {
             if(!IsInBounds(x, y)) return TileData.OutOfBounds;
@@ -69,7 +67,8 @@ namespace SketchLand
             else
             {
                 DamagedTiles[damagePos] = new TileDamageState(currentDamage, Time.time);
-                
+                OnDamageChanged?.Invoke();
+
                 AudioManager.Instance.PlayOneShot(tc.TileHitSFX, new(damagePos.x, damagePos.y));
 
                 if (refreshCurrentBounds && PlayerCamera.Instance.IsPositionInBounds(x, y))
@@ -103,6 +102,8 @@ namespace SketchLand
                     refreshedVisibleDamage = true;
                 }
             }
+
+            OnDamageChanged?.Invoke();
 
             if (refreshedVisibleDamage)
                 PlayerCamera.Instance.InvokeCurrentBoundsRefresh();
@@ -300,7 +301,10 @@ namespace SketchLand
 
         public void ClearDamage(int x, int y)
         {
-            DamagedTiles.Remove(new Vector2Int(x, y));
+            if (DamagedTiles.Remove(new Vector2Int(x, y)))
+            {
+                OnDamageChanged?.Invoke();
+            }
         }
 
         private void WriteTile(int x, int y, TileData value)

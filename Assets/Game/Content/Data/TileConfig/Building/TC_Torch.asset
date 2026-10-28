@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3e6628b84a1d44278cce9fcc7e7ef62, type: 3}
   m_Name: TC_Torch
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.SpriteTileConfigSO
-  <RequiredHarvestType>k__BackingField: 2
+  <RequiredHarvestType>k__BackingField: 0
   <MaxHP>k__BackingField: 1
   <LightLevel>k__BackingField: 1
   <Indestructible>k__BackingField: 0

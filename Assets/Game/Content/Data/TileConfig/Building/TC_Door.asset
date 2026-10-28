@@ -18,7 +18,6 @@ MonoBehaviour:
   <Indestructible>k__BackingField: 0
   <IsSolid>k__BackingField: 1
   <Size>k__BackingField: {x: 1, y: 2}
-  <DrawTile>k__BackingField: {fileID: 11400000, guid: 7d2495a05d7c34815832330efb687922, type: 2}
   <TileHitSFX>k__BackingField:
     Guid:
       Data1: 663265361
@@ -40,11 +39,13 @@ MonoBehaviour:
     _minAmount: 1
     _maxAmount: 1
     _dropChance: 1
+  <DrawTile>k__BackingField: {fileID: 11400000, guid: 7d2495a05d7c34815832330efb687922, type: 2}
   <ClosedDoorSprite>k__BackingField: {fileID: 7632935944368568502, guid: 2f87ce7e588154a76acbf2c4eda5fff0, type: 3}
   <OpenDoorSprite>k__BackingField: {fileID: 2103766653744169134, guid: 2f87ce7e588154a76acbf2c4eda5fff0, type: 3}
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 2895663963195310379
       type: {class: DoorIB, ns: OceanGame, asm: Assembly-CSharp}
-      data: 

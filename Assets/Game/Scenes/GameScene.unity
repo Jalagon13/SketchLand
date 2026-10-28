@@ -686,7 +686,7 @@ GameObject:
   - component: {fileID: 188555075}
   - component: {fileID: 188555074}
   m_Layer: 0
-  m_Name: WorldGrid
+  m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -712,15 +712,16 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 188555073}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1608990555}
   - {fileID: 1420173608}
+  - {fileID: 407327314}
   - {fileID: 1458897855}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1924350004}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &211677276
 GameObject:
@@ -1452,6 +1453,155 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1442964531627222901, guid: d282bbe71d29441cbbbd3a0e146ffd3c, type: 3}
   m_PrefabInstance: {fileID: 330939455}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &407327313
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 407327314}
+  - component: {fileID: 407327317}
+  - component: {fileID: 407327316}
+  - component: {fileID: 407327315}
+  m_Layer: 0
+  m_Name: Background Damage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &407327314
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 407327313}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 188555075}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &407327315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 407327313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b4b496f622ec4a858d5eece75ce49e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.DamageOverlayRenderer
+  _crackTiles:
+  - {fileID: 11400000, guid: 0d4b958598fb5486b9793b724049138f, type: 2}
+  - {fileID: 11400000, guid: f1d7291abfae94d12b11180927f10a10, type: 2}
+  - {fileID: 11400000, guid: 04ada8cd0b82a47a3a9fe2c2be793dcd, type: 2}
+  - {fileID: 11400000, guid: 3bf5ad31e63084b6bb041cdeac6acdd1, type: 2}
+  - {fileID: 11400000, guid: 4c24a05c265314a72877eb1dd77ff59c, type: 2}
+  - {fileID: 11400000, guid: 2b7c0e8f416474390b9b5da154f71e26, type: 2}
+  - {fileID: 11400000, guid: 2f480e5c8b9bf41cb8439e8a57b13ab1, type: 2}
+  - {fileID: 11400000, guid: 5ccc963fbe1ac4bc5845bd0abba72ad5, type: 2}
+--- !u!483693784 &407327316
+TilemapRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 407327313}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: -10
+  m_MaskInteraction: 0
+  m_ChunkSize: {x: 32, y: 32, z: 32}
+  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_MaxChunkCount: 16
+  m_MaxFrameAge: 16
+  m_SortOrder: 0
+  m_Mode: 0
+  m_DetectChunkCullingBounds: 0
+--- !u!1839735485 &407327317
+Tilemap:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 407327313}
+  m_Enabled: 1
+  m_Tiles: {}
+  m_AnimatedTiles: {}
+  m_TileAssetArray: []
+  m_TileSpriteArray: []
+  m_TileMatrixArray: []
+  m_TileColorArray: []
+  m_TileObjectToInstantiateArray: []
+  m_AnimationFrameRate: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 0.6666667}
+  m_Origin: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0, y: 0, z: 1}
+  m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
+  m_TileOrientation: 0
+  m_TileOrientationMatrix:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
 --- !u!1 &428728192
 GameObject:
   m_ObjectHideFlags: 0
@@ -3057,7 +3207,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -3
+  m_SortingOrder: -100
   m_MaskInteraction: 0
   m_Sprite: {fileID: 2479569665873144938, guid: c4b6cfbd2f6244edba8e43b01b0ee346, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -3852,7 +4002,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -3
+  m_SortingOrder: -100
   m_MaskInteraction: 0
   m_Sprite: {fileID: 2479569665873144938, guid: c4b6cfbd2f6244edba8e43b01b0ee346, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -4040,7 +4190,7 @@ GameObject:
   - component: {fileID: 1132728924}
   - component: {fileID: 1132728923}
   m_Layer: 0
-  m_Name: TerrainRendering
+  m_Name: Terrain Rendering
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4058,11 +4208,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03200e4ea939f45ac94bc1f0a3a4bd03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.TerrainChunkRenderer
-  UseIllustratedRendering: 1
   _camera: {fileID: 330585545}
   _terrainShader: {fileID: 4800000, guid: 35d73e86d717b45fab240059019cb08a, type: 3}
   _paddingCells: 2
   _prefetchChunks: 1
+  _foregroundSettings:
+    SortingLayerName: Default
+    SortingOrder: 0
+    Tint: {r: 1, g: 1, b: 1, a: 1}
+    GameObjectLayer: 0
+    Z: 0
+  _backgroundSettings:
+    SortingLayerName: Default
+    SortingOrder: -30
+    Tint: {r: 0.43137255, g: 0.43137255, b: 0.49019608, a: 1}
+    GameObjectLayer: 0
+    Z: 0
 --- !u!4 &1132728924
 Transform:
   m_ObjectHideFlags: 0
@@ -4076,7 +4237,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1924350004}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1172065390
 GameObject:
@@ -4348,6 +4509,14 @@ MonoBehaviour:
     _amount: 999
   - _ingredient: {fileID: 11400000, guid: 81a74ab6b5b314aa5a95260481a734d8, type: 2}
     _amount: 999
+  - _ingredient: {fileID: 11400000, guid: 8546a0373cc304100bf54c76c1fc19b5, type: 2}
+    _amount: 99
+  - _ingredient: {fileID: 11400000, guid: ed13bde50d6d54218b3be409d52464f5, type: 2}
+    _amount: 99
+  - _ingredient: {fileID: 11400000, guid: 7c88a6e8135fd491198a7ef38abd39b0, type: 2}
+    _amount: 99
+  - _ingredient: {fileID: 11400000, guid: 6f393675a7658455ca34e97ac758ccee, type: 2}
+    _amount: 99
 --- !u!114 &1178486984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4995,8 +5164,9 @@ GameObject:
   - component: {fileID: 1420173608}
   - component: {fileID: 1420173610}
   - component: {fileID: 1420173609}
+  - component: {fileID: 1420173611}
   m_Layer: 0
-  m_Name: Foreground
+  m_Name: Foreground Objects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5111,6 +5281,18 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &1420173611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1420173607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38492104b0b044fb58aed2b7f0f7aba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.SpriteTileRenderer
 --- !u!1 &1435379571
 GameObject:
   m_ObjectHideFlags: 0
@@ -5160,8 +5342,9 @@ GameObject:
   - component: {fileID: 1458897855}
   - component: {fileID: 1458897857}
   - component: {fileID: 1458897856}
+  - component: {fileID: 1458897858}
   m_Layer: 0
-  m_Name: CrackOverlay
+  m_Name: Foreground Damage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5276,6 +5459,27 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &1458897858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1458897854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b4b496f622ec4a858d5eece75ce49e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.DamageOverlayRenderer
+  _crackTiles:
+  - {fileID: 11400000, guid: 0d4b958598fb5486b9793b724049138f, type: 2}
+  - {fileID: 11400000, guid: f1d7291abfae94d12b11180927f10a10, type: 2}
+  - {fileID: 11400000, guid: 04ada8cd0b82a47a3a9fe2c2be793dcd, type: 2}
+  - {fileID: 11400000, guid: 3bf5ad31e63084b6bb041cdeac6acdd1, type: 2}
+  - {fileID: 11400000, guid: 4c24a05c265314a72877eb1dd77ff59c, type: 2}
+  - {fileID: 11400000, guid: 2b7c0e8f416474390b9b5da154f71e26, type: 2}
+  - {fileID: 11400000, guid: 2f480e5c8b9bf41cb8439e8a57b13ab1, type: 2}
+  - {fileID: 11400000, guid: 5ccc963fbe1ac4bc5845bd0abba72ad5, type: 2}
 --- !u!1 &1470296445
 GameObject:
   m_ObjectHideFlags: 0
@@ -5832,8 +6036,9 @@ GameObject:
   - component: {fileID: 1608990555}
   - component: {fileID: 1608990557}
   - component: {fileID: 1608990556}
+  - component: {fileID: 1608990558}
   m_Layer: 0
-  m_Name: Background
+  m_Name: Background Objects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5901,7 +6106,7 @@ TilemapRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -20
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -5948,6 +6153,18 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &1608990558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608990554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38492104b0b044fb58aed2b7f0f7aba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.SpriteTileRenderer
 --- !u!1 &1611927499
 GameObject:
   m_ObjectHideFlags: 0
@@ -6741,7 +6958,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -3
+  m_SortingOrder: -100
   m_MaskInteraction: 0
   m_Sprite: {fileID: 2479569665873144938, guid: c4b6cfbd2f6244edba8e43b01b0ee346, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -6753,6 +6970,57 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &1924350003
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1924350004}
+  - component: {fileID: 1924350005}
+  m_Layer: 0
+  m_Name: World Rendering
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1924350004
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924350003}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 188555075}
+  - {fileID: 1132728924}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1924350005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924350003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 907d9bcfe14064849a2489546ad92190, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OceanGame.WorldRenderer
+  _terrain: {fileID: 1132728923}
+  _foregroundObjects: {fileID: 1420173611}
+  _foregroundDamage: {fileID: 1458897858}
+  _backgroundObjects: {fileID: 1608990558}
+  _backgroundDamage: {fileID: 407327315}
 --- !u!1 &1948501889
 GameObject:
   m_ObjectHideFlags: 0
@@ -6823,7 +7091,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2043979313}
   - component: {fileID: 2043979314}
-  - component: {fileID: 2043979315}
   - component: {fileID: 2043979316}
   - component: {fileID: 2043979321}
   - component: {fileID: 2043979317}
@@ -6863,35 +7130,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.WorldManager
   <WorldGen>k__BackingField: {fileID: 2043979316}
-  _foregroundTilemap: {fileID: 1420173610}
-  _backgroundTilemap: {fileID: 1608990557}
   _surfaceBg: {fileID: 856868902}
   _tileRepairDelay: 5
   _debugTreeConfig: {fileID: 11400000, guid: 4f515916d235640d480d2b10b7f502af, type: 2}
   _testProjectile: {fileID: 11400000, guid: b5e08a065994447879f5911de6519ca2, type: 2}
---- !u!114 &2043979315
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2043979312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 907d9bcfe14064849a2489546ad92190, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OceanGame.WorldRenderer
-  _mainCamera: {fileID: 330585545}
-  _damageOverlayTilemap: {fileID: 1458897857}
-  _crackTiles:
-  - {fileID: 11400000, guid: 0d4b958598fb5486b9793b724049138f, type: 2}
-  - {fileID: 11400000, guid: f1d7291abfae94d12b11180927f10a10, type: 2}
-  - {fileID: 11400000, guid: 04ada8cd0b82a47a3a9fe2c2be793dcd, type: 2}
-  - {fileID: 11400000, guid: 3bf5ad31e63084b6bb041cdeac6acdd1, type: 2}
-  - {fileID: 11400000, guid: 4c24a05c265314a72877eb1dd77ff59c, type: 2}
-  - {fileID: 11400000, guid: 2b7c0e8f416474390b9b5da154f71e26, type: 2}
-  - {fileID: 11400000, guid: 2f480e5c8b9bf41cb8439e8a57b13ab1, type: 2}
-  - {fileID: 11400000, guid: 5ccc963fbe1ac4bc5845bd0abba72ad5, type: 2}
 --- !u!114 &2043979316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9286,9 +9528,8 @@ SceneRoots:
   - {fileID: 279898998}
   - {fileID: 832575519}
   - {fileID: 330585546}
-  - {fileID: 188555075}
-  - {fileID: 1132728924}
   - {fileID: 959343873}
   - {fileID: 285757409}
   - {fileID: 759830593}
   - {fileID: 4297005443430499605}
+  - {fileID: 1924350004}

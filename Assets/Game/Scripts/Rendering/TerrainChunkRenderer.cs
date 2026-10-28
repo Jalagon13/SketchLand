@@ -1,22 +1,16 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 using UnityEngine.Rendering;
 
 namespace SketchLand
 {
-    [DefaultExecutionOrder(10000)]
     [DisallowMultipleComponent]
     public sealed class TerrainChunkRenderer : MonoBehaviour
     {
-        public static TerrainChunkRenderer Instance { get; private set; }
-
         public const int ChunkSize = 16;
 
         [Header("Rendering")]
-        public bool UseIllustratedRendering = true;
-
         [SerializeField] private Camera _camera;
         [SerializeField] private Shader _terrainShader;
 
@@ -56,12 +50,32 @@ namespace SketchLand
         private Layer _background;
 
         private bool _refreshRequested = true;
-        private bool _lastUse;
+
+        [Serializable]
+        private sealed class LayerSettings
+        {
+            public string SortingLayerName = "Default";
+            public int SortingOrder;
+
+            public Color Tint = Color.white;
+
+            [Range(0, 31)]
+            public int GameObjectLayer;
+
+            public float Z;
+        }
+
+        [SerializeField]
+        private LayerSettings _foregroundSettings = new();
+
+        [SerializeField]
+        private LayerSettings _backgroundSettings = new()
+        {
+            SortingOrder = -30
+        };
 
         private void Awake()
         {
-            Instance = this;
-
             _properties = new MaterialPropertyBlock();
 
             if (_camera == null)
@@ -79,43 +93,38 @@ namespace SketchLand
             _refreshRequested = true;
         }
 
+        private void OnDisable()
+        {
+            TileConfigSO.VisualsChanged -= RequestRefresh;
+
+            Clear();
+        }
+
+        private void OnDestroy()
+        {
+            Clear();
+        }
+
         [ContextMenu("Rebuild Visible Terrain")]
         public void RequestRefresh()
         {
             _refreshRequested = true;
         }
 
-        public static bool ShouldRender(TileData tile)
+        public void Render(WorldManager world)
         {
-            var renderer = Instance;
-
-            return renderer != null &&
-                   renderer.isActiveAndEnabled &&
-                   renderer.UseIllustratedRendering &&
-                   renderer._terrainShader != null &&
-                   renderer._camera != null &&
-                   renderer._camera.orthographic &&
-                   TerrainMeshBuilder.GetVisualConfig(tile) != null;
-        }
-
-        private void LateUpdate()
-        {
-            var world = WorldManager.Instance;
-
             if (world == null || !world.IsWorldReady)
                 return;
 
-            if (_refreshRequested || _lastUse != UseIllustratedRendering)
+            if (_refreshRequested)
             {
                 _refreshRequested = false;
-                _lastUse = UseIllustratedRendering;
 
                 ReleaseLayers();
                 ReleaseMaterials();
-                RefreshTilemaps();
             }
 
-            if (!UseIllustratedRendering || _terrainShader == null || _camera == null || !_camera.orthographic)
+            if (_terrainShader == null || _camera == null || !_camera.orthographic)
             {
                 return;
             }
@@ -123,10 +132,10 @@ namespace SketchLand
             BindLayer(ref _foreground, world.FgGrid);
             BindLayer(ref _background, world.BgGrid);
 
-            RectInt visibleChunks = GetVisibleChunkRange(world.FgGrid.Width, world.FgGrid.Height);
+            RectInt visibleChunks = GetVisibleChunkRange(world.FgGrid.Width,world.FgGrid.Height);
 
-            RenderLayer(_background, visibleChunks, "Background");
-            RenderLayer(_foreground, visibleChunks, "Foreground");
+            RenderLayer(_background, visibleChunks, "Background", _backgroundSettings);
+            RenderLayer(_foreground, visibleChunks, "Foreground", _foregroundSettings);
         }
 
         private void BindLayer(ref Layer layer, TileGrid grid)
@@ -190,7 +199,7 @@ namespace SketchLand
             return new RectInt(firstX, firstY, Mathf.Max(0, lastX - firstX + 1), Mathf.Max(0, lastY - firstY + 1));
         }
 
-        private void RenderLayer(Layer layer, RectInt visibleChunks, string layerName)
+        private void RenderLayer(Layer layer, RectInt visibleChunks, string layerName, LayerSettings settings)
         {
             _removeKeys.Clear();
 
@@ -206,16 +215,15 @@ namespace SketchLand
                 layer.Chunks.Remove(key);
             }
 
-            Tilemap map = layer.Grid.Tilemap;
-            TilemapRenderer source = map.GetComponent<TilemapRenderer>();
-            
-            // All fills in this world layer draw before any outlines, including
-            // outlines which extend across a rendering chunk boundary.
-            layer.Sorting.sortingLayerID = source.sortingLayerID;
-            layer.Sorting.sortingOrder = source.sortingOrder;
+            int sortingLayerId = SortingLayer.NameToID(settings.SortingLayerName);
+
+            layer.Root.layer = settings.GameObjectLayer;
+
+            layer.Sorting.sortingLayerID = sortingLayerId;
+            layer.Sorting.sortingOrder = settings.SortingOrder;
 
             _properties.Clear();
-            _properties.SetColor("_LayerTint", map.color);
+            _properties.SetColor("_LayerTint", settings.Tint);
 
             for (int cy = visibleChunks.yMin; cy < visibleChunks.yMax; cy++)
             {
@@ -234,15 +242,19 @@ namespace SketchLand
                         layer.Chunks.Add(key, chunk);
                     }
 
-                    chunk.Root.layer = map.gameObject.layer;
-                    chunk.InkRenderer.gameObject.layer = map.gameObject.layer;
-                    chunk.Root.transform.position = new Vector3(startX, startY, map.transform.position.z);
-                    chunk.Renderer.sortingLayerID = source.sortingLayerID;
+                    chunk.Root.layer = settings.GameObjectLayer;
+                    chunk.InkRenderer.gameObject.layer = settings.GameObjectLayer;
+
+                    chunk.Root.transform.position = new Vector3(startX, startY, settings.Z);
+
+                    chunk.Renderer.sortingLayerID = sortingLayerId;
                     chunk.Renderer.sortingOrder = 0;
-                    chunk.InkRenderer.sortingLayerID = source.sortingLayerID;
+
+                    chunk.InkRenderer.sortingLayerID = sortingLayerId;
                     chunk.InkRenderer.sortingOrder = 1;
-                    chunk.InkRenderer.SetPropertyBlock(_properties);
+
                     chunk.Renderer.SetPropertyBlock(_properties);
+                    chunk.InkRenderer.SetPropertyBlock(_properties);
 
                     if (!chunk.Dirty)
                         continue;
@@ -344,39 +356,12 @@ namespace SketchLand
             }
         }
 
-        private static void RefreshTilemaps()
-        {
-            var world = WorldManager.Instance;
-
-            if (world == null ||
-                !world.IsWorldReady ||
-                GameDataRegistry.Instance == null ||
-                WorldRenderer.Instance == null ||
-                PlayerCamera.Instance == null ||
-                world.FgGrid.Tilemap == null ||
-                world.BgGrid.Tilemap == null)
-            {
-                return;
-            }
-
-            PlayerCamera.Instance.InvokeCurrentBoundsRefresh();
-        }
-
-        private void OnDisable()
-        {
-            TileConfigSO.VisualsChanged -= RequestRefresh;
-
-            ReleaseLayers();
-            RefreshTilemaps();
-        }
-
-        private void OnDestroy()
+        public void Clear()
         {
             ReleaseLayers();
             ReleaseMaterials();
 
-            if (Instance == this)
-                Instance = null;
+            _refreshRequested = true;
         }
 
         private void ReleaseLayers()
