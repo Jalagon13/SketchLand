@@ -39,8 +39,8 @@ MonoBehaviour:
     _minAmount: 1
     _maxAmount: 1
     _dropChance: 1
-  FillTexture: {fileID: 0}
-  FillTint: {r: 0.49056602, g: 0.31094894, b: 0.20594516, a: 1}
+  FillTexture: {fileID: 2800000, guid: a3eb33a2ecb0b4dfbbf62863cc356e72, type: 3}
+  FillTint: {r: 1, g: 1, b: 1, a: 1}
   TextureWorldSize: {x: 4, y: 4}
   TextureOffset: {x: 0, y: 0}
   OutlineColor: {r: 0.06, g: 0.05, b: 0.04, a: 1}
@@ -48,7 +48,6 @@ MonoBehaviour:
   OutlineWobble: 0.0617
   OutlineWavelength: 2.21
   CornerSoftness: 0.1
-  <DrawTile>k__BackingField: {fileID: 0}
   references:
     version: 2
     RefIds:
