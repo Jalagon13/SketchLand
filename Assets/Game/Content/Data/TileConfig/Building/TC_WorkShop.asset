@@ -9,16 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93c73fdc83b114b56a5d587022066f87, type: 3}
-  m_Name: TC_WorkShop
-  m_EditorClassIdentifier: Assembly-CSharp::OceanGame.TileConfigSO
+  m_Script: {fileID: 11500000, guid: e3e6628b84a1d44278cce9fcc7e7ef62, type: 3}
+  m_Name: TC_Workshop
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.SpriteTileConfigSO
   <RequiredHarvestType>k__BackingField: 2
   <MaxHP>k__BackingField: 50
   <LightLevel>k__BackingField: 0
   <Indestructible>k__BackingField: 0
   <IsSolid>k__BackingField: 0
-  <Size>k__BackingField: {x: 2, y: 1}
-  <DrawTile>k__BackingField: {fileID: 11400000, guid: 5301ff395c3a74abd8f8391d60829b19, type: 2}
+  <Size>k__BackingField: {x: 1, y: 2}
   <TileHitSFX>k__BackingField:
     Guid:
       Data1: 663265361
@@ -34,27 +33,20 @@ MonoBehaviour:
       Data4: 380314682
     Path: event:/World/WoodDestroyedSFX
   <InteractBehavior>k__BackingField:
-    rid: 2895663963195310374
+    rid: 2783294442866475244
   LootDrops:
   - _item: {fileID: 11400000, guid: 7c88a6e8135fd491198a7ef38abd39b0, type: 2}
     _minAmount: 1
     _maxAmount: 1
     _dropChance: 1
+  <DrawTile>k__BackingField: {fileID: 11400000, guid: 5301ff395c3a74abd8f8391d60829b19, type: 2}
   references:
     version: 2
     RefIds:
-    - rid: 2895663963195310374
-      type: {class: CrafterIB, ns: OceanGame, asm: Assembly-CSharp}
+    - rid: 2783294442866475244
+      type: {class: CrafterIB, ns: SketchLand, asm: Assembly-CSharp}
       data:
         <Recipes>k__BackingField:
-        - {fileID: 11400000, guid: 384e8c24a70aa45a4aeca5f801c2d9c6, type: 2}
-        - {fileID: 11400000, guid: d33411cbf4ed940e39fdecab3a3ff70f, type: 2}
         - {fileID: 11400000, guid: f66fba809f0ce4b0485e7905e0247b1d, type: 2}
-        - {fileID: 11400000, guid: 32f2a8d6efd894ce7a9cd6e0ac408b05, type: 2}
-        - {fileID: 11400000, guid: 2f9ef216a9c4e4eba89412a9815cf8e2, type: 2}
         - {fileID: 11400000, guid: 8fa80f7554cc0491393cbd9343f9203f, type: 2}
-        - {fileID: 11400000, guid: fb9feb33862d144698952810968b7ca2, type: 2}
-        - {fileID: 11400000, guid: efc663112aead4e4e9252ca776bef4ed, type: 2}
-        - {fileID: 11400000, guid: 3a867a87ce6234916ac6f36bdd3e0dcb, type: 2}
-        - {fileID: 11400000, guid: b46a18b468f5a4b3fb019285769d1622, type: 2}
-        - {fileID: 11400000, guid: 112f8ac7795254ea582c3e7c52232416, type: 2}
+        - {fileID: 11400000, guid: 2f9ef216a9c4e4eba89412a9815cf8e2, type: 2}

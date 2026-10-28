@@ -34,27 +34,24 @@ namespace SketchLand
         private readonly List<int> _inkTriangles = new();
         private readonly List<Vector2> _polygon = new();
 
-        private readonly TileConfigSO[] _neighbourConfigs = new TileConfigSO[4];
+        private readonly TerrainTileConfigSO[] _neighbourConfigs = new TerrainTileConfigSO[4];
         private readonly TileData[] _neighbourData = new TileData[4];
         private readonly List<Vector2> _edgePoints = new();
         private readonly HashSet<(Vector2, float, Color)> _inkJoints = new();
 
         private Vector2 _origin;
 
-        public static TileConfigSO GetVisualConfig(TileData tile)
+        public static TerrainTileConfigSO GetVisualConfig(TileData tile)
         {
             if (!tile.HasTile || GameDataRegistry.Instance == null)
                 return null;
 
-            TileConfigSO config = tile.TileConfig;
-
-            if (config == null ||
-                !config.UseIllustratedRendering ||
-                config.IsMultiTile ||
-                config is TreeTileConfigSO)
-            {
+            if (tile.TileConfig is not TerrainTileConfigSO config)
                 return null;
-            }
+
+            // This renderer currently supports only 1x1 terrain cells.
+            if (config.IsMultiTile)
+                return null;
 
             return config;
         }
@@ -64,7 +61,7 @@ namespace SketchLand
             RectInt region,
             Mesh mesh,
             Mesh inkMesh,
-            Func<TileConfigSO, Material> getMaterial)
+            Func<TerrainTileConfigSO, Material> getMaterial)
         {
             _vertices.Clear();
             _uvs.Clear();
@@ -83,7 +80,7 @@ namespace SketchLand
                 for (int x = region.xMin; x < region.xMax; x++)
                 {
                     TileData tile = grid.GetTileData(x, y);
-                    TileConfigSO config = GetVisualConfig(tile);
+                    TerrainTileConfigSO config = GetVisualConfig(tile);
 
                     if (config == null)
                         continue;
@@ -145,7 +142,7 @@ namespace SketchLand
             int x,
             int y,
             TileData tile,
-            TileConfigSO config,
+            TerrainTileConfigSO config,
             int materialIndex)
         {
             for (int i = 0; i < 4; i++)
@@ -172,7 +169,7 @@ namespace SketchLand
 
                 Vector2 a = cellOrigin + Corners[edge];
                 Vector2 b = cellOrigin + Corners[next];
-                TileConfigSO neighbour = _neighbourConfigs[edge];
+                TerrainTileConfigSO neighbour = _neighbourConfigs[edge];
 
                 bool boundary = neighbour != config;
                 bool exposed = neighbour == null;
@@ -183,7 +180,7 @@ namespace SketchLand
                 bool roundEnd =
                     exposed && _neighbourConfigs[next] == null;
 
-                TileConfigSO edgeStyle = ResolveStyle(
+                TerrainTileConfigSO edgeStyle = ResolveStyle(
                     config,
                     tile.TileId,
                     neighbour,
@@ -267,10 +264,10 @@ namespace SketchLand
             }
         }
 
-        private static TileConfigSO ResolveStyle(
-            TileConfigSO a,
+        private static TerrainTileConfigSO ResolveStyle(
+            TerrainTileConfigSO a,
             ushort aId,
-            TileConfigSO b,
+            TerrainTileConfigSO b,
             ushort bId)
         {
             if (b == null)
@@ -290,7 +287,7 @@ namespace SketchLand
         }
 
         private void BuildEdgePoints(Vector2 a, Vector2 b, float startCut,
-            float endCut, bool boundary, TileConfigSO style)
+            float endCut, bool boundary, TerrainTileConfigSO style)
         {
             _edgePoints.Clear();
             Vector2 direction = b - a;
@@ -318,7 +315,7 @@ namespace SketchLand
         }
 
         private static Vector2 WarpEdge(Vector2 point, bool horizontal,
-            TileConfigSO style, float envelope)
+        TerrainTileConfigSO style, float envelope)
         {
             float amplitude = Mathf.Clamp(style.OutlineWobble, 0f, 0.08f);
             float wavelength = Mathf.Max(0.1f, style.OutlineWavelength);
@@ -333,7 +330,7 @@ namespace SketchLand
 
         private int AddFillVertex(
             Vector2 point,
-            TileConfigSO config,
+            TerrainTileConfigSO config,
             Vector2 textureSize)
         {
             Vector2 uv = new Vector2(

@@ -9,26 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93c73fdc83b114b56a5d587022066f87, type: 3}
+  m_Script: {fileID: 11500000, guid: e2b0488c44e6342c98721959b16e8839, type: 3}
   m_Name: TC_WoodPlank
-  m_EditorClassIdentifier: Assembly-CSharp::OceanGame.TileDataSO
-  <RequiredHarvestType>k__BackingField: 2
-  <MaxHP>k__BackingField: 100
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.TerrainTileConfigSO
+  <RequiredHarvestType>k__BackingField: 1
+  <MaxHP>k__BackingField: 50
   <LightLevel>k__BackingField: 0
   <Indestructible>k__BackingField: 0
   <IsSolid>k__BackingField: 1
   <Size>k__BackingField: {x: 1, y: 1}
-  <DrawTile>k__BackingField: {fileID: 11400000, guid: 127470c3f1f464b5384edbd570431823, type: 2}
-  UseIllustratedRendering: 1
-  FillTexture: {fileID: 0}
-  FillTint: {r: 0.8867924, g: 0.6801483, b: 0.51450694, a: 1}
-  TextureWorldSize: {x: 4, y: 4}
-  TextureOffset: {x: 0, y: 0}
-  OutlineColor: {r: 0.06, g: 0.05, b: 0.04, a: 1}
-  OutlineWidth: 0.08
-  OutlineWobble: 0
-  OutlineWavelength: 0.65
-  CornerSoftness: 0.04
   <TileHitSFX>k__BackingField:
     Guid:
       Data1: 663265361
@@ -46,10 +35,20 @@ MonoBehaviour:
   <InteractBehavior>k__BackingField:
     rid: -2
   LootDrops:
-  - _item: {fileID: 11400000, guid: 81a74ab6b5b314aa5a95260481a734d8, type: 2}
+  - _item: {fileID: 11400000, guid: a8ba4590c8abf433dbe1aa7470e8b094, type: 2}
     _minAmount: 1
     _maxAmount: 1
     _dropChance: 1
+  FillTexture: {fileID: 0}
+  FillTint: {r: 0.8113208, g: 0.5919178, b: 0.17986828, a: 1}
+  TextureWorldSize: {x: 4, y: 4}
+  TextureOffset: {x: 0, y: 0}
+  OutlineColor: {r: 0.06, g: 0.05, b: 0.04, a: 1}
+  OutlineWidth: 0.08
+  OutlineWobble: 0.0617
+  OutlineWavelength: 2.05
+  CornerSoftness: 0.0846
+  <DrawTile>k__BackingField: {fileID: 0}
   references:
     version: 2
     RefIds:

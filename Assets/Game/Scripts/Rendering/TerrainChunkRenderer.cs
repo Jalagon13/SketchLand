@@ -45,8 +45,8 @@ namespace SketchLand
 
         private readonly TerrainMeshBuilder _builder = new();
 
-        private readonly Dictionary<TileConfigSO, Material>
-            _fillMaterials = new();
+        private readonly Dictionary<TerrainTileConfigSO, Material>
+        _fillMaterials = new();
 
         private readonly List<Vector2Int> _removeKeys = new();
         private MaterialPropertyBlock _properties;
@@ -105,8 +105,7 @@ namespace SketchLand
             if (world == null || !world.IsWorldReady)
                 return;
 
-            if (_refreshRequested ||
-                _lastUse != UseIllustratedRendering)
+            if (_refreshRequested || _lastUse != UseIllustratedRendering)
             {
                 _refreshRequested = false;
                 _lastUse = UseIllustratedRendering;
@@ -116,10 +115,7 @@ namespace SketchLand
                 RefreshTilemaps();
             }
 
-            if (!UseIllustratedRendering ||
-                _terrainShader == null ||
-                _camera == null ||
-                !_camera.orthographic)
+            if (!UseIllustratedRendering || _terrainShader == null || _camera == null || !_camera.orthographic)
             {
                 return;
             }
@@ -127,9 +123,7 @@ namespace SketchLand
             BindLayer(ref _foreground, world.FgGrid);
             BindLayer(ref _background, world.BgGrid);
 
-            RectInt visibleChunks = GetVisibleChunkRange(
-                world.FgGrid.Width,
-                world.FgGrid.Height);
+            RectInt visibleChunks = GetVisibleChunkRange(world.FgGrid.Width, world.FgGrid.Height);
 
             RenderLayer(_background, visibleChunks, "Background");
             RenderLayer(_foreground, visibleChunks, "Foreground");
@@ -142,8 +136,7 @@ namespace SketchLand
 
             ReleaseLayer(layer);
 
-            var root = new GameObject(grid == WorldManager.Instance.FgGrid
-                ? "Illustrated foreground" : "Illustrated background");
+            var root = new GameObject(grid == WorldManager.Instance.FgGrid ? "Illustrated foreground" : "Illustrated background");
             root.transform.SetParent(transform, true);
             layer = new Layer
             {
@@ -180,17 +173,13 @@ namespace SketchLand
                 }
             }
 
-            int firstX = Mathf.FloorToInt(
-                (minX - _paddingCells) / ChunkSize) - _prefetchChunks;
+            int firstX = Mathf.FloorToInt((minX - _paddingCells) / ChunkSize) - _prefetchChunks;
 
-            int firstY = Mathf.FloorToInt(
-                (minY - _paddingCells) / ChunkSize) - _prefetchChunks;
+            int firstY = Mathf.FloorToInt((minY - _paddingCells) / ChunkSize) - _prefetchChunks;
 
-            int lastX = Mathf.FloorToInt(
-                (maxX + _paddingCells) / ChunkSize) + _prefetchChunks;
+            int lastX = Mathf.FloorToInt((maxX + _paddingCells) / ChunkSize) + _prefetchChunks;
 
-            int lastY = Mathf.FloorToInt(
-                (maxY + _paddingCells) / ChunkSize) + _prefetchChunks;
+            int lastY = Mathf.FloorToInt((maxY + _paddingCells) / ChunkSize) + _prefetchChunks;
 
             firstX = Mathf.Max(0, firstX);
             firstY = Mathf.Max(0, firstY);
@@ -198,17 +187,10 @@ namespace SketchLand
             lastX = Mathf.Min((width - 1) / ChunkSize, lastX);
             lastY = Mathf.Min((height - 1) / ChunkSize, lastY);
 
-            return new RectInt(
-                firstX,
-                firstY,
-                Mathf.Max(0, lastX - firstX + 1),
-                Mathf.Max(0, lastY - firstY + 1));
+            return new RectInt(firstX, firstY, Mathf.Max(0, lastX - firstX + 1), Mathf.Max(0, lastY - firstY + 1));
         }
 
-        private void RenderLayer(
-            Layer layer,
-            RectInt visibleChunks,
-            string layerName)
+        private void RenderLayer(Layer layer, RectInt visibleChunks, string layerName)
         {
             _removeKeys.Clear();
 
@@ -226,6 +208,7 @@ namespace SketchLand
 
             Tilemap map = layer.Grid.Tilemap;
             TilemapRenderer source = map.GetComponent<TilemapRenderer>();
+            
             // All fills in this world layer draw before any outlines, including
             // outlines which extend across a rendering chunk boundary.
             layer.Sorting.sortingLayerID = source.sortingLayerID;
@@ -243,11 +226,7 @@ namespace SketchLand
                     int startX = cx * ChunkSize;
                     int startY = cy * ChunkSize;
 
-                    RectInt region = new RectInt(
-                        startX,
-                        startY,
-                        Mathf.Min(ChunkSize, layer.Grid.Width - startX),
-                        Mathf.Min(ChunkSize, layer.Grid.Height - startY));
+                    RectInt region = new RectInt(startX, startY, Mathf.Min(ChunkSize, layer.Grid.Width - startX), Mathf.Min(ChunkSize, layer.Grid.Height - startY));
 
                     if (!layer.Chunks.TryGetValue(key, out Chunk chunk))
                     {
@@ -257,12 +236,7 @@ namespace SketchLand
 
                     chunk.Root.layer = map.gameObject.layer;
                     chunk.InkRenderer.gameObject.layer = map.gameObject.layer;
-
-                    chunk.Root.transform.position = new Vector3(
-                        startX,
-                        startY,
-                        map.transform.position.z);
-
+                    chunk.Root.transform.position = new Vector3(startX, startY, map.transform.position.z);
                     chunk.Renderer.sortingLayerID = source.sortingLayerID;
                     chunk.Renderer.sortingOrder = 0;
                     chunk.InkRenderer.sortingLayerID = source.sortingLayerID;
@@ -273,13 +247,7 @@ namespace SketchLand
                     if (!chunk.Dirty)
                         continue;
 
-                    chunk.Renderer.sharedMaterials = _builder.Build(
-                        layer.Grid,
-                        region,
-                        chunk.Mesh,
-                        chunk.InkMesh,
-                        GetFillMaterial);
-
+                    chunk.Renderer.sharedMaterials = _builder.Build(layer.Grid, region, chunk.Mesh, chunk.InkMesh, GetFillMaterial);
                     chunk.Renderer.enabled = chunk.Mesh.subMeshCount > 0;
                     chunk.InkRenderer.enabled = chunk.InkMesh.vertexCount > 0;
                     chunk.Dirty = false;
@@ -289,8 +257,7 @@ namespace SketchLand
 
         private Chunk CreateChunk(Layer layer, string layerName, Vector2Int key)
         {
-            var root = new GameObject(
-                $"{layerName} terrain [{key.x}, {key.y}]");
+            var root = new GameObject($"{layerName} terrain [{key.x}, {key.y}]");
 
             root.transform.SetParent(layer.Root.transform, true);
 
@@ -305,16 +272,16 @@ namespace SketchLand
 
             var renderer = root.AddComponent<MeshRenderer>();
 
-            renderer.shadowCastingMode =
-                UnityEngine.Rendering.ShadowCastingMode.Off;
-
+            renderer.shadowCastingMode = ShadowCastingMode.Off;
             renderer.receiveShadows = false;
 
             var inkRoot = new GameObject("Outline");
             inkRoot.transform.SetParent(root.transform, false);
+            
             var inkMesh = new Mesh { name = mesh.name + " ink" };
             inkMesh.MarkDynamic();
             inkRoot.AddComponent<MeshFilter>().sharedMesh = inkMesh;
+            
             var inkRenderer = inkRoot.AddComponent<MeshRenderer>();
             inkRenderer.sharedMaterial = GetInkMaterial();
             inkRenderer.shadowCastingMode = ShadowCastingMode.Off;
@@ -330,7 +297,7 @@ namespace SketchLand
             };
         }
 
-        private Material GetFillMaterial(TileConfigSO config)
+        private Material GetFillMaterial(TerrainTileConfigSO config)
         {
             if (_fillMaterials.TryGetValue(config, out Material material))
                 return material;
@@ -340,11 +307,7 @@ namespace SketchLand
                 name = config.name + " illustrated fill"
             };
 
-            material.SetTexture(
-                "_MainTex",
-                config.FillTexture != null
-                    ? config.FillTexture
-                    : Texture2D.whiteTexture);
+            material.SetTexture("_MainTex", config.FillTexture != null ? config.FillTexture : Texture2D.whiteTexture);
 
             _fillMaterials.Add(config, material);
 
@@ -373,11 +336,7 @@ namespace SketchLand
             {
                 for (int dx = -1; dx <= 1; dx++)
                 {
-                    Vector2Int key = new Vector2Int(
-                        Mathf.FloorToInt(
-                            (position.x + dx) / (float)ChunkSize),
-                        Mathf.FloorToInt(
-                            (position.y + dy) / (float)ChunkSize));
+                    Vector2Int key = new Vector2Int(Mathf.FloorToInt((position.x + dx) / (float)ChunkSize), Mathf.FloorToInt((position.y + dy) / (float)ChunkSize));
 
                     if (layer.Chunks.TryGetValue(key, out Chunk chunk))
                         chunk.Dirty = true;

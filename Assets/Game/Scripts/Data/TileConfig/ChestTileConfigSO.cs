@@ -3,7 +3,7 @@ using UnityEngine;
 namespace SketchLand
 {
     [CreateAssetMenu(fileName = "New ChestTileConfigSO", menuName = "OceanGame/TileConfig/ChestTileConfigSO")]
-    public class ChestTileConfigSO : TileConfigSO
+    public class ChestTileConfigSO : SpriteTileConfigSO
     {
         public override void OnTileDestroyed(TileGrid grid, int x, int y, TileData tileData, bool refreshCurrentBounds = false)
         {

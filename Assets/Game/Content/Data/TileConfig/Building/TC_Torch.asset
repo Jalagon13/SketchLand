@@ -9,16 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93c73fdc83b114b56a5d587022066f87, type: 3}
+  m_Script: {fileID: 11500000, guid: e3e6628b84a1d44278cce9fcc7e7ef62, type: 3}
   m_Name: TC_Torch
-  m_EditorClassIdentifier: Assembly-CSharp::OceanGame.TileDataSO
-  <RequiredHarvestType>k__BackingField: 0
-  <MaxHP>k__BackingField: 50
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.SpriteTileConfigSO
+  <RequiredHarvestType>k__BackingField: 2
+  <MaxHP>k__BackingField: 1
   <LightLevel>k__BackingField: 1
   <Indestructible>k__BackingField: 0
   <IsSolid>k__BackingField: 0
   <Size>k__BackingField: {x: 1, y: 1}
-  <DrawTile>k__BackingField: {fileID: 11400000, guid: c085640d10a1d4797818080cb3fc6f40, type: 2}
   <TileHitSFX>k__BackingField:
     Guid:
       Data1: 663265361
@@ -40,6 +39,7 @@ MonoBehaviour:
     _minAmount: 1
     _maxAmount: 1
     _dropChance: 1
+  <DrawTile>k__BackingField: {fileID: 11400000, guid: c085640d10a1d4797818080cb3fc6f40, type: 2}
   references:
     version: 2
     RefIds:

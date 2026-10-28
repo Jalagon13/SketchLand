@@ -7,7 +7,7 @@ using UnityEngine.Tilemaps;
 namespace SketchLand
 {
     [CreateAssetMenu(fileName = "New DoorTileConfigSO", menuName = "OceanGame/TileConfig/DoorTileConfigSO")]
-    public class DoorTileConfigSO : TileConfigSO
+    public class DoorTileConfigSO : SpriteTileConfigSO
     {
         [field: Header("Door Tile Settings")]
         [field: SerializeField] public Sprite ClosedDoorSprite { get; private set; }

@@ -9,26 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93c73fdc83b114b56a5d587022066f87, type: 3}
+  m_Script: {fileID: 11500000, guid: e2b0488c44e6342c98721959b16e8839, type: 3}
   m_Name: TC_Grass
-  m_EditorClassIdentifier: Assembly-CSharp::OceanGame.TileDataSO
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.TerrainTileConfigSO
   <RequiredHarvestType>k__BackingField: 1
-  <MaxHP>k__BackingField: 100
+  <MaxHP>k__BackingField: 50
   <LightLevel>k__BackingField: 0
   <Indestructible>k__BackingField: 0
   <IsSolid>k__BackingField: 1
   <Size>k__BackingField: {x: 1, y: 1}
-  <DrawTile>k__BackingField: {fileID: 11400000, guid: c874e0f2c3f0d4fdda8f7f81bfbad170, type: 2}
-  UseIllustratedRendering: 1
-  FillTexture: {fileID: 0}
-  FillTint: {r: 0.4737314, g: 0.8018868, b: 0.3517711, a: 1}
-  TextureWorldSize: {x: 4, y: 4}
-  TextureOffset: {x: 0, y: 0}
-  OutlineColor: {r: 0.06, g: 0.05, b: 0.04, a: 1}
-  OutlineWidth: 0.08
-  OutlineWobble: 0.065
-  OutlineWavelength: 1.8
-  CornerSoftness: 0.15
   <TileHitSFX>k__BackingField:
     Guid:
       Data1: 2070957096
@@ -50,6 +39,16 @@ MonoBehaviour:
     _minAmount: 1
     _maxAmount: 1
     _dropChance: 1
+  FillTexture: {fileID: 0}
+  FillTint: {r: 0.30125976, g: 0.8018868, b: 0.2988163, a: 1}
+  TextureWorldSize: {x: 4, y: 4}
+  TextureOffset: {x: 0, y: 0}
+  OutlineColor: {r: 0.06, g: 0.05, b: 0.04, a: 1}
+  OutlineWidth: 0.08
+  OutlineWobble: 0.0617
+  OutlineWavelength: 2.21
+  CornerSoftness: 0.1
+  <DrawTile>k__BackingField: {fileID: 0}
   references:
     version: 2
     RefIds:

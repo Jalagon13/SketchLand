@@ -39,16 +39,16 @@ MonoBehaviour:
       type: {class: FillWorldStep, ns: SketchLand, asm: Assembly-CSharp}
       data:
         RunStep: 1
-        _grassTile: {fileID: 11400000, guid: 578a10688548347e5a8e896d9305c527, type: 2}
-        _dirtTile: {fileID: 11400000, guid: d927e8dc6d24d465b9dcd9aae0e08c71, type: 2}
-        _stoneTile: {fileID: 11400000, guid: 4c03968963b3647e89b9d76186c74206, type: 2}
+        _grassTile: {fileID: 11400000, guid: 351353116e811413bb8b8471749de904, type: 2}
+        _dirtTile: {fileID: 11400000, guid: b63dc996a25c44ec7b9a9572bf76ccca, type: 2}
+        _stoneTile: {fileID: 11400000, guid: de53f42a1a9254889bd3b400b4b4244a, type: 2}
         _dirtDepth: 6
     - rid: 2783294373672517732
       type: {class: OreGenStep, ns: SketchLand, asm: Assembly-CSharp}
       data:
         RunStep: 1
         _oreConfigs:
-        - OreTile: {fileID: 11400000, guid: 75d3adf13369b426cbdbcc99aabd6f3d, type: 2}
+        - OreTile: {fileID: 11400000, guid: 2b58cfe69bd5e4f60b5f4c566d0e67a9, type: 2}
           StartingDepth: 3
           ChunkSize: 25
           VeinsPerChunk: 6
@@ -67,7 +67,7 @@ MonoBehaviour:
       type: {class: SetBgGenStep, ns: SketchLand, asm: Assembly-CSharp}
       data:
         RunStep: 1
-        _dirtTile: {fileID: 11400000, guid: d927e8dc6d24d465b9dcd9aae0e08c71, type: 2}
+        _dirtTile: {fileID: 11400000, guid: b63dc996a25c44ec7b9a9572bf76ccca, type: 2}
     - rid: 2783294373672517735
       type: {class: CaveGenStep, ns: SketchLand, asm: Assembly-CSharp}
       data:
