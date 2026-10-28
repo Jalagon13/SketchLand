@@ -56,12 +56,7 @@ namespace SketchLand
             return config;
         }
 
-        public Material[] Build(
-            TileGrid grid,
-            RectInt region,
-            Mesh mesh,
-            Mesh inkMesh,
-            Func<TerrainTileConfigSO, Material> getMaterial)
+        public Material[] Build(TileGrid grid, RectInt region, Mesh mesh, Mesh inkMesh, Func<TerrainTileConfigSO, Material> getMaterial)
         {
             _vertices.Clear();
             _uvs.Clear();
@@ -110,6 +105,7 @@ namespace SketchLand
 
             inkMesh.Clear();
             inkMesh.indexFormat = IndexFormat.UInt32;
+            
             if (_inkTriangles.Count > 0)
             {
                 inkMesh.SetVertices(_vertices);
@@ -137,13 +133,7 @@ namespace SketchLand
             return index;
         }
 
-        private void AddCell(
-            TileGrid grid,
-            int x,
-            int y,
-            TileData tile,
-            TerrainTileConfigSO config,
-            int materialIndex)
+        private void AddCell(TileGrid grid, int x, int y, TileData tile, TerrainTileConfigSO config, int materialIndex)
         {
             for (int i = 0; i < 4; i++)
             {
@@ -174,28 +164,17 @@ namespace SketchLand
                 bool boundary = neighbour != config;
                 bool exposed = neighbour == null;
 
-                bool roundStart =
-                    exposed && _neighbourConfigs[previous] == null;
+                bool roundStart = exposed && _neighbourConfigs[previous] == null;
+                bool roundEnd = exposed && _neighbourConfigs[next] == null;
 
-                bool roundEnd =
-                    exposed && _neighbourConfigs[next] == null;
+                TerrainTileConfigSO edgeStyle = ResolveStyle(config, tile.TileId, neighbour, _neighbourData[edge].TileId);
 
-                TerrainTileConfigSO edgeStyle = ResolveStyle(
-                    config,
-                    tile.TileId,
-                    neighbour,
-                    _neighbourData[edge].TileId);
-
-                BuildEdgePoints(a, b,
-                    roundStart ? radius : 0f,
-                    roundEnd ? radius : 0f,
-                    boundary, edgeStyle);
+                BuildEdgePoints(a, b, roundStart ? radius : 0f, roundEnd ? radius : 0f, boundary, edgeStyle);
 
                 _polygon.AddRange(_edgePoints);
 
                 // Each shared edge is owned by its left/bottom cell.
-                bool ownsBoundary =
-                    exposed || edge == 1 || edge == 2;
+                bool ownsBoundary = exposed || edge == 1 || edge == 2;
 
                 if (boundary && ownsBoundary)
                 {
@@ -206,20 +185,13 @@ namespace SketchLand
 
                     for (int i = 0; i < _edgePoints.Count - 1; i++)
                     {
-                        AddInkStrip(
-                            _edgePoints[i],
-                            _edgePoints[i + 1],
-                            width,
-                            edgeStyle.OutlineColor);
+                        AddInkStrip( _edgePoints[i], _edgePoints[i + 1], width, edgeStyle.OutlineColor);
                     }
                 }
 
                 if (roundEnd)
                 {
-                    Vector2 following =
-                        b +
-                        (Corners[(next + 1) % 4] - Corners[next])
-                        * radius;
+                    Vector2 following = b + (Corners[(next + 1) % 4] - Corners[next]) * radius;
 
                     Vector2 start = _edgePoints[_edgePoints.Count - 1];
                     Vector2 last = start;
@@ -227,36 +199,27 @@ namespace SketchLand
                     for (int i = 1; i <= 6; i++)
                     {
                         float t = i / 6f;
-                        Vector2 point = (1f - t) * (1f - t) * start
-                            + 2f * (1f - t) * t * b + t * t * following;
+                        Vector2 point = (1f - t) * (1f - t) * start + 2f * (1f - t) * t * b + t * t * following;
                         if (i < 6)
                             _polygon.Add(point);
+                            
                         AddInkStrip(last, point, config.OutlineWidth, config.OutlineColor);
                         last = point;
                     }
                 }
             }
 
-            Vector2 textureSize = new Vector2(
-                Mathf.Max(0.01f, config.TextureWorldSize.x),
-                Mathf.Max(0.01f, config.TextureWorldSize.y));
+            Vector2 textureSize = new Vector2(Mathf.Max(0.01f, config.TextureWorldSize.x), Mathf.Max(0.01f, config.TextureWorldSize.y));
 
-            int center = AddFillVertex(
-                cellOrigin + Vector2.one * 0.5f,
-                config,
-                textureSize);
+            int center = AddFillVertex(cellOrigin + Vector2.one * 0.5f, config, textureSize);
 
             List<int> triangles = _triangles[materialIndex];
 
             for (int i = 0; i < _polygon.Count; i++)
             {
-                int a = AddFillVertex(
-                    _polygon[i], config, textureSize);
+                int a = AddFillVertex(_polygon[i], config, textureSize);
 
-                int b = AddFillVertex(
-                    _polygon[(i + 1) % _polygon.Count],
-                    config,
-                    textureSize);
+                int b = AddFillVertex(_polygon[(i + 1) % _polygon.Count], config, textureSize);
 
                 triangles.Add(center);
                 triangles.Add(a);
@@ -264,11 +227,7 @@ namespace SketchLand
             }
         }
 
-        private static TerrainTileConfigSO ResolveStyle(
-            TerrainTileConfigSO a,
-            ushort aId,
-            TerrainTileConfigSO b,
-            ushort bId)
+        private static TerrainTileConfigSO ResolveStyle(TerrainTileConfigSO a, ushort aId, TerrainTileConfigSO b, ushort bId)
         {
             if (b == null)
                 return a;
@@ -286,56 +245,50 @@ namespace SketchLand
             return aId <= bId ? a : b;
         }
 
-        private void BuildEdgePoints(Vector2 a, Vector2 b, float startCut,
-            float endCut, bool boundary, TerrainTileConfigSO style)
+        private void BuildEdgePoints(Vector2 a, Vector2 b, float startCut, float endCut, bool boundary, TerrainTileConfigSO style)
         {
             _edgePoints.Clear();
             Vector2 direction = b - a;
             _edgePoints.Add(a + direction * startCut);
+            
             float wavelength = Mathf.Max(0.1f, style.OutlineWavelength);
-            int segments = boundary && style.OutlineWobble > 0f
-                ? Mathf.Clamp(Mathf.CeilToInt(6f / wavelength), 8, 64) : 1;
+            int segments = boundary && style.OutlineWobble > 0f ? Mathf.Clamp(Mathf.CeilToInt(6f / wavelength), 8, 64) : 1;
             bool horizontal = Mathf.Abs(direction.x) > 0.5f;
             bool forward = horizontal ? b.x > a.x : b.y > a.y;
+            
             Vector2 minimum = Vector2.Min(a, b);
             Vector2 axis = horizontal ? Vector2.right : Vector2.up;
+            
             for (int i = 1; i < segments; i++)
             {
                 float t = i / (float)segments;
                 if (t <= startCut || t >= 1f - endCut)
                     continue;
+                    
                 // Canonical coordinates make both sides of a material seam identical.
                 int canonicalIndex = forward ? i : segments - i;
                 Vector2 point = minimum + axis * (canonicalIndex / (float)segments);
                 float localT = (t - startCut) / (1f - startCut - endCut);
-                _edgePoints.Add(WarpEdge(point, horizontal, style,
-                    Mathf.Sin(localT * Mathf.PI)));
+                _edgePoints.Add(WarpEdge(point, horizontal, style, Mathf.Sin(localT * Mathf.PI)));
             }
             _edgePoints.Add(b - direction * endCut);
         }
 
-        private static Vector2 WarpEdge(Vector2 point, bool horizontal,
-        TerrainTileConfigSO style, float envelope)
+        private static Vector2 WarpEdge(Vector2 point, bool horizontal, TerrainTileConfigSO style, float envelope)
         {
             float amplitude = Mathf.Clamp(style.OutlineWobble, 0f, 0.08f);
             float wavelength = Mathf.Max(0.1f, style.OutlineWavelength);
             float along = horizontal ? point.x : point.y;
             float across = horizontal ? point.y : point.x;
             float phase = along * (2f * Mathf.PI / wavelength) + across * 1.73f;
-            float wave = (Mathf.Sin(phase)
-                + 0.35f * Mathf.Sin(phase * 1.93f + across * 0.37f)) / 1.35f;
-            return point + (horizontal ? Vector2.up : Vector2.right)
-                * (wave * amplitude * envelope);
+            float wave = (Mathf.Sin(phase) + 0.35f * Mathf.Sin(phase * 1.93f + across * 0.37f)) / 1.35f;
+            
+            return point + (horizontal ? Vector2.up : Vector2.right) * (wave * amplitude * envelope);
         }
 
-        private int AddFillVertex(
-            Vector2 point,
-            TerrainTileConfigSO config,
-            Vector2 textureSize)
+        private int AddFillVertex(Vector2 point, TerrainTileConfigSO config, Vector2 textureSize)
         {
-            Vector2 uv = new Vector2(
-                point.x / textureSize.x,
-                point.y / textureSize.y);
+            Vector2 uv = new Vector2(point.x / textureSize.x, point.y / textureSize.y);
 
             uv += config.TextureOffset;
 
@@ -346,22 +299,14 @@ namespace SketchLand
         {
             int index = _vertices.Count;
 
-            _vertices.Add(new Vector3(
-                point.x - _origin.x,
-                point.y - _origin.y,
-                0f));
-
+            _vertices.Add(new Vector3(point.x - _origin.x, point.y - _origin.y, 0f));
             _uvs.Add(uv);
             _colors.Add(color);
 
             return index;
         }
 
-        private void AddInkStrip(
-            Vector2 a,
-            Vector2 b,
-            float width,
-            Color color)
+        private void AddInkStrip(Vector2 a, Vector2 b, float width, Color color)
         {
             Vector2 direction = b - a;
 
@@ -371,8 +316,7 @@ namespace SketchLand
             width = Mathf.Clamp(width, 0.001f, 0.12f);
 
             // Center ink on the shared fill boundary, hiding its rasterized edge.
-            Vector2 inward = new Vector2(
-                -direction.y, direction.x).normalized;
+            Vector2 inward = new Vector2(-direction.y, direction.x).normalized;
 
             float feather = 0.012f;
             float halfWidth = width * 0.5f;
@@ -412,6 +356,7 @@ namespace SketchLand
                 _inkTriangles.Add(k + 3);
                 _inkTriangles.Add(k + 2);
             }
+            
             AddInkJoint(a, width, color);
             AddInkJoint(b, width, color);
         }
@@ -420,12 +365,14 @@ namespace SketchLand
         {
             if (!_inkJoints.Add((point, width, color)))
                 return;
+                
             const int segments = 16;
             float radius = width * 0.5f;
             Color transparent = color;
             transparent.a = 0f;
             int center = AddVertex(point, Vector2.zero, color);
             int first = _vertices.Count;
+            
             for (int i = 0; i <= segments; i++)
             {
                 float angle = i * (2f * Mathf.PI / segments);

@@ -27,19 +27,14 @@ namespace SketchLand
             _refreshRequested = true;
         }
 
-        public void RequestRefresh()
+        private void OnDisable()
         {
+            TileConfigSO.VisualsChanged -= RequestRefresh;
+
+            Disconnect();
+            ClearViews();
+
             _refreshRequested = true;
-        }
-
-        private void OnTileChanged(Vector2Int position)
-        {
-            RequestRefresh();
-        }
-
-        private void OnBoundsChanged(RectInt oldBounds, RectInt newBounds)
-        {
-            RequestRefresh();
         }
 
         private void LateUpdate()
@@ -96,6 +91,21 @@ namespace SketchLand
             _foregroundDamage.Render(_foreground, bounds);
         }
 
+        public void RequestRefresh()
+        {
+            _refreshRequested = true;
+        }
+
+        private void OnTileChanged(Vector2Int position)
+        {
+            RequestRefresh();
+        }
+
+        private void OnBoundsChanged(RectInt oldBounds, RectInt newBounds)
+        {
+            RequestRefresh();
+        }
+
         private void Disconnect()
         {
             if (_foreground != null)
@@ -138,14 +148,6 @@ namespace SketchLand
                 _backgroundDamage.Clear();
         }
 
-        private void OnDisable()
-        {
-            TileConfigSO.VisualsChanged -= RequestRefresh;
-
-            Disconnect();
-            ClearViews();
-
-            _refreshRequested = true;
-        }
+        
     }
 }
