@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e2b0488c44e6342c98721959b16e8839, type: 3}
-  m_Name: TC_WoodPlank
+  m_Name: TC_Dirt
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.TerrainTileConfigSO
-  <RequiredHarvestType>k__BackingField: 2
+  <RequiredHarvestType>k__BackingField: 1
   <MaxHP>k__BackingField: 50
   <LightLevel>k__BackingField: 0
   <Indestructible>k__BackingField: 0
@@ -20,34 +20,34 @@ MonoBehaviour:
   <Size>k__BackingField: {x: 1, y: 1}
   <TileHitSFX>k__BackingField:
     Guid:
-      Data1: 663265361
-      Data2: 1341010617
-      Data3: 18740408
-      Data4: 275038047
-    Path: event:/World/WoodHitSFX
+      Data1: 2070957096
+      Data2: 1079413369
+      Data3: -2118459249
+      Data4: -142417729
+    Path: event:/World/SandHitSFX
   <TileDestroyedSFX>k__BackingField:
     Guid:
-      Data1: -1391175195
-      Data2: 1120500594
-      Data3: 1478287533
-      Data4: 380314682
-    Path: event:/World/WoodDestroyedSFX
+      Data1: -1423510184
+      Data2: 1266889974
+      Data3: 1737393593
+      Data4: -848103714
+    Path: event:/World/SandDestroyedSFX
   <InteractBehavior>k__BackingField:
     rid: -2
   LootDrops:
-  - _item: {fileID: 11400000, guid: a8ba4590c8abf433dbe1aa7470e8b094, type: 2}
+  - _item: {fileID: 11400000, guid: b424afe4dee6641ca97d9b23d029ab30, type: 2}
     _minAmount: 1
     _maxAmount: 1
     _dropChance: 1
-  FillTexture: {fileID: 0}
-  FillTint: {r: 0.8113208, g: 0.5919178, b: 0.17986828, a: 1}
+  FillTexture: {fileID: 2800000, guid: a3eb33a2ecb0b4dfbbf62863cc356e72, type: 3}
+  FillTint: {r: 1, g: 1, b: 1, a: 1}
   TextureWorldSize: {x: 4, y: 4}
   TextureOffset: {x: 0, y: 0}
-  OutlineColor: {r: 0.06, g: 0.05, b: 0.04, a: 1}
-  OutlineWidth: 0.08
-  OutlineWobble: 0.0617
-  OutlineWavelength: 2.05
-  CornerSoftness: 0.0846
+  OutlineColor: {r: 0, g: 0, b: 0, a: 1}
+  OutlineWidth: 0.07
+  OutlineWobble: 0.0487
+  OutlineWavelength: 1.35
+  CornerSoftness: 0.2
   references:
     version: 2
     RefIds:
