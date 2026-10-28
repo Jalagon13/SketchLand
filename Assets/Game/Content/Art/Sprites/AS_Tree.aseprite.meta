@@ -173,7 +173,7 @@ ScriptedImporter:
   - name: tile_tree_trunk
     originalName: 
     pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
@@ -275,7 +275,7 @@ ScriptedImporter:
         x: 1
         y: 0
         width: 79
-        height: 32
+        height: 33
       spriteId: f0a0ca566491f45469bdfbf0db8d75ea
     linkedCells: []
     tileCells: []
