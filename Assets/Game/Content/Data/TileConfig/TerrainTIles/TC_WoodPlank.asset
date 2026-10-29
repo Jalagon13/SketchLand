@@ -35,19 +35,19 @@ MonoBehaviour:
   <InteractBehavior>k__BackingField:
     rid: -2
   LootDrops:
-  - _item: {fileID: 11400000, guid: a8ba4590c8abf433dbe1aa7470e8b094, type: 2}
+  - _item: {fileID: 11400000, guid: 81a74ab6b5b314aa5a95260481a734d8, type: 2}
     _minAmount: 1
     _maxAmount: 1
     _dropChance: 1
-  FillTexture: {fileID: 0}
-  FillTint: {r: 0.8113208, g: 0.5919178, b: 0.17986828, a: 1}
+  FillTexture: {fileID: 2800000, guid: ae9f4c45fd89c4217a32dca866dc367e, type: 3}
+  FillTint: {r: 1, g: 1, b: 1, a: 1}
   TextureWorldSize: {x: 4, y: 4}
   TextureOffset: {x: 0, y: 0}
   OutlineColor: {r: 0.06, g: 0.05, b: 0.04, a: 1}
   OutlineWidth: 0.07
-  OutlineWobble: 0.0617
-  OutlineWavelength: 2.05
-  CornerSoftness: 0.0632
+  OutlineWobble: 0.0051
+  OutlineWavelength: 1.99
+  CornerSoftness: 0.15
   references:
     version: 2
     RefIds:

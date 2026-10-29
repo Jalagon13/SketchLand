@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c870073cee61e43189d4c6df2d5b2835, type: 3}
-  m_Name: Amr_Fins
+  m_Name: Amr_Boots
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.ArmorItemSO
-  <ItemName>k__BackingField: Basic Fins
-  <Description>k__BackingField: Increases movement speed underwater
+  <ItemName>k__BackingField: Boots
+  <Description>k__BackingField: 
   <DisplayIcon>k__BackingField: {fileID: 8277983452361353924, guid: 2f87ce7e588154a76acbf2c4eda5fff0, type: 3}
   <IsStackable>k__BackingField: 1
   <ArmorPieceType>k__BackingField: 2

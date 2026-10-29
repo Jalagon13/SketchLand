@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b08ceb78e3b2495b8d808a5860e66794, type: 3}
   m_Name: TreeTile
   m_EditorClassIdentifier: Unity.2D.Tilemap.Extras::UnityEngine.Tilemaps.AutoTile
-  m_DefaultSprite: {fileID: 5188054300322564313, guid: 3ab19ebc5de5d4525afdc9d466ed4fa0, type: 3}
+  m_DefaultSprite: {fileID: 21300000, guid: 665f6941a89dd459fa3f1070f507f581, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_MaskType: 0

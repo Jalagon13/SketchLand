@@ -39,8 +39,8 @@ MonoBehaviour:
     _minAmount: 1
     _maxAmount: 1
     _dropChance: 1
-  FillTexture: {fileID: 0}
-  FillTint: {r: 0.4245283, g: 0.32768485, b: 0.16220185, a: 1}
+  FillTexture: {fileID: 2800000, guid: c8cc1dd45badd45efa12a1085f2a5695, type: 3}
+  FillTint: {r: 1, g: 1, b: 1, a: 1}
   TextureWorldSize: {x: 4, y: 4}
   TextureOffset: {x: 0, y: 0}
   OutlineColor: {r: 0.06, g: 0.05, b: 0.04, a: 1}

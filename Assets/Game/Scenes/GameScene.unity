@@ -4725,7 +4725,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30b17211ccef9498aaa4c9e832e73480, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.PlacingManager
-  _placementsPerSecond: 10
+  _placementsPerSecond: 8
 --- !u!114 &1246345774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4750,7 +4750,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 312f06ee138834a2bb001c3cbbc6ce3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.Player
-  <InteractRange>k__BackingField: 3
+  <InteractRange>k__BackingField: 3.5
   <WalkingBoxColliderSize>k__BackingField: {x: 0.75, y: 1.75}
   <SprintSpeed>k__BackingField: 6.25
   <SprintTransitionSharpness>k__BackingField: 7

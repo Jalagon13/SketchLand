@@ -17,18 +17,7 @@ MonoBehaviour:
   <LightLevel>k__BackingField: 0
   <Indestructible>k__BackingField: 0
   <IsSolid>k__BackingField: 0
-  <Size>k__BackingField: {x: 1, y: 6}
-  <DrawTile>k__BackingField: {fileID: 11400000, guid: db9af0ae5bd824755a35ec9dcf9b0fa5, type: 2}
-  UseIllustratedRendering: 0
-  FillTexture: {fileID: 0}
-  FillTint: {r: 1, g: 1, b: 1, a: 1}
-  TextureWorldSize: {x: 4, y: 4}
-  TextureOffset: {x: 0, y: 0}
-  OutlineColor: {r: 0.06, g: 0.05, b: 0.04, a: 1}
-  OutlineWidth: 0.04
-  OutlineWobble: 0.025
-  OutlineWavelength: 0.65
-  CornerSoftness: 0.1
+  <Size>k__BackingField: {x: 1, y: 5}
   <TileHitSFX>k__BackingField:
     Guid:
       Data1: 663265361
@@ -50,6 +39,7 @@ MonoBehaviour:
     _minAmount: 1
     _maxAmount: 2
     _dropChance: 1
+  <DrawTile>k__BackingField: {fileID: 11400000, guid: db9af0ae5bd824755a35ec9dcf9b0fa5, type: 2}
   references:
     version: 2
     RefIds:
