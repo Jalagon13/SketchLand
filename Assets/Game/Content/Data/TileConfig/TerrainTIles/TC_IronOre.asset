@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TC_IronOre
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.TerrainTileConfigSO
   <RequiredHarvestType>k__BackingField: 1
-  <MaxHP>k__BackingField: 100
+  <MaxHP>k__BackingField: 120
   <LightLevel>k__BackingField: 0
   <Indestructible>k__BackingField: 0
   <IsSolid>k__BackingField: 1

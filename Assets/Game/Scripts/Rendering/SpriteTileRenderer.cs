@@ -9,6 +9,8 @@ namespace SketchLand
     {
         private Tilemap _tilemap;
 
+        public Tilemap Tilemap => _tilemap;
+
         private readonly HashSet<Vector3Int> _drawn = new();
         private readonly HashSet<Vector3Int> _next = new();
 

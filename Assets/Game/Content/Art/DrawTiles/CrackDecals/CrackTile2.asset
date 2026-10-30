@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
   m_Name: CrackTile2
   m_EditorClassIdentifier: Unity.2D.Tilemap.Extras::UnityEngine.RuleTile
-  m_DefaultSprite: {fileID: -1299548849331238103, guid: 2f87ce7e588154a76acbf2c4eda5fff0, type: 3}
+  m_DefaultSprite: {fileID: 674231749, guid: eb186bfe1c4e7426293b5ef537db2156, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules: []

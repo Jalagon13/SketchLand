@@ -87,8 +87,8 @@ namespace SketchLand
             _backgroundObjects.Render(_background, bounds);
             _foregroundObjects.Render(_foreground, bounds);
 
-            _backgroundDamage.Render(_background, bounds);
-            _foregroundDamage.Render(_foreground, bounds);
+            _backgroundDamage.Render(_background, bounds, _backgroundObjects.Tilemap);
+            _foregroundDamage.Render(_foreground, bounds, _foregroundObjects.Tilemap);
         }
 
         public void RequestRefresh()
