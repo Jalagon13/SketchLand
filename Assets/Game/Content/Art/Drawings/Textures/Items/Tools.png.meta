@@ -132,7 +132,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tools_3
+      name: Shovel_Wood
       rect:
         serializedVersion: 2
         x: 768
@@ -479,6 +479,7 @@ TextureImporter:
     nameFileIdTable:
       Axe_Wood: -631927366
       Pickaxe_Wood: -2002231663
+      Shovel_Wood: -2144026015
       Sword_Wood: 387179986
       Tools_10: -1795917388
       Tools_11: 535580185
@@ -486,7 +487,6 @@ TextureImporter:
       Tools_13: -1627728109
       Tools_14: 43494115
       Tools_15: 1831209003
-      Tools_3: -2144026015
       Tools_4: -1222669417
       Tools_5: -1876535385
       Tools_6: 28830913

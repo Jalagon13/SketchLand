@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2b0488c44e6342c98721959b16e8839, type: 3}
   m_Name: TC_Grass
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.TerrainTileConfigSO
-  <RequiredHarvestType>k__BackingField: 1
+  <RequiredHarvestType>k__BackingField: 3
   <MaxHP>k__BackingField: 80
   <LightLevel>k__BackingField: 0
   <Indestructible>k__BackingField: 0
