@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 694fa9d06789c488a9efbe0d8d65ee87, type: 3}
-  m_Name: Con_HealthPotion
+  m_Name: Con_CookedMeat
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.ConsumableItemSO
-  <ItemName>k__BackingField: Health Potion
+  <ItemName>k__BackingField: Cooked Meat
   <Description>k__BackingField: 
   <DisplayIcon>k__BackingField: {fileID: 3121390128114958339, guid: 2f87ce7e588154a76acbf2c4eda5fff0, type: 3}
   <IsStackable>k__BackingField: 1

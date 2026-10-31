@@ -10,10 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24ddd890fc20042c7a954e03d6047e1a, type: 3}
-  m_Name: Rec_Bottle
+  m_Name: Rec_CookedMeat
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.RecipeSO
-  <OutputItem>k__BackingField: {fileID: 11400000, guid: e6f149573fb6a4cd982a6c0ffd4a1075, type: 2}
-  <OutputAmonut>k__BackingField: 2
+  <OutputItem>k__BackingField: {fileID: 11400000, guid: 7bf33d186c10b416c8333f3b3665a663, type: 2}
+  <OutputAmonut>k__BackingField: 1
   <Recipe>k__BackingField:
-  - _ingredient: {fileID: 11400000, guid: d6e5e2bab9b7347208c312146e82e2e3, type: 2}
+  - _ingredient: {fileID: 11400000, guid: 7bf33d186c10b416c8333f3b3665a663, type: 2}
+    _amount: 1
+  - _ingredient: {fileID: 11400000, guid: 81a74ab6b5b314aa5a95260481a734d8, type: 2}
     _amount: 1
