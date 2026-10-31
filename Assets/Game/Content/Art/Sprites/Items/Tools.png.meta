@@ -110,7 +110,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: item_wood_axe
+      name: Axe_Wood
       rect:
         serializedVersion: 2
         x: 256
@@ -374,7 +374,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: item_wood_pickaxe
+      name: Pickaxe_Wood
       rect:
         serializedVersion: 2
         x: 0
@@ -433,6 +433,8 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":256.0,"y":256.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
+      Axe_Wood: -631927366
+      Pickaxe_Wood: -2002231663
       Tools_10: -1795917388
       Tools_11: 535580185
       Tools_12: 1603694149
@@ -445,8 +447,6 @@ TextureImporter:
       Tools_7: -10662500
       Tools_8: -1895852302
       Tools_9: 103005710
-      item_wood_axe: -631927366
-      item_wood_pickaxe: -2002231663
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
