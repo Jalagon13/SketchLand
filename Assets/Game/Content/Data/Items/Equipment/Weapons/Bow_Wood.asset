@@ -14,8 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.RangedWeaponItemSO
   <ItemName>k__BackingField: Bow
   <Description>k__BackingField: 
-  <DisplayIcon>k__BackingField: {fileID: -5507865559307185436, guid: 2f87ce7e588154a76acbf2c4eda5fff0, type: 3}
+  <DisplayIcon>k__BackingField: {fileID: 1970053439, guid: 299c04dea1eaa4e78b9c26825532306e, type: 3}
   <IsStackable>k__BackingField: 1
+  <HeldPosition>k__BackingField: {x: 0, y: 0, z: 0}
+  <HeldRotation>k__BackingField: 0
+  <HeldScale>k__BackingField: {x: 1, y: 1, z: 1}
   <ShotCooldown>k__BackingField: 0.75
   <Projectile>k__BackingField: {fileID: 11400000, guid: b5e08a065994447879f5911de6519ca2, type: 2}
   <Aummunition>k__BackingField: {fileID: 11400000, guid: dbcbcd20bffa749e2920a1db8a6a1792, type: 2}

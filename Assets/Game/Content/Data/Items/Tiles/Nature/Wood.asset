@@ -9,13 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ad5d6c9d626f4a86b10848c127dc8e7, type: 3}
-  m_Name: Rsc_IronIngot
-  m_EditorClassIdentifier: Assembly-CSharp::OceanGame.ItemSO
-  <ItemName>k__BackingField: Iron Ingot
+  m_Script: {fileID: 11500000, guid: a420d73f53b79404f9078d4ebe9d53e7, type: 3}
+  m_Name: Wood
+  m_EditorClassIdentifier: Assembly-CSharp::OceanGame.TileItemSO
+  <ItemName>k__BackingField: Wood
   <Description>k__BackingField: 
-  <DisplayIcon>k__BackingField: {fileID: -1134669434, guid: 9e2d18de5ad924e289edcfd83e0dd806, type: 3}
+  <DisplayIcon>k__BackingField: {fileID: -1327560853, guid: 9e2d18de5ad924e289edcfd83e0dd806, type: 3}
   <IsStackable>k__BackingField: 1
   <HeldPosition>k__BackingField: {x: 0.084, y: -0.03, z: 0}
   <HeldRotation>k__BackingField: 167.9009
   <HeldScale>k__BackingField: {x: 1, y: 1, z: 1}
+  <PlaceTileDataSO>k__BackingField: {fileID: 11400000, guid: b7ea4b09cf0b943a9aca358bb8348256, type: 2}

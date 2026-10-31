@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.ToolItemSO
   <ItemName>k__BackingField: Wood Shovel
   <Description>k__BackingField: 
-  <DisplayIcon>k__BackingField: {fileID: -2144026015, guid: 95b48bea6960f4495a1bed98908a2b81, type: 3}
+  <DisplayIcon>k__BackingField: {fileID: 387179986, guid: 95b48bea6960f4495a1bed98908a2b81, type: 3}
   <IsStackable>k__BackingField: 0
   <HeldPosition>k__BackingField: {x: 0.226, y: -0.328, z: 0}
   <HeldRotation>k__BackingField: 167.9009

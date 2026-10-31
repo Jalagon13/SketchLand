@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a420d73f53b79404f9078d4ebe9d53e7, type: 3}
-  m_Name: Tile_Door
+  m_Name: Forge
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.TileItemSO
-  <ItemName>k__BackingField: Door
+  <ItemName>k__BackingField: Furnace
   <Description>k__BackingField: 
-  <DisplayIcon>k__BackingField: {fileID: 2130740027, guid: d4eb438eab0e84b7fa7af78682397bbf, type: 3}
+  <DisplayIcon>k__BackingField: {fileID: 2109044852, guid: c058b18f1128f4bcb97f8845caf370fa, type: 3}
   <IsStackable>k__BackingField: 1
   <HeldPosition>k__BackingField: {x: 0.084, y: -0.03, z: 0}
   <HeldRotation>k__BackingField: 167.9009
   <HeldScale>k__BackingField: {x: 1, y: 1, z: 1}
-  <PlaceTileDataSO>k__BackingField: {fileID: 11400000, guid: ba3aad1cd917f45aea3a6204b86df04e, type: 2}
+  <PlaceTileDataSO>k__BackingField: {fileID: 11400000, guid: e42bdd7cb272843519e112e3a25d0ee9, type: 2}

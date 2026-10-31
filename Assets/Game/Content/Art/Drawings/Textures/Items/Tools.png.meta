@@ -110,7 +110,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Sword_Wood
+      name: Shovel_Wood
       rect:
         serializedVersion: 2
         x: 512
@@ -132,7 +132,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Shovel_Wood
+      name: asdf
       rect:
         serializedVersion: 2
         x: 768
@@ -479,8 +479,7 @@ TextureImporter:
     nameFileIdTable:
       Axe_Wood: -631927366
       Pickaxe_Wood: -2002231663
-      Shovel_Wood: -2144026015
-      Sword_Wood: 387179986
+      Shovel_Wood: 387179986
       Tools_10: -1795917388
       Tools_11: 535580185
       Tools_12: 1603694149
@@ -493,6 +492,7 @@ TextureImporter:
       Tools_7: -10662500
       Tools_8: -1895852302
       Tools_9: 103005710
+      asdf: -2144026015
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

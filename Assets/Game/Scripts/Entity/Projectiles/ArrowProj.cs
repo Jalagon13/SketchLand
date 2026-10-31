@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SketchLand
 {
-    public class HarpoonProj : Projectile
+    public class ArrowProj : Projectile
     {
         [Header("Gravity")]
         public float GravityForce = 20f;
