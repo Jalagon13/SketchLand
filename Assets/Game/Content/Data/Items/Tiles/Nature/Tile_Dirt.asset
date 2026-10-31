@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.TileItemSO
   <ItemName>k__BackingField: Dirt
   <Description>k__BackingField: 
-  <DisplayIcon>k__BackingField: {fileID: 1366788342255239845, guid: 2f87ce7e588154a76acbf2c4eda5fff0, type: 3}
+  <DisplayIcon>k__BackingField: {fileID: -724094166, guid: 9e2d18de5ad924e289edcfd83e0dd806, type: 3}
   <IsStackable>k__BackingField: 1
   <HeldPosition>k__BackingField: {x: 0.084, y: -0.03, z: 0}
   <HeldRotation>k__BackingField: 167.9009

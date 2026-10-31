@@ -132,7 +132,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Placeables_1
+      name: Door_Wood
       rect:
         serializedVersion: 2
         x: 256
@@ -154,7 +154,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Placeables_2
+      name: Chest_Wood
       rect:
         serializedVersion: 2
         x: 512
@@ -477,14 +477,14 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":256.0,"y":256.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":true,"isAlternate":false}'
     nameFileIdTable:
-      Placeables_1: 2130740027
+      Chest_Wood: -2029088852
+      Door_Wood: 2130740027
       Placeables_10: 1601855104
       Placeables_11: 1614995767
       Placeables_12: 41266097
       Placeables_13: 1064479256
       Placeables_14: 1688407921
       Placeables_15: 347512274
-      Placeables_2: -2029088852
       Placeables_3: -2136120868
       Placeables_4: 466414708
       Placeables_5: -1820392239

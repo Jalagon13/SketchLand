@@ -132,7 +132,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Resources_2
+      name: Dirt
       rect:
         serializedVersion: 2
         x: 512
@@ -154,7 +154,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Resources_3
+      name: Ore_Iron
       rect:
         serializedVersion: 2
         x: 768
@@ -176,7 +176,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Resources_4
+      name: Ore_Iro
       rect:
         serializedVersion: 2
         x: 0
@@ -477,15 +477,15 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":256.0,"y":256.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":true,"isAlternate":false}'
     nameFileIdTable:
+      Dirt: -724094166
+      Ore_Iro: -1134669434
+      Ore_Iron: -63505906
       Resources_10: 304760144
       Resources_11: 93287081
       Resources_12: -1198781535
       Resources_13: 1633050589
       Resources_14: -136511233
       Resources_15: 1889336526
-      Resources_2: -724094166
-      Resources_3: -63505906
-      Resources_4: -1134669434
       Resources_5: 597171210
       Resources_6: 1425448261
       Resources_7: -2132018790
