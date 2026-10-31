@@ -259,7 +259,7 @@ namespace SketchLand
                     if (!chunk.Dirty)
                         continue;
 
-                    chunk.Renderer.sharedMaterials = _builder.Build(layer.Grid, region, chunk.Mesh, chunk.InkMesh, GetFillMaterial);
+                    chunk.Renderer.sharedMaterials = _builder.Build(layer.Grid, region, chunk.Mesh, chunk.InkMesh, GetFillMaterial, layer == _background);
                     chunk.Renderer.enabled = chunk.Mesh.subMeshCount > 0;
                     chunk.InkRenderer.enabled = chunk.InkMesh.vertexCount > 0;
                     chunk.Dirty = false;
@@ -343,10 +343,11 @@ namespace SketchLand
 
         private void MarkDirty(Layer layer, Vector2Int position)
         {
-            // Corner rules inspect diagonals too, hence the 3x3 area.
-            for (int dy = -1; dy <= 1; dy++)
+            // Background coverage extends half a cell; its outline also samples neighbours.
+            int radius = layer == _background ? 2 : 1;
+            for (int dy = -radius; dy <= radius; dy++)
             {
-                for (int dx = -1; dx <= 1; dx++)
+                for (int dx = -radius; dx <= radius; dx++)
                 {
                     Vector2Int key = new Vector2Int(Mathf.FloorToInt((position.x + dx) / (float)ChunkSize), Mathf.FloorToInt((position.y + dy) / (float)ChunkSize));
 

@@ -56,7 +56,7 @@ namespace SketchLand
             return config;
         }
 
-        public Material[] Build(TileGrid grid, RectInt region, Mesh mesh, Mesh inkMesh, Func<TerrainTileConfigSO, Material> getMaterial)
+        public Material[] Build(TileGrid grid, RectInt region, Mesh mesh, Mesh inkMesh, Func<TerrainTileConfigSO, Material> getMaterial, bool background = false)
         {
             _vertices.Clear();
             _uvs.Clear();
@@ -70,11 +70,14 @@ namespace SketchLand
 
             _origin = new Vector2(region.xMin, region.yMin);
 
-            for (int y = region.yMin; y < region.yMax; y++)
+            var layout = new TerrainRenderLayout(grid, background);
+            RectInt renderRegion = layout.GetRegion(region);
+
+            for (int y = renderRegion.yMin; y < renderRegion.yMax; y++)
             {
-                for (int x = region.xMin; x < region.xMax; x++)
+                for (int x = renderRegion.xMin; x < renderRegion.xMax; x++)
                 {
-                    TileData tile = grid.GetTileData(x, y);
+                    TileData tile = layout.Sample(x, y);
                     TerrainTileConfigSO config = GetVisualConfig(tile);
 
                     if (config == null)
@@ -83,7 +86,7 @@ namespace SketchLand
                     Material material = getMaterial(config);
                     int materialIndex = GetMaterialIndex(material);
 
-                    AddCell(grid, x, y, tile, config, materialIndex);
+                    AddCell(layout, x, y, tile, config, materialIndex);
                 }
             }
 
@@ -133,22 +136,23 @@ namespace SketchLand
             return index;
         }
 
-        private void AddCell(TileGrid grid, int x, int y, TileData tile, TerrainTileConfigSO config, int materialIndex)
+        private void AddCell(TerrainRenderLayout layout, int x, int y, TileData tile, TerrainTileConfigSO config, int materialIndex)
         {
             for (int i = 0; i < 4; i++)
             {
                 Vector2Int offset = Neighbours[i];
 
                 _neighbourData[i] =
-                    grid.GetTileData(x + offset.x, y + offset.y);
+                    layout.Sample(x + offset.x, y + offset.y);
 
                 _neighbourConfigs[i] =
                     GetVisualConfig(_neighbourData[i]);
             }
 
-            Vector2 cellOrigin = new Vector2(x, y);
+            Rect cell = layout.GetCellBounds(x, y);
+            Vector2 cellOrigin = cell.min;
 
-            float radius = Mathf.Clamp(config.CornerSoftness, 0f, 0.2f);
+            float radius = Mathf.Clamp(config.CornerSoftness, 0f, Mathf.Min(0.2f, Mathf.Min(cell.width, cell.height) * 0.5f));
 
             _polygon.Clear();
 
@@ -157,8 +161,8 @@ namespace SketchLand
                 int next = (edge + 1) % 4;
                 int previous = (edge + 3) % 4;
 
-                Vector2 a = cellOrigin + Corners[edge];
-                Vector2 b = cellOrigin + Corners[next];
+                Vector2 a = cellOrigin + Vector2.Scale(Corners[edge], cell.size);
+                Vector2 b = cellOrigin + Vector2.Scale(Corners[next], cell.size);
                 TerrainTileConfigSO neighbour = _neighbourConfigs[edge];
 
                 bool boundary = neighbour != config;
@@ -169,7 +173,8 @@ namespace SketchLand
 
                 TerrainTileConfigSO edgeStyle = ResolveStyle(config, tile.TileId, neighbour, _neighbourData[edge].TileId);
 
-                BuildEdgePoints(a, b, roundStart ? radius : 0f, roundEnd ? radius : 0f, boundary, edgeStyle);
+                float edgeLength = Vector2.Distance(a, b);
+                BuildEdgePoints(a, b, roundStart ? radius / edgeLength : 0f, roundEnd ? radius / edgeLength : 0f, boundary, edgeStyle);
 
                 _polygon.AddRange(_edgePoints);
 
@@ -211,7 +216,7 @@ namespace SketchLand
 
             Vector2 textureSize = new Vector2(Mathf.Max(0.01f, config.TextureWorldSize.x), Mathf.Max(0.01f, config.TextureWorldSize.y));
 
-            int center = AddFillVertex(cellOrigin + Vector2.one * 0.5f, config, textureSize);
+            int center = AddFillVertex(cell.center, config, textureSize);
 
             List<int> triangles = _triangles[materialIndex];
 
@@ -253,7 +258,7 @@ namespace SketchLand
             
             float wavelength = Mathf.Max(0.1f, style.OutlineWavelength);
             int segments = boundary && style.OutlineWobble > 0f ? Mathf.Clamp(Mathf.CeilToInt(6f / wavelength), 8, 64) : 1;
-            bool horizontal = Mathf.Abs(direction.x) > 0.5f;
+            bool horizontal = Mathf.Abs(direction.x) > 0f;
             bool forward = horizontal ? b.x > a.x : b.y > a.y;
             
             Vector2 minimum = Vector2.Min(a, b);
@@ -267,7 +272,7 @@ namespace SketchLand
                     
                 // Canonical coordinates make both sides of a material seam identical.
                 int canonicalIndex = forward ? i : segments - i;
-                Vector2 point = minimum + axis * (canonicalIndex / (float)segments);
+                Vector2 point = minimum + axis * (direction.magnitude * canonicalIndex / (float)segments);
                 float localT = (t - startCut) / (1f - startCut - endCut);
                 _edgePoints.Add(WarpEdge(point, horizontal, style, Mathf.Sin(localT * Mathf.PI)));
             }

@@ -74,14 +74,17 @@ namespace SketchLand
             if (WorldManager.Instance == null || WorldManager.Instance.MouseOverUI) return false;
 
             Vector2 mouseWorldPos = WorldManager.MouseWorldPosition;
-            Vector2Int mouseTilePos = WorldManager.MouseWorldTilePosition;
 
             float distanceToPlayer = Vector2.Distance(Player.Instance.Character.transform.position, mouseWorldPos);
             if (distanceToPlayer > Player.Instance.InteractRange) return false;
 
             var targetLayer = WorldManager.Instance.ActiveLayer;
             var grid = targetLayer == WorldManager.LayerType.Foreground ? WorldManager.Instance.FgGrid : WorldManager.Instance.BgGrid;
-            var tileData = grid.GetTileData(mouseTilePos.x, mouseTilePos.y);
+            
+            if (!MiningTargetResolver.TryResolve(grid, mouseWorldPos, targetLayer == WorldManager.LayerType.Background, out Vector2Int targetPosition))
+                return false;
+
+            var tileData = grid.GetTileData(targetPosition.x, targetPosition.y);
             
             if (tileData.HasTile)
             {
@@ -94,7 +97,7 @@ namespace SketchLand
                     return false; // Incompatible tool (e.g. pickaxe hitting tree, axe hitting stone)
                 }
 
-                WorldManager.Instance.DamageTile(mouseTilePos, tool.MiningDamage, targetLayer, refreshCurrentBounds: true);
+                WorldManager.Instance.DamageTile(targetPosition, tool.MiningDamage, targetLayer, refreshCurrentBounds: true);
                 
                 // Set interval
                 float interval = tool.MineTicksPerSecond > 0f ? 1f / tool.MineTicksPerSecond : 0.25f;

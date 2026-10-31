@@ -8,6 +8,7 @@ namespace SketchLand
     public class SetBgGenStep : WorldGenStep
     {
         [SerializeField] private TileConfigSO _dirtTile;
+        [SerializeField] private int _belowSurfaceOffset = 1;
 
         public override IEnumerator Execute(WorldGenContext ctx)
         {
@@ -16,7 +17,7 @@ namespace SketchLand
 
             for (int x = 0; x < ctx.Width; x++)
             {
-                for (int y = bottomLevel; y < ctx.SurfaceHeightMap[x]; y++)
+                for (int y = bottomLevel; y < ctx.SurfaceHeightMap[x] - _belowSurfaceOffset; y++)
                 {
                     ctx.BgGrid[x, y] = new TileData(_dirtTile.GetId());
                 }
