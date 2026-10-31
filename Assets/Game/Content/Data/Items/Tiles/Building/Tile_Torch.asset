@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.TileItemSO
   <ItemName>k__BackingField: Torch
   <Description>k__BackingField: 
-  <DisplayIcon>k__BackingField: {fileID: 5323533958294135581, guid: 2f87ce7e588154a76acbf2c4eda5fff0, type: 3}
+  <DisplayIcon>k__BackingField: {fileID: -1411864203, guid: d4eb438eab0e84b7fa7af78682397bbf, type: 3}
   <IsStackable>k__BackingField: 1
-  <HeldPosition>k__BackingField: {x: 0.084, y: -0.03, z: 0}
-  <HeldRotation>k__BackingField: 167.9009
+  <HeldPosition>k__BackingField: {x: 0.109, y: -0.251, z: 0}
+  <HeldRotation>k__BackingField: 198.11722
   <HeldScale>k__BackingField: {x: 1, y: 1, z: 1}
   <PlaceTileDataSO>k__BackingField: {fileID: 11400000, guid: 5ad02b828bd0340e49386decae7de78d, type: 2}

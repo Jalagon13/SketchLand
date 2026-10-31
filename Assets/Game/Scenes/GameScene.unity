@@ -4410,6 +4410,10 @@ MonoBehaviour:
     _amount: 999
   - _ingredient: {fileID: 11400000, guid: a8ba4590c8abf433dbe1aa7470e8b094, type: 2}
     _amount: 999
+  - _ingredient: {fileID: 11400000, guid: 7c88a6e8135fd491198a7ef38abd39b0, type: 2}
+    _amount: 99
+  - _ingredient: {fileID: 11400000, guid: 6f393675a7658455ca34e97ac758ccee, type: 2}
+    _amount: 99
 --- !u!114 &1178486984
 MonoBehaviour:
   m_ObjectHideFlags: 0

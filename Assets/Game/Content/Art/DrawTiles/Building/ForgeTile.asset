@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b08ceb78e3b2495b8d808a5860e66794, type: 3}
-  m_Name: FurnaceTile
+  m_Name: ForgeTile
   m_EditorClassIdentifier: Unity.2D.Tilemap.Extras::UnityEngine.Tilemaps.AutoTile
   m_DefaultSprite: {fileID: 6878807697356030981, guid: 2f87ce7e588154a76acbf2c4eda5fff0, type: 3}
   m_DefaultGameObject: {fileID: 0}
