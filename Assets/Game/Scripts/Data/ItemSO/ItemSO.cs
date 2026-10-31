@@ -10,6 +10,14 @@ namespace SketchLand
         [field: SerializeField, TextArea] public string Description { get; private set; }
         [field: SerializeField] public Sprite DisplayIcon { get; private set; }
         [field: SerializeField] public bool IsStackable { get; private set; } = true;
+
+        [field: Header("Held Item Pose")]
+        [field: Tooltip("HeldItemSprite local position relative to ItemGrip, copied directly from its Transform.")]
+        [field: SerializeField] public Vector3 HeldPosition { get; private set; } = Vector3.zero;
+        [field: Tooltip("HeldItemSprite local Z rotation in degrees, copied directly from its Transform.")]
+        [field: SerializeField] public float HeldRotation { get; private set; } = 0f;
+        [field: Tooltip("HeldItemSprite local scale, copied directly from its Transform.")]
+        [field: SerializeField] public Vector3 HeldScale { get; private set; } = Vector3.one;
         
         public ushort GetId()
         {

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace SketchLand
 {
-    // Position the tool after animation, before PlayerHandGripIK and IKManager2D.
+    // Position the held item after animation, before PlayerHandGripIK and IKManager2D.
     [DefaultExecutionOrder(-30)]
     public class PlayerHeldItemDisplay : MonoBehaviour
     {
@@ -16,6 +16,9 @@ namespace SketchLand
         private PlayerHandGripIK _handGripIK;
         private ServerCharacter _character;
         private ItemSO _selectedItem;
+        private Vector3 _defaultSpritePosition;
+        private Quaternion _defaultSpriteRotation;
+        private Vector3 _defaultSpriteScale;
         private ItemPose _pose;
         private Transform _swingParent;
         private Vector3 _swingPosition;
@@ -32,8 +35,15 @@ namespace SketchLand
             _handGripIK = GetComponent<PlayerHandGripIK>();
             _character = GetComponent<ServerCharacter>();
 
+            // Item adjustments affect only the sprite, leaving the grip, hand IK,
+            // and authored resting/swing poses independent of the item's artwork.
+            Transform spriteTransform = _heldItemSprite.transform;
+            _defaultSpritePosition = spriteTransform.localPosition;
+            _defaultSpriteRotation = spriteTransform.localRotation;
+            _defaultSpriteScale = spriteTransform.localScale;
+
             // The prefab keeps the authored swing pose; the hand mount owns
-            // the resting pose. Neither needs per-item offset settings.
+            // the resting pose.
             _swingParent = _itemRoot.parent;
             _swingPosition = _itemRoot.localPosition;
             _swingRotation = _itemRoot.localRotation;
@@ -77,6 +87,13 @@ namespace SketchLand
 
         private void ShowItem(ItemSO item)
         {
+            // Every selected item owns its local sprite pose, including the
+            // identity pose. Restore the prefab pose only for an empty hand.
+            Transform spriteTransform = _heldItemSprite.transform;
+            spriteTransform.SetLocalPositionAndRotation(
+                item != null ? item.HeldPosition : _defaultSpritePosition,
+                item != null ? Quaternion.Euler(0f, 0f, item.HeldRotation) : _defaultSpriteRotation);
+            spriteTransform.localScale = item != null ? item.HeldScale : _defaultSpriteScale;
             _heldItemSprite.sprite = item != null ? item.DisplayIcon : null;
             _heldItemSprite.enabled = _heldItemSprite.sprite != null;
         }

@@ -16,6 +16,10 @@ MonoBehaviour:
   <Description>k__BackingField: 
   <DisplayIcon>k__BackingField: {fileID: -2002231663, guid: 95b48bea6960f4495a1bed98908a2b81, type: 3}
   <IsStackable>k__BackingField: 0
+  <UseCustomHeldPose>k__BackingField: 1
+  <HeldPosition>k__BackingField: {x: 0.226, y: -0.328, z: 0}
+  <HeldRotation>k__BackingField: 167.9009
+  <HeldScale>k__BackingField: {x: 1, y: 1, z: 1}
   <HarvestType>k__BackingField: 1
   <TargetLayer>k__BackingField: 0
   <MiningDamage>k__BackingField: 20

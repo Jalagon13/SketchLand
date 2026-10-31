@@ -16,4 +16,7 @@ MonoBehaviour:
   <Description>k__BackingField: 
   <DisplayIcon>k__BackingField: {fileID: -1327560853, guid: 9e2d18de5ad924e289edcfd83e0dd806, type: 3}
   <IsStackable>k__BackingField: 1
+  <HeldPosition>k__BackingField: {x: 0.084, y: -0.03, z: 0}
+  <HeldRotation>k__BackingField: 167.9009
+  <HeldScale>k__BackingField: {x: 1, y: 1, z: 1}
   <PlaceTileDataSO>k__BackingField: {fileID: 11400000, guid: b7ea4b09cf0b943a9aca358bb8348256, type: 2}

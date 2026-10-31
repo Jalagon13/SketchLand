@@ -110,33 +110,11 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Wood
+      name: Stone
       rect:
         serializedVersion: 2
-        x: 0
+        x: 256
         y: 768
-        width: 256
-        height: 256
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 69309036cb0b84f97979395c2a2fa9f9
-      internalID: -1327560853
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Resources_1
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 512
         width: 256
         height: 256
       alignment: 0
@@ -157,8 +135,8 @@ TextureImporter:
       name: Resources_2
       rect:
         serializedVersion: 2
-        x: 256
-        y: 512
+        x: 512
+        y: 768
         width: 256
         height: 256
       alignment: 0
@@ -179,8 +157,8 @@ TextureImporter:
       name: Resources_3
       rect:
         serializedVersion: 2
-        x: 512
-        y: 512
+        x: 768
+        y: 768
         width: 256
         height: 256
       alignment: 0
@@ -201,7 +179,7 @@ TextureImporter:
       name: Resources_4
       rect:
         serializedVersion: 2
-        x: 768
+        x: 0
         y: 512
         width: 256
         height: 256
@@ -223,8 +201,8 @@ TextureImporter:
       name: Resources_5
       rect:
         serializedVersion: 2
-        x: 0
-        y: 256
+        x: 256
+        y: 512
         width: 256
         height: 256
       alignment: 0
@@ -245,8 +223,8 @@ TextureImporter:
       name: Resources_6
       rect:
         serializedVersion: 2
-        x: 256
-        y: 256
+        x: 512
+        y: 512
         width: 256
         height: 256
       alignment: 0
@@ -267,8 +245,8 @@ TextureImporter:
       name: Resources_7
       rect:
         serializedVersion: 2
-        x: 512
-        y: 256
+        x: 768
+        y: 512
         width: 256
         height: 256
       alignment: 0
@@ -289,7 +267,7 @@ TextureImporter:
       name: Resources_8
       rect:
         serializedVersion: 2
-        x: 768
+        x: 0
         y: 256
         width: 256
         height: 256
@@ -311,8 +289,8 @@ TextureImporter:
       name: Resources_9
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 256
+        y: 256
         width: 256
         height: 256
       alignment: 0
@@ -333,8 +311,8 @@ TextureImporter:
       name: Resources_10
       rect:
         serializedVersion: 2
-        x: 256
-        y: 0
+        x: 512
+        y: 256
         width: 256
         height: 256
       alignment: 0
@@ -355,8 +333,8 @@ TextureImporter:
       name: Resources_11
       rect:
         serializedVersion: 2
-        x: 512
-        y: 0
+        x: 768
+        y: 256
         width: 256
         height: 256
       alignment: 0
@@ -377,7 +355,7 @@ TextureImporter:
       name: Resources_12
       rect:
         serializedVersion: 2
-        x: 768
+        x: 0
         y: 0
         width: 256
         height: 256
@@ -391,6 +369,94 @@ TextureImporter:
       bones: []
       spriteID: 32befe502ac154f618ecb8ae18dc92ef
       internalID: -1198781535
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wood
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 768
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2da7caf69efd54161983eefada1ded6a
+      internalID: -1327560853
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Resources_13
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9a8ca315666814f63937bd0f92b3643e
+      internalID: 1633050589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Resources_14
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 71655d6cf971a4236ad510a15ea9bb6b
+      internalID: -136511233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Resources_15
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1401ff9921cbe432e9d80d357af2e3fd
+      internalID: 1889336526
       vertices: []
       indices: 
       edges: []
@@ -409,12 +475,14 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":256.0,"y":256.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":256.0,"y":256.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":true,"isAlternate":false}'
     nameFileIdTable:
-      Resources_1: 184825950
       Resources_10: 304760144
       Resources_11: 93287081
       Resources_12: -1198781535
+      Resources_13: 1633050589
+      Resources_14: -136511233
+      Resources_15: 1889336526
       Resources_2: -724094166
       Resources_3: -63505906
       Resources_4: -1134669434
@@ -423,6 +491,7 @@ TextureImporter:
       Resources_7: -2132018790
       Resources_8: 38323398
       Resources_9: -1501257001
+      Stone: 184825950
       Wood: -1327560853
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0

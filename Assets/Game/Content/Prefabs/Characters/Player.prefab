@@ -853,9 +853,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4929472780235366128}
   m_Layer: 0
-  m_Name: ToolGrip
+  m_Name: ItemGrip
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 2800000, guid: 160b197aba549514286b94426ceae589, type: 3}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1187,7 +1187,7 @@ Transform:
   m_GameObject: {fileID: 6599308077465748602}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.9944312, w: 0.10538855}
-  m_LocalPosition: {x: 0.226, y: -0.328, z: 0}
+  m_LocalPosition: {x: 0.084, y: -0.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1242,7 +1242,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 3
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -2002231663, guid: 95b48bea6960f4495a1bed98908a2b81, type: 3}
+  m_Sprite: {fileID: -1327560853, guid: 9e2d18de5ad924e289edcfd83e0dd806, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
