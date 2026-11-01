@@ -9,7 +9,6 @@ namespace SketchLand
         [field: SerializeField] public HarvestType HarvestType { get; private set; } = HarvestType.None;
         [field: SerializeField] public WorldManager.LayerType TargetLayer { get; private set; } = WorldManager.LayerType.Foreground;
         [field: SerializeField] public int MiningDamage { get; private set; } = 15;
-        [field: SerializeField] public float MineTicksPerSecond { get; private set; } = 4;
 
         [field: Header("Melee & Hitbox Settings")]
         [field: SerializeField] public int MeleeDamage { get; private set; } = 10;
@@ -26,19 +25,16 @@ namespace SketchLand
         public override void OnPrimaryActionStarted(Player player)
         {
             player.ArmHandler.StartPrimaryAction(this);
-            MiningManager.Instance.StartMining(this);
         }
         
         public override void OnPrimaryActionHeld(Player player)
         {
             player.ArmHandler.HoldPrimaryAction(this);
-            MiningManager.Instance.TickMining(this);
         }
         
         public override void OnPrimaryActionRelease(Player player)
         {
             player.ArmHandler.ReleasePrimaryAction(this);
-            MiningManager.Instance.StopMining();
         }
     }
 }

@@ -152,6 +152,8 @@ namespace SketchLand
                 _isHitboxActive = true;
             });
 
+            float miningImpactTime = _swingSequence.Duration() + tool.SwingDuration * 0.5f;
+
             _swingSequence.Append(
             DOVirtual.Float(
                 startAngle,
@@ -160,6 +162,14 @@ namespace SketchLand
                 angle => _armPivot.localRotation =
                     Quaternion.Euler(0f, 0f, angle))
             .SetEase(Ease.InOutCubic));
+
+            // One mining attempt per swing, halfway through the active arc.
+            // Killing the sequence before impact also cancels the mining hit.
+            _swingSequence.InsertCallback(miningImpactTime, () =>
+            {
+                if (Player.Instance != null && Player.Instance.Character == _character)
+                    MiningManager.Instance?.TryPerformMine(tool);
+            });
 
             _swingSequence.AppendCallback(() => _isHitboxActive = false);
 

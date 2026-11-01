@@ -47,6 +47,10 @@ MonoBehaviour:
       type: {class: CrafterIB, ns: SketchLand, asm: Assembly-CSharp}
       data:
         <Recipes>k__BackingField:
+        - {fileID: 11400000, guid: 02f3175f9ad6f4b82a201c4ed89f0680, type: 2}
+        - {fileID: 11400000, guid: f24a9d6a8773a4e67a2e1d78302f3abe, type: 2}
+        - {fileID: 11400000, guid: e1669292f1f3843638040df9dd7c3e5a, type: 2}
+        - {fileID: 11400000, guid: 2e82c1277a90f4d148c35f31cc48454a, type: 2}
         - {fileID: 11400000, guid: f66fba809f0ce4b0485e7905e0247b1d, type: 2}
         - {fileID: 11400000, guid: 8fa80f7554cc0491393cbd9343f9203f, type: 2}
         - {fileID: 11400000, guid: 2f9ef216a9c4e4eba89412a9815cf8e2, type: 2}

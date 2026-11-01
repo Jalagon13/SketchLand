@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ddd890fc20042c7a954e03d6047e1a, type: 3}
+  m_Name: Rec_Axe_Wood
+  m_EditorClassIdentifier: Assembly-CSharp::OceanGame.RecipeSO
+  <OutputItem>k__BackingField: {fileID: 11400000, guid: 2e6df84076b2b454a9e50fd441cb468c, type: 2}
+  <OutputAmonut>k__BackingField: 1
+  <Recipe>k__BackingField:
+  - _ingredient: {fileID: 11400000, guid: 81a74ab6b5b314aa5a95260481a734d8, type: 2}
+    _amount: 8

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace SketchLand
@@ -7,71 +6,19 @@ namespace SketchLand
     {
         public static MiningManager Instance { get; private set; }
 
-        private float _nextMineTime;
-        private bool _isMining;
-
         private void Awake()
         {
             Instance = this;
         }
         
-        private void Start() 
+        // Called once by the swing animation at impact. Resolve the current hover,
+        // so moving the mouse during windup changes which tile receives the hit.
+        public bool TryPerformMine(ToolItemSO tool)
         {
-            if (Player.Instance == null) return;
-
-            Player.Instance.PlayerReady += OnPlayerReady;
-
-            if (Player.Instance.Character != null)
-                OnPlayerReady(Player.Instance.Character);
-        }
-        
-        private void OnDestroy() 
-        {
-            if (Player.Instance == null) return;
-
-            if(Player.Instance.Character != null)
-                Player.Instance.Character.Health.CurrentLifeState.OnValueChanged -= OnLifeStateChanged;
-                
-            Player.Instance.PlayerReady -= OnPlayerReady;
-        }
-
-        private void OnPlayerReady(ServerCharacter player)
-        {
-            player.Health.CurrentLifeState.OnValueChanged += OnLifeStateChanged;
-        }
-
-        private void OnLifeStateChanged(LifeState previousValue, LifeState newValue)
-        {
-            if(newValue == LifeState.Dead)
-            {
-                StopMining();
-            }
-        }
-
-        public void StartMining(ToolItemSO tool)
-        {
-            _isMining = true;
-            
-            TryPerformMine(tool); // Instantly attempt a mine on the first click
-        }
-
-        public void TickMining(ToolItemSO tool)
-        {
-            if (!_isMining) return;
-
-            TryPerformMine(tool);
-        }
-
-        public void StopMining()
-        {
-            _isMining = false;
-        }
-
-        private bool TryPerformMine(ToolItemSO tool)
-        {
-            if (tool == null) return false;
-            if (Time.time < _nextMineTime) return false; // Enforce tool cooldown even when spam-clicking
-            if (WorldManager.Instance == null || WorldManager.Instance.MouseOverUI) return false;
+            if (!isActiveAndEnabled || tool == null) return false;
+            if (WorldManager.Instance == null || !WorldManager.Instance.IsWorldReady || WorldManager.Instance.MouseOverUI) return false;
+            if (Player.Instance == null || Player.Instance.Character == null) return false;
+            if (Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead) return false;
 
             Vector2 mouseWorldPos = WorldManager.MouseWorldPosition;
 
@@ -98,10 +45,6 @@ namespace SketchLand
                 }
 
                 WorldManager.Instance.DamageTile(targetPosition, tool.MiningDamage, targetLayer, refreshCurrentBounds: true);
-                
-                // Set interval
-                float interval = tool.MineTicksPerSecond > 0f ? 1f / tool.MineTicksPerSecond : 0.25f;
-                _nextMineTime = Time.time + interval;
                 
                 return true;
             }
