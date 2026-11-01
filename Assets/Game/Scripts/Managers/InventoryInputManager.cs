@@ -19,6 +19,9 @@ namespace SketchLand
         
         public InventorySlot ActiveSlot { get; private set; }
 
+        private ItemSO _primaryActionItem;
+        private InventorySlot _primaryActionSlot;
+
         private void Awake()
         {
             Instance = this;
@@ -45,6 +48,13 @@ namespace SketchLand
         private void Update()
         {
             ActiveSlot = GetActiveInvSlot();
+            // Consuming the cursor stack can reveal the selected hotbar tool.
+            // That tool must not inherit the placement press.
+            if (_primaryActionItem != null &&
+                (ActiveSlot != _primaryActionSlot || ActiveSlot.IsEmpty || ActiveSlot.GetItemSO() != _primaryActionItem))
+            {
+                ReleasePrimaryAction();
+            }
             if(ActiveSlot.IsEmpty) return;
             
             if(Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead) return;
@@ -54,7 +64,7 @@ namespace SketchLand
 
             if (GameInput.Instance.PrimaryActionHeld)
             {
-                ActiveSlot.GetItemSO().OnPrimaryActionHeld(player);
+                _primaryActionItem?.OnPrimaryActionHeld(player);
             }
             else if(GameInput.Instance.SecondaryActionHeld)
             {
@@ -64,26 +74,32 @@ namespace SketchLand
 
         private void OnPrimaryActionPressed(InputAction.CallbackContext context)
         {
+            // Release the item that received the press, even if selection changed
+            // or the player died before releasing the button.
+            if (context.phase == InputActionPhase.Canceled)
+            {
+                ReleasePrimaryAction();
+                return;
+            }
+
+            if (context.phase != InputActionPhase.Started) return;
+            ReleasePrimaryAction();
             if (Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead) return;
 
             var activeSlot = GetActiveInvSlot();
-            
-            if(!activeSlot.IsEmpty)
-            {
-                var player = Player.Instance;
+            if (activeSlot.IsEmpty || WorldManager.Instance.MouseOverUI) return;
 
-                if (context.phase == InputActionPhase.Started)
-                {
-                    if(WorldManager.Instance.MouseOverUI) return;
-                    
-                    activeSlot.GetItemSO().OnPrimaryActionStarted(player);
-                }
-                else if(context.phase == InputActionPhase.Canceled)
-                {
-                    activeSlot.GetItemSO().OnPrimaryActionRelease(player);
-                }
-                
-            }
+            _primaryActionSlot = activeSlot;
+            _primaryActionItem = activeSlot.GetItemSO();
+            _primaryActionItem.OnPrimaryActionStarted(Player.Instance);
+        }
+
+        private void ReleasePrimaryAction()
+        {
+            var item = _primaryActionItem;
+            _primaryActionItem = null;
+            _primaryActionSlot = null;
+            item?.OnPrimaryActionRelease(Player.Instance);
         }
 
         private void OnSecondaryActionPressed(InputAction.CallbackContext context)
