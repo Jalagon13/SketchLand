@@ -19,7 +19,7 @@ namespace SketchLand
             _tilemap = GetComponent<Tilemap>();
         }
 
-        public void Render(TileGrid grid, RectInt bounds)
+        public void Render(TileGrid grid, RectInt bounds, TileGrid background = null)
         {
             _next.Clear();
 
@@ -47,7 +47,7 @@ namespace SketchLand
 
                     TileData rootTile = grid.GetTileData(root.x, root.y);
 
-                    _tilemap.SetTile(root, config.GetStateInterpretedTileForRendering(rootTile.State));
+                    _tilemap.SetTile(root, config.GetTileForRendering(grid, background, new Vector2Int(root.x, root.y), rootTile.State));
                 }
             }
 

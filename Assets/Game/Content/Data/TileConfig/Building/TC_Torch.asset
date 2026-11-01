@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3e6628b84a1d44278cce9fcc7e7ef62, type: 3}
+  m_Script: {fileID: 11500000, guid: 2d2ddc39a43ad43139f2edd497c6ccc5, type: 3}
   m_Name: TC_Torch
-  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.SpriteTileConfigSO
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.TorchTileConfigSO
   <RequiredHarvestType>k__BackingField: 0
   <MaxHP>k__BackingField: 1
   <LightLevel>k__BackingField: 1
@@ -40,6 +40,9 @@ MonoBehaviour:
     _maxAmount: 1
     _dropChance: 1
   <DrawTile>k__BackingField: {fileID: 11400000, guid: c085640d10a1d4797818080cb3fc6f40, type: 2}
+  <FloorSprite>k__BackingField: {fileID: -144446906, guid: b52b00e8505b74bb0868ed95cd3a0f2a, type: 3}
+  <WallSprite>k__BackingField: {fileID: 1975926915, guid: b52b00e8505b74bb0868ed95cd3a0f2a, type: 3}
+  <BackgroundSprite>k__BackingField: {fileID: -227786942, guid: b52b00e8505b74bb0868ed95cd3a0f2a, type: 3}
   references:
     version: 2
     RefIds:

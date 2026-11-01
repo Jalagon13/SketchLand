@@ -32,6 +32,35 @@ namespace SketchLand
 
         public bool IsMultiTile => Size != new Vector2Int(1, 1);
 
+        public virtual bool CanPlace(TileGrid foreground, TileGrid background, Vector2Int position, WorldManager.LayerType layer)
+        {
+            bool isBackground = layer == WorldManager.LayerType.Background;
+            TileGrid target = isBackground ? background : foreground;
+            int x = position.x;
+            int y = position.y;
+            if (!target.IsInBounds(x, y) || target.GetTileData(x, y).HasTile) return false;
+            if (isBackground && IsMultiTile) return false;
+
+            bool solidNeighbor = HasNeighbor(target, x, y, solidOnly: true);
+            bool backgroundNeighbor = HasNeighbor(background, x, y);
+            bool foregroundNeighbor = HasNeighbor(foreground, x, y);
+
+            return solidNeighbor || (isBackground
+                ? foreground.GetTileData(x, y).HasTile || (!backgroundNeighbor && foregroundNeighbor)
+                : background.GetTileData(x, y).HasTile || backgroundNeighbor);
+        }
+
+        private static bool HasNeighbor(TileGrid grid, int x, int y, bool solidOnly = false)
+        {
+            return Matches(grid.GetTileData(x - 1, y)) || Matches(grid.GetTileData(x + 1, y)) ||
+                   Matches(grid.GetTileData(x, y - 1)) || Matches(grid.GetTileData(x, y + 1));
+
+            bool Matches(TileData tile) => tile.HasTile && (!solidOnly || tile.IsSolid);
+        }
+
+        // Called for the changed cell and its cardinal neighbors after either world layer changes.
+        public virtual void OnSupportChanged(TileGrid foreground, TileGrid background, Vector2Int position) { }
+
         public ushort GetId()
         {
             return GameDataRegistry.Instance.GetTileIdFromTileDataSO(this);

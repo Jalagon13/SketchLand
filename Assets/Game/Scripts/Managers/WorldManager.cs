@@ -37,6 +37,8 @@ namespace SketchLand
         public int SeaLevel { get; private set; }
 
 
+        private TileSupportTracker _tileSupport;
+
         private void Awake()
         {
             Instance = this;
@@ -49,6 +51,7 @@ namespace SketchLand
         
         private void OnDestroy() 
         {
+            _tileSupport?.Dispose();
             GameInput.Instance.OnToggleBuildLayer -= ToggleBuildLayer;
         }
 
@@ -89,6 +92,8 @@ namespace SketchLand
             var height = context.Height;
             SeaLevel = context.RoughSurfaceHeight;
 
+            _tileSupport?.Dispose();
+
             // Create fresh layers matching generated dimensions
             FgGrid = new TileGrid(width, height);
             BgGrid = new TileGrid(width, height);
@@ -102,6 +107,8 @@ namespace SketchLand
                     BgGrid.SetTileData(x, y, context.BgGrid[x, y]);
                 }
             }
+
+            _tileSupport = new TileSupportTracker(FgGrid, BgGrid);
 
             _surfaceBg.Initialize();
 

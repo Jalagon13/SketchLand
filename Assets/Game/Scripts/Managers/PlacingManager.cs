@@ -99,36 +99,7 @@ namespace SketchLand
                 return false;
             }
 
-            bool isBackgroundPlacement = activeLayer == WorldManager.LayerType.Background;
-            var supportGrid = isBackgroundPlacement ? world.BgGrid : world.FgGrid;
-
-            // Just the complicated rules for when you can place a tile as it is now
-            bool hasSolidNeighbor =
-                IsSolidTile(supportGrid, mouseTilePos.x, mouseTilePos.y + 1) ||
-                IsSolidTile(supportGrid, mouseTilePos.x, mouseTilePos.y - 1) ||
-                IsSolidTile(supportGrid, mouseTilePos.x - 1, mouseTilePos.y) ||
-                IsSolidTile(supportGrid, mouseTilePos.x + 1, mouseTilePos.y);
-
-            bool hasBackgroundNeighbor =
-                world.BgGrid.GetTileData(mouseTilePos.x, mouseTilePos.y + 1).HasTile ||
-                world.BgGrid.GetTileData(mouseTilePos.x, mouseTilePos.y - 1).HasTile ||
-                world.BgGrid.GetTileData(mouseTilePos.x - 1, mouseTilePos.y).HasTile ||
-                world.BgGrid.GetTileData(mouseTilePos.x + 1, mouseTilePos.y).HasTile;
-
-            bool hasForegroundNeighbor =
-                world.FgGrid.GetTileData(mouseTilePos.x, mouseTilePos.y + 1).HasTile ||
-                world.FgGrid.GetTileData(mouseTilePos.x, mouseTilePos.y - 1).HasTile ||
-                world.FgGrid.GetTileData(mouseTilePos.x - 1, mouseTilePos.y).HasTile ||
-                world.FgGrid.GetTileData(mouseTilePos.x + 1, mouseTilePos.y).HasTile;
-
-            bool canPlaceBesideForeground = isBackgroundPlacement && !hasBackgroundNeighbor && hasForegroundNeighbor;
-            bool isBehindForegroundTile = world.FgGrid.GetTileData(mouseTilePos.x, mouseTilePos.y).HasTile;
-            bool isInFrontOfBackgroundTile = !isBackgroundPlacement && world.BgGrid.GetTileData(mouseTilePos.x, mouseTilePos.y).HasTile;
-            bool canPlaceBesideBackground = !isBackgroundPlacement && hasBackgroundNeighbor;
-            bool hasPlacementSupport = hasSolidNeighbor || (isBackgroundPlacement && isBehindForegroundTile) || canPlaceBesideForeground || isInFrontOfBackgroundTile || canPlaceBesideBackground;
-
-            // If no support, do not do that
-            if (!hasPlacementSupport) return false;
+            if (!tileConfig.CanPlace(world.FgGrid, world.BgGrid, mouseTilePos, activeLayer)) return false;
 
             // If everything is good then we can proceed to place the tile
             var tileToPlaceTd = new TileData(tileConfig.GetId());
@@ -178,10 +149,5 @@ namespace SketchLand
             return false;
         }
 
-        private static bool IsSolidTile(TileGrid grid, int x, int y)
-        {
-            var tile = grid.GetTileData(x, y);
-            return tile.HasTile && tile.IsSolid;
-        }
     }
 }

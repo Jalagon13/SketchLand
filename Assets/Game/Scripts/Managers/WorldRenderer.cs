@@ -85,7 +85,7 @@ namespace SketchLand
             RectInt bounds = _view.CurrentVisibleTileBounds;
 
             _backgroundObjects.Render(_background, bounds);
-            _foregroundObjects.Render(_foreground, bounds);
+            _foregroundObjects.Render(_foreground, bounds, _background);
 
             _backgroundDamage.Render(_background, bounds, _backgroundObjects.Tilemap);
             _foregroundDamage.Render(_foreground, bounds, _foregroundObjects.Tilemap);
