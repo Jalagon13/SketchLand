@@ -2744,6 +2744,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 973649509}
     m_Modifications:
+    - target: {fileID: 1235841023773419543, guid: 3b770195dab8b4c5ab9deb9099575fa9, type: 3}
+      propertyPath: m_text
+      value: 'Chest
+
+        Armor'
+      objectReference: {fileID: 0}
+    - target: {fileID: 1235841023773419543, guid: 3b770195dab8b4c5ab9deb9099575fa9, type: 3}
+      propertyPath: m_fontSize
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1235841023773419543, guid: 3b770195dab8b4c5ab9deb9099575fa9, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 1300865306261324413, guid: 3b770195dab8b4c5ab9deb9099575fa9, type: 3}
       propertyPath: m_Name
       value: ArmorSlotUI (1)
@@ -6543,6 +6557,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 973649509}
     m_Modifications:
+    - target: {fileID: 1235841023773419543, guid: 3b770195dab8b4c5ab9deb9099575fa9, type: 3}
+      propertyPath: m_text
+      value: 'Grieves
+
+        Armor'
+      objectReference: {fileID: 0}
+    - target: {fileID: 1235841023773419543, guid: 3b770195dab8b4c5ab9deb9099575fa9, type: 3}
+      propertyPath: m_fontSize
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1235841023773419543, guid: 3b770195dab8b4c5ab9deb9099575fa9, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1300865306261324413, guid: 3b770195dab8b4c5ab9deb9099575fa9, type: 3}
       propertyPath: m_Name
       value: ArmorSlotUI (2)
@@ -8352,6 +8380,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 973649509}
     m_Modifications:
+    - target: {fileID: 1235841023773419543, guid: 3b770195dab8b4c5ab9deb9099575fa9, type: 3}
+      propertyPath: m_text
+      value: "Head \nArmor"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1235841023773419543, guid: 3b770195dab8b4c5ab9deb9099575fa9, type: 3}
+      propertyPath: m_fontSize
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1235841023773419543, guid: 3b770195dab8b4c5ab9deb9099575fa9, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 1300865306261324413, guid: 3b770195dab8b4c5ab9deb9099575fa9, type: 3}
       propertyPath: m_Name
       value: ArmorSlotUI
