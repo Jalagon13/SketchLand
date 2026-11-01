@@ -4628,7 +4628,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30b17211ccef9498aaa4c9e832e73480, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.PlacingManager
-  _placementsPerSecond: 8
+  _placementsPerSecond: 9
 --- !u!114 &1246345774
 MonoBehaviour:
   m_ObjectHideFlags: 0
