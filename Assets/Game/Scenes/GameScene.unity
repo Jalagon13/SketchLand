@@ -525,11 +525,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.FMODEvents
   <SurfaceAmbience>k__BackingField:
     Guid:
-      Data1: 995689372
-      Data2: 1176779951
-      Data3: 1183494566
-      Data4: 229374135
-    Path: event:/Ambience/BeachAMB
+      Data1: -285468547
+      Data2: 1081422540
+      Data3: 1595198123
+      Data4: 1431236662
+    Path: event:/Ambience/ForestAMB
   <InventoryOpenSFX>k__BackingField:
     Guid:
       Data1: -729829203

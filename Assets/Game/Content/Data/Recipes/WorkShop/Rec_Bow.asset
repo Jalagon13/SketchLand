@@ -17,5 +17,3 @@ MonoBehaviour:
   <Recipe>k__BackingField:
   - _ingredient: {fileID: 11400000, guid: 81a74ab6b5b314aa5a95260481a734d8, type: 2}
     _amount: 6
-  - _ingredient: {fileID: 11400000, guid: a8ba4590c8abf433dbe1aa7470e8b094, type: 2}
-    _amount: 4
