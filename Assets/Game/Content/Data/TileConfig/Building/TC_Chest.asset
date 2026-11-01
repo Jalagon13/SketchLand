@@ -43,7 +43,6 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 2895664574932451429
-      type: {class: ChestIB, ns: OceanGame, asm: Assembly-CSharp}
+      type: {class: ChestIB, ns: SketchLand, asm: Assembly-CSharp}
+      data:

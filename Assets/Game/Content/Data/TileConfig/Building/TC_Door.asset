@@ -45,7 +45,6 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 2895663963195310379
-      type: {class: DoorIB, ns: OceanGame, asm: Assembly-CSharp}
+      type: {class: DoorIB, ns: SketchLand, asm: Assembly-CSharp}
+      data:
