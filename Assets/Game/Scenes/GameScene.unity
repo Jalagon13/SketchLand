@@ -2334,7 +2334,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.CharacterSpawnRules
   _tempMaxCharCount: 12
-  _tempPerSecSpawnChance: 0.025
+  _tempPerSecSpawnChance: 0.02
   _tempSpawnEntries:
   - _character: {fileID: 11400000, guid: 2a9db1f511b6a4888a49dd1d2f56bd26, type: 2}
     _weight: 1

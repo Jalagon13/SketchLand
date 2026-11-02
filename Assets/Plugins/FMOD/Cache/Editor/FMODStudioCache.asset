@@ -74,6 +74,33 @@ MonoBehaviour:
   - Name: Desktop
     Value: 5803456
   Exists: 1
+--- !u!114 &-8424686170783769712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Character/DeerDamagedSFX
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Character/DeerDamagedSFX
+  Guid:
+    Data1: -625518566
+    Data2: 1300118833
+    Data3: 865802677
+    Data4: 1708618978
+  Banks:
+  - {fileID: 3577887858702865261}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-7725265703934676413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -386,10 +413,10 @@ MonoBehaviour:
   Path: Assets/Game/Content/Audio/SketchLandFmod/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639291191739559117
+  lastModified: 639292086915057148
   FileSizes:
   - Name: Desktop
-    Value: 2598
+    Value: 2640
   Exists: 1
 --- !u!114 &-566181306087128266
 MonoBehaviour:
@@ -568,7 +595,6 @@ MonoBehaviour:
   - {fileID: 4992623391973922254}
   - {fileID: 5889885681609198114}
   - {fileID: -41482348850798246}
-  - {fileID: 6933756915368667214}
   - {fileID: -10300795804262074}
   - {fileID: 8784048187313166457}
   - {fileID: -9082670671657809726}
@@ -579,12 +605,14 @@ MonoBehaviour:
   - {fileID: -4768077998354109219}
   - {fileID: -7362452079675181944}
   - {fileID: 2532699624637513635}
+  - {fileID: -8424686170783769712}
+  - {fileID: 7521341096817836189}
   EditorParameters: []
   MasterBanks:
   - {fileID: 7085332518744053529}
   StringsBanks:
   - {fileID: -2037089612849682014}
-  cacheTime: 639291194820065818
+  cacheTime: 639292086915057148
   cacheVersion: 131637
 --- !u!114 &1946753427569621067
 MonoBehaviour:
@@ -736,10 +764,10 @@ MonoBehaviour:
   Path: Assets/Game/Content/Audio/SketchLandFmod/Build/Desktop/Entity.bank
   Name: Entity
   StudioPath: bank:/Entity
-  lastModified: 639274801404530156
+  lastModified: 639292086914986733
   FileSizes:
   - Name: Desktop
-    Value: 201856
+    Value: 220608
   Exists: 1
 --- !u!114 &4432863096188550666
 MonoBehaviour:
@@ -896,33 +924,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &6933756915368667214
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Character/JellyfishDamagedSFX
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
-  Path: event:/Character/JellyfishDamagedSFX
-  Guid:
-    Data1: -625518566
-    Data2: 1300118833
-    Data3: 865802677
-    Data4: 1708618978
-  Banks:
-  - {fileID: 3577887858702865261}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &7085332518744053529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -938,7 +939,7 @@ MonoBehaviour:
   Path: Assets/Game/Content/Audio/SketchLandFmod/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639291191739550509
+  lastModified: 639292086915050480
   FileSizes:
   - Name: Desktop
     Value: 1036
@@ -963,6 +964,33 @@ MonoBehaviour:
     Data4: 1138547050
   Banks:
   - {fileID: -8982631441875359115}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &7521341096817836189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Character/DeerDeathSFX
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Character/DeerDeathSFX
+  Guid:
+    Data1: 436241729
+    Data2: 1338562015
+    Data3: 1107315596
+    Data4: 1210994109
+  Banks:
+  - {fileID: 3577887858702865261}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1

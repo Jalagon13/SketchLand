@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: DeerData
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.CharacterSO
   <BodyColliderSize>k__BackingField: {x: 1.9, y: 1.9}
-  <BaseMaxHealth>k__BackingField: 14
+  <BaseMaxHealth>k__BackingField: 25
   <BaseDefense>k__BackingField: 0
   <BaseDamage>k__BackingField: 4
   <KnockbackForce>k__BackingField: 10
-  <BaseKbResist>k__BackingField: 0
+  <BaseKbResist>k__BackingField: 0.2
   <BaseSpeed>k__BackingField: 3
   <BaseIFrameDuration>k__BackingField: 0.17
   <BaseTurnSharpness>k__BackingField: 5
@@ -31,14 +31,14 @@ MonoBehaviour:
       Data2: 1300118833
       Data3: 865802677
       Data4: 1708618978
-    Path: event:/Character/JellyfishDamagedSFX
+    Path: event:/Character/DeerDamagedSFX
   <CharacterDeathSFX>k__BackingField:
     Guid:
-      Data1: -625518566
-      Data2: 1300118833
-      Data3: 865802677
-      Data4: 1708618978
-    Path: event:/Character/JellyfishDamagedSFX
+      Data1: 436241729
+      Data2: 1338562015
+      Data3: 1107315596
+      Data4: 1210994109
+    Path: event:/Character/DeerDeathSFX
   LootDrops:
   - _item: {fileID: 11400000, guid: 7bf33d186c10b416c8333f3b3665a663, type: 2}
     _minAmount: 1

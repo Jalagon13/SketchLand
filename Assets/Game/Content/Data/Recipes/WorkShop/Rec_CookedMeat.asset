@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24ddd890fc20042c7a954e03d6047e1a, type: 3}
   m_Name: Rec_CookedMeat
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.RecipeSO
-  <OutputItem>k__BackingField: {fileID: 11400000, guid: 7bf33d186c10b416c8333f3b3665a663, type: 2}
+  <OutputItem>k__BackingField: {fileID: 11400000, guid: fe977c3c6a1ac40199d63b4806e13e06, type: 2}
   <OutputAmonut>k__BackingField: 1
   <Recipe>k__BackingField:
   - _ingredient: {fileID: 11400000, guid: 7bf33d186c10b416c8333f3b3665a663, type: 2}
