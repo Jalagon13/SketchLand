@@ -6,14 +6,12 @@ namespace SketchLand
     [RequireComponent(typeof(CharacterHealth), typeof(DamageReceiver))]
     public class ServerCharacter : Entity
     {
-        [Header("AI State Machine")]
-        [SerializeReference]
-        public CharacterRootState RootState;
+        public CharacterRootState RootState { get; private set; }
 
+        [SerializeField] private bool _debugStateOn;
+        
         [SerializeField] private CharacterSO _data;
         public CharacterSO Data => _data;
-        
-        [SerializeField] private bool _debugStateOn;
 
         [Header("Visuals")]
         [SerializeField] private Transform _visuals;
@@ -48,17 +46,13 @@ namespace SketchLand
 
         public override void OnNetworkSpawn()
         {
-            State stateToRun = null;
+            RootState = _data.RootState?.CreateInstance();
+            Machine = null;
 
-            if (RootState != null)
-            {
-                RootState.Initialize(this);
-                stateToRun = RootState;
-            }
+            if (RootState == null) return;
 
-            if (stateToRun == null) return;
-
-            Machine = new StateMachineBuilder(stateToRun).Build(_debugStateOn);
+            RootState.Initialize(this);
+            Machine = new StateMachineBuilder(RootState).Build(_debugStateOn);
             Machine.Start();
         }
 

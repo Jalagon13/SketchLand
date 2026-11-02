@@ -82,6 +82,9 @@ namespace SketchLand
         
         // Parameterless constructor so Unity can instantiate it in the inspector
         public CharacterRootState() : base(null, null) { }
+
+        // Create a runtime state from the template's configuration, without sharing runtime state.
+        public abstract CharacterRootState CreateInstance();
         
         // Called on spawn to hook up the character context and initialize child states
         public virtual void Initialize(ServerCharacter ctx)

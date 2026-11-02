@@ -15,6 +15,11 @@ namespace SketchLand
         // Parameterless constructor for Unity serialization
         public PlayerRootState() : base() { }
 
+        public override CharacterRootState CreateInstance()
+        {
+            return new PlayerRootState();
+        }
+
         public override void Initialize(ServerCharacter ctx)
         {
             base.Initialize(ctx);

@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1789cce2ee3144d3f896586a04761dd0, type: 3}
+  m_Name: ZombieData
+  m_EditorClassIdentifier: Assembly-CSharp::OceanGame.CharacterSO
+  RootState:
+    rid: 2417915168950845608
+  <BodyColliderSize>k__BackingField: {x: 1.75, y: 1.9}
+  <BaseMaxHealth>k__BackingField: 25
+  <BaseDefense>k__BackingField: 4
+  <BaseDamage>k__BackingField: 0
+  <KnockbackForce>k__BackingField: 10
+  <BaseKbResist>k__BackingField: 0.2
+  <BaseSpeed>k__BackingField: 1
+  <BaseIFrameDuration>k__BackingField: 0.17
+  <BaseTurnSharpness>k__BackingField: 5
+  <CanBeKnockedBacked>k__BackingField: 1
+  <CanDie>k__BackingField: 1
+  <CanDamagePlayerOnTouch>k__BackingField: 0
+  <CharacterPrefab>k__BackingField: {fileID: 3454599396775519568, guid: 97551924553cd4e8a94609e9d830e17f, type: 3}
+  <CharacterDamagedSFX>k__BackingField:
+    Guid:
+      Data1: -625518566
+      Data2: 1300118833
+      Data3: 865802677
+      Data4: 1708618978
+    Path: event:/Character/DeerDamagedSFX
+  <CharacterDeathSFX>k__BackingField:
+    Guid:
+      Data1: 436241729
+      Data2: 1338562015
+      Data3: 1107315596
+      Data4: 1210994109
+    Path: event:/Character/DeerDeathSFX
+  LootDrops:
+  - _item: {fileID: 11400000, guid: 7bf33d186c10b416c8333f3b3665a663, type: 2}
+    _minAmount: 1
+    _maxAmount: 2
+    _dropChance: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 2417915168950845608
+      type: {class: DeerRootState, ns: SketchLand, asm: Assembly-CSharp}
+      data:
+        _minWanderTime: 4
+        _maxWanderTime: 8
+        _minIdleTime: 3
+        _maxIdleTime: 6
+        <GravityForce>k__BackingField: 25
+        <TerminalVelocity>k__BackingField: -40
+        <MinJumpSpeed>k__BackingField: 10
+        <AirborneMoveSpeedMultiplier>k__BackingField: 0.75

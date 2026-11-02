@@ -115,28 +115,12 @@ MonoBehaviour:
   _ignoreCollision: 0
   Velocity: {x: 0, y: 0}
   ColliderSize: {x: 0, y: 0}
-  RootState:
-    rid: 2417915168950845581
-  _data: {fileID: 11400000, guid: 2a9db1f511b6a4888a49dd1d2f56bd26, type: 2}
   _debugStateOn: 0
+  _data: {fileID: 11400000, guid: 2a9db1f511b6a4888a49dd1d2f56bd26, type: 2}
   _visuals: {fileID: 5907841507912977926}
   _animator: {fileID: 0}
   DesiredDirection: {x: 0, y: 0}
   KnockbackVelocity: {x: 0, y: 0}
-  references:
-    version: 2
-    RefIds:
-    - rid: 2417915168950845581
-      type: {class: DeerRootState, ns: SketchLand, asm: Assembly-CSharp}
-      data:
-        _minWanderTime: 4
-        _maxWanderTime: 8
-        _minIdleTime: 3
-        _maxIdleTime: 6
-        <GravityForce>k__BackingField: 25
-        <TerminalVelocity>k__BackingField: -40
-        <MinJumpSpeed>k__BackingField: 10
-        <AirborneMoveSpeedMultiplier>k__BackingField: 0.75
 --- !u!1 &4896151375245867449
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,6 +7,10 @@ namespace SketchLand
     [CreateAssetMenu(fileName = "New Character SO", menuName = "OceanGame/CharacterSO")]
     public class CharacterSO : ScriptableObject
     {
+        [Header("AI State Machine")]
+        [SerializeReference]
+        public CharacterRootState RootState;
+
         [Header("Core Stats")]
         [field: SerializeField] public Vector2 BodyColliderSize { get; private set; } = Vector2.one;
         [field: SerializeField] public int BaseMaxHealth { get; private set; }

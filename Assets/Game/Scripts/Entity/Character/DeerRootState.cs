@@ -31,6 +31,21 @@ namespace SketchLand
 
         public DeerRootState() : base() { }
 
+        public override CharacterRootState CreateInstance()
+        {
+            return new DeerRootState
+            {
+                _minWanderTime = _minWanderTime,
+                _maxWanderTime = _maxWanderTime,
+                _minIdleTime = _minIdleTime,
+                _maxIdleTime = _maxIdleTime,
+                GravityForce = GravityForce,
+                TerminalVelocity = TerminalVelocity,
+                MinJumpSpeed = MinJumpSpeed,
+                AirborneMoveSpeedMultiplier = AirborneMoveSpeedMultiplier
+            };
+        }
+
         public override void Initialize(ServerCharacter ctx)
         {
             base.Initialize(ctx);

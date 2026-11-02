@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1789cce2ee3144d3f896586a04761dd0, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.CharacterSO
+  RootState:
+    rid: 2417915168950845609
   <BodyColliderSize>k__BackingField: {x: 1, y: 1}
   <BaseMaxHealth>k__BackingField: 50
   <BaseDefense>k__BackingField: 0
@@ -40,3 +42,9 @@ MonoBehaviour:
       Data4: 1759758874
     Path: event:/Player/PlayerHurtSFX
   LootDrops: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2417915168950845609
+      type: {class: PlayerRootState, ns: SketchLand, asm: Assembly-CSharp}
+      data:
