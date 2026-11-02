@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3082536240
+  GlobalObjectIdHash: 3042516918
   InScenePlacedSourceGlobalObjectIdHash: 0
   m_InScenePlacedDisabledByDefault: 0
   DeferredDespawnTick: 0
@@ -128,7 +128,15 @@ MonoBehaviour:
     RefIds:
     - rid: 2417915168950845581
       type: {class: DeerRootState, ns: SketchLand, asm: Assembly-CSharp}
-      data: 
+      data:
+        _minWanderTime: 1
+        _maxWanderTime: 3
+        _minIdleTime: 2
+        _maxIdleTime: 4
+        <GravityForce>k__BackingField: 25
+        <TerminalVelocity>k__BackingField: -40
+        <MinJumpSpeed>k__BackingField: 3.75
+        <AirborneMoveSpeedMultiplier>k__BackingField: 0.65
 --- !u!1 &6902626330650952792
 GameObject:
   m_ObjectHideFlags: 0

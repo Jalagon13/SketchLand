@@ -37,6 +37,18 @@ namespace SketchLand
             _ctx.Animator.SetBool("IsSprinting", false);
         }
 
+        protected override void OnFixedUpdate(float fixedDeltaTime)
+        {
+            var player = Player.Instance;
+            
+            float targetSpeed = GameInput.Instance.SprintHeld ? player.SprintSpeed : _ctx.Data.BaseSpeed;
+            float blend = 1f - Mathf.Exp(-player.SprintTransitionSharpness * fixedDeltaTime);
+            
+            MovementSpeed = Mathf.Lerp(MovementSpeed, targetSpeed, blend);
+            
+            UpdateLocomotionAnimation(ActiveChild == Grounded);
+        }
+
         public void UpdateLocomotionAnimation(bool isGrounded)
         {
             float horizontalSpeedSquared = _ctx.Velocity.x * _ctx.Velocity.x;
@@ -44,15 +56,6 @@ namespace SketchLand
             _ctx.Animator.SetBool("IsSprinting", isGrounded && !_ctx.IsKnockedBack
                 && GameInput.Instance.SprintHeld && Mathf.Abs(_ctx.DesiredDirection.x) > 0.01f
                 && horizontalSpeedSquared > 0.8f);
-        }
-
-        protected override void OnFixedUpdate(float fixedDeltaTime)
-        {
-            var player = Player.Instance;
-            float targetSpeed = GameInput.Instance.SprintHeld ? player.SprintSpeed : _ctx.Data.BaseSpeed;
-            float blend = 1f - Mathf.Exp(-player.SprintTransitionSharpness * fixedDeltaTime);
-            MovementSpeed = Mathf.Lerp(MovementSpeed, targetSpeed, blend);
-            UpdateLocomotionAnimation(ActiveChild == Grounded);
         }
     }
 
