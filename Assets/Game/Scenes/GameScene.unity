@@ -2318,7 +2318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d58df6de50ce94e08a6db50f9a63e04c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.CharacterManager
-  _enableSpawning: 0
+  _enableSpawning: 1
   _globalMaxCharacterCap: 200
   _durationTillCharacterDespawns: 15
 --- !u!114 &653184666
@@ -2333,7 +2333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8f52762262d413e849637a1b15c3fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.CharacterSpawnRules
-  _tempMaxCharCount: 6
+  _tempMaxCharCount: 12
   _tempPerSecSpawnChance: 0.025
   _tempSpawnEntries:
   - _character: {fileID: 11400000, guid: 2a9db1f511b6a4888a49dd1d2f56bd26, type: 2}
@@ -4420,11 +4420,11 @@ MonoBehaviour:
     _amount: 1
   - _ingredient: {fileID: 11400000, guid: 56e413806c6d64ffa868bcf95d2c3967, type: 2}
     _amount: 1
-  - _ingredient: {fileID: 11400000, guid: 5b240b003502b42019cc4681899503be, type: 2}
-    _amount: 1
   - _ingredient: {fileID: 11400000, guid: e7abd829c61264bd08d0508539b98356, type: 2}
     _amount: 1
   - _ingredient: {fileID: 11400000, guid: dbcbcd20bffa749e2920a1db8a6a1792, type: 2}
+    _amount: 999
+  - _ingredient: {fileID: 11400000, guid: 1c2c9103005254e2096a71428bc94070, type: 2}
     _amount: 999
 --- !u!114 &1178486984
 MonoBehaviour:
@@ -6945,7 +6945,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51cdf8c1b5c244ce08d3e4b8e345a306, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.LightManager
-  _showLight: 1
+  _showLight: 0
   _multiplyMaterial: {fileID: 2100000, guid: c9c44d8d34d4a42d59d850f4cc9d34f9, type: 2}
   _fullBrightness: 6
   _extraLightmapPadding: 8

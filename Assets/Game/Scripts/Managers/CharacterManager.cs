@@ -180,7 +180,7 @@ namespace SketchLand
             spawnedCharacter = character;
             CharacterLifetime lifetime = new(owner, _durationTillCharacterDespawns);
             _characterDespawnTimers.Add(spawnedCharacter, lifetime);
-            // Debug.Log($"Spawned {spawnedCharacter.name} at {spawnPosition}!");
+            Debug.Log($"Spawned {spawnedCharacter.name} at {spawnPosition}!");
             return true;
         }
 

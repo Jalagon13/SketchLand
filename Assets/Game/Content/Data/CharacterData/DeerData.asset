@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1789cce2ee3144d3f896586a04761dd0, type: 3}
-  m_Name: JellyfishData
+  m_Name: DeerData
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.CharacterSO
-  <BodyColliderSize>k__BackingField: {x: 0.75, y: 0.75}
+  <BodyColliderSize>k__BackingField: {x: 1.9, y: 1.9}
   <BaseMaxHealth>k__BackingField: 14
   <BaseDefense>k__BackingField: 0
   <BaseDamage>k__BackingField: 4
@@ -23,7 +23,7 @@ MonoBehaviour:
   <BaseTurnSharpness>k__BackingField: 5
   <CanBeKnockedBacked>k__BackingField: 1
   <CanDie>k__BackingField: 1
-  <CanDamagePlayerOnTouch>k__BackingField: 1
+  <CanDamagePlayerOnTouch>k__BackingField: 0
   <CharacterPrefab>k__BackingField: {fileID: 3454599396775519568, guid: 97551924553cd4e8a94609e9d830e17f, type: 3}
   <CharacterDamagedSFX>k__BackingField:
     Guid:
@@ -40,7 +40,7 @@ MonoBehaviour:
       Data4: 1708618978
     Path: event:/Character/JellyfishDamagedSFX
   LootDrops:
-  - _item: {fileID: 11400000, guid: 278c74882f6fb40319f2f4c99b2f71ff, type: 2}
+  - _item: {fileID: 11400000, guid: 7bf33d186c10b416c8333f3b3665a663, type: 2}
     _minAmount: 1
     _maxAmount: 2
     _dropChance: 1

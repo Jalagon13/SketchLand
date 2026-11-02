@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7179942279974174629}
   - component: {fileID: 3454599396775519568}
   m_Layer: 0
-  m_Name: JellyfishNpc
+  m_Name: DeerNpc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3042516918
+  GlobalObjectIdHash: 3082536240
   InScenePlacedSourceGlobalObjectIdHash: 0
   m_InScenePlacedDisabledByDefault: 0
   DeferredDespawnTick: 0
@@ -116,23 +116,19 @@ MonoBehaviour:
   Velocity: {x: 0, y: 0}
   ColliderSize: {x: 0, y: 0}
   RootState:
-    rid: 2783293967076425866
+    rid: 2417915168950845581
   _data: {fileID: 11400000, guid: 2a9db1f511b6a4888a49dd1d2f56bd26, type: 2}
-  _visualsGO: {fileID: 6902626330650952792}
   _debugStateOn: 0
+  _visuals: {fileID: 5907841507912977926}
+  _animator: {fileID: 0}
   DesiredDirection: {x: 0, y: 0}
   KnockbackVelocity: {x: 0, y: 0}
   references:
     version: 2
     RefIds:
-    - rid: 2783293967076425866
-      type: {class: JellyfishRootState, ns: OceanGame, asm: Assembly-CSharp}
-      data:
-        DashStrength: 6
-        DashDeceleration: 4
-        TimeBetweenDashes: 1.5
-        GravityForce: 20
-        TerminalVelocity: -18
+    - rid: 2417915168950845581
+      type: {class: DeerRootState, ns: SketchLand, asm: Assembly-CSharp}
+      data: 
 --- !u!1 &6902626330650952792
 GameObject:
   m_ObjectHideFlags: 0
@@ -214,12 +210,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 4424441914307035889, guid: 2f87ce7e588154a76acbf2c4eda5fff0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a380c2ad353834fac91499d5562ac5fb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
