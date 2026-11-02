@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.CharacterSO
   RootState:
     rid: 2417915168950845609
-  <BodyColliderSize>k__BackingField: {x: 1, y: 1}
+  <BodyColliderSize>k__BackingField: {x: 0.75, y: 1.75}
   <BaseMaxHealth>k__BackingField: 50
   <BaseDefense>k__BackingField: 0
   <BaseDamage>k__BackingField: 0
@@ -47,4 +47,4 @@ MonoBehaviour:
     RefIds:
     - rid: 2417915168950845609
       type: {class: PlayerRootState, ns: SketchLand, asm: Assembly-CSharp}
-      data:
+      data: 

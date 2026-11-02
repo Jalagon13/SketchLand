@@ -13,34 +13,34 @@ MonoBehaviour:
   m_Name: ZombieData
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.CharacterSO
   RootState:
-    rid: 2417915168950845608
-  <BodyColliderSize>k__BackingField: {x: 1.75, y: 1.9}
-  <BaseMaxHealth>k__BackingField: 25
+    rid: 2417915168950845619
+  <BodyColliderSize>k__BackingField: {x: 0.75, y: 1.75}
+  <BaseMaxHealth>k__BackingField: 40
   <BaseDefense>k__BackingField: 4
-  <BaseDamage>k__BackingField: 0
+  <BaseDamage>k__BackingField: 6
   <KnockbackForce>k__BackingField: 10
-  <BaseKbResist>k__BackingField: 0.2
-  <BaseSpeed>k__BackingField: 1
+  <BaseKbResist>k__BackingField: 0.05
+  <BaseSpeed>k__BackingField: 2
   <BaseIFrameDuration>k__BackingField: 0.17
   <BaseTurnSharpness>k__BackingField: 5
   <CanBeKnockedBacked>k__BackingField: 1
   <CanDie>k__BackingField: 1
-  <CanDamagePlayerOnTouch>k__BackingField: 0
-  <CharacterPrefab>k__BackingField: {fileID: 3454599396775519568, guid: 97551924553cd4e8a94609e9d830e17f, type: 3}
+  <CanDamagePlayerOnTouch>k__BackingField: 1
+  <CharacterPrefab>k__BackingField: {fileID: 3454599396775519568, guid: fb09dc60020ed4961b629549be555871, type: 3}
   <CharacterDamagedSFX>k__BackingField:
     Guid:
-      Data1: -625518566
-      Data2: 1300118833
-      Data3: 865802677
-      Data4: 1708618978
-    Path: event:/Character/DeerDamagedSFX
+      Data1: -1489350017
+      Data2: 1203981027
+      Data3: 1870255023
+      Data4: -422337342
+    Path: event:/Character/DeepOneDamagedSFX
   <CharacterDeathSFX>k__BackingField:
     Guid:
-      Data1: 436241729
-      Data2: 1338562015
-      Data3: 1107315596
-      Data4: 1210994109
-    Path: event:/Character/DeerDeathSFX
+      Data1: -1325172787
+      Data2: 1191774288
+      Data3: -2133570171
+      Data4: -1438792589
+    Path: event:/Character/DeepOneDeathSFX
   LootDrops:
   - _item: {fileID: 11400000, guid: 7bf33d186c10b416c8333f3b3665a663, type: 2}
     _minAmount: 1
@@ -49,13 +49,9 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 2417915168950845608
-      type: {class: DeerRootState, ns: SketchLand, asm: Assembly-CSharp}
+    - rid: 2417915168950845619
+      type: {class: ZombieRootState, ns: SketchLand, asm: Assembly-CSharp}
       data:
-        _minWanderTime: 4
-        _maxWanderTime: 8
-        _minIdleTime: 3
-        _maxIdleTime: 6
         <GravityForce>k__BackingField: 25
         <TerminalVelocity>k__BackingField: -40
         <MinJumpSpeed>k__BackingField: 10
