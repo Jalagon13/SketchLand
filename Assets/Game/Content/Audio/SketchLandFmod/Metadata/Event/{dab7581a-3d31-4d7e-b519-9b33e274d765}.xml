@@ -2,10 +2,10 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{dab7581a-3d31-4d7e-b519-9b33e274d765}">
 		<property name="name">
-			<value>JellyfishDamagedSFX</value>
+			<value>DeerDamagedSFX</value>
 		</property>
 		<property name="outputFormat">
-			<value>0</value>
+			<value>1</value>
 		</property>
 		<relationship name="folder">
 			<destination>{b8c03eb6-02d8-437c-bbc0-e880a77d496d}</destination>
@@ -87,7 +87,7 @@
 	</object>
 	<object class="MultiSound" id="{ea81fef1-b82c-4bf5-91dd-7e1174c7522f}">
 		<relationship name="sounds">
-			<destination>{cfb8d286-1b83-41b8-9c21-225a82f48c8b}</destination>
+			<destination>{f5226c43-4895-4212-8e64-f1f2edc6cce3}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{01d16c8a-dbc2-4cbd-92a2-5d69405d1baa}">
@@ -110,9 +110,9 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{bb2c425a-e59f-4e54-bd58-73158bd0198c}" />
-	<object class="SingleSound" id="{cfb8d286-1b83-41b8-9c21-225a82f48c8b}">
+	<object class="SingleSound" id="{f5226c43-4895-4212-8e64-f1f2edc6cce3}">
 		<relationship name="audioFile">
-			<destination>{9a3fc4a3-8e2e-4d38-964b-c04530d0796b}</destination>
+			<destination>{8f6b9dca-d106-4064-8cab-6706b6871b2c}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{98e40b6d-4372-4103-a833-25112fdeddf2}" />
