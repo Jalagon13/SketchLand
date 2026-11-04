@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2084175778676068006}
   m_Layer: 0
-  m_Name: Left_Shin
+  m_Name: Right_Shin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,7 @@ GameObject:
   - component: {fileID: 8848615455790912273}
   - component: {fileID: 4142656658920657267}
   m_Layer: 0
-  m_Name: Right_Hand_LimbSolver2D
+  m_Name: Left_Hand_LimbSolver2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -141,7 +141,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6512186024566660040}
   m_Layer: 0
-  m_Name: Right_Leg_LimbSolver2D_Target
+  m_Name: Left_Leg_LimbSolver2D_Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -172,7 +172,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1950927407569819645}
   m_Layer: 0
-  m_Name: Right_Forearm
+  m_Name: Left_Forearm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -204,7 +204,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4975192161041177432}
   m_Layer: 0
-  m_Name: Left_Forearm
+  m_Name: Right_Forearm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -236,7 +236,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4951745854113215339}
   m_Layer: 0
-  m_Name: Left_Hand
+  m_Name: Right_Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -267,7 +267,7 @@ GameObject:
   m_Component:
   - component: {fileID: 493969628389232457}
   m_Layer: 0
-  m_Name: Left_Thigh
+  m_Name: Right_Thigh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -300,7 +300,7 @@ GameObject:
   - component: {fileID: 2595781277397219214}
   - component: {fileID: 7982625690607230891}
   m_Layer: 0
-  m_Name: Right_Leg_LimbSolver2D
+  m_Name: Left_Leg_LimbSolver2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -364,7 +364,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8777229000148243808}
   m_Layer: 0
-  m_Name: Right_Thigh
+  m_Name: Left_Thigh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -378,7 +378,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5953818227800620381}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.97491336, w: 0.22258475}
+  m_LocalRotation: {x: 0, y: 0, z: -0.97910637, w: 0.20334888}
   m_LocalPosition: {x: -0.0021, y: -0.003, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -396,7 +396,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5245811115692711359}
   m_Layer: 0
-  m_Name: Right_Upper_Arm
+  m_Name: Left_Upper_Arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -460,7 +460,7 @@ GameObject:
   m_Component:
   - component: {fileID: 324178223598463638}
   m_Layer: 0
-  m_Name: Left_Foot
+  m_Name: Right_Foot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -525,7 +525,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4288703307892131388}
   m_Layer: 0
-  m_Name: Right_Hand_LimbSolver2D_Target
+  m_Name: Left_Hand_LimbSolver2D_Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -556,7 +556,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7948005462350632689}
   m_Layer: 0
-  m_Name: Right_Hand
+  m_Name: Left_Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -587,7 +587,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9112986281684348}
   m_Layer: 0
-  m_Name: Left_Upper_Arm
+  m_Name: Right_Upper_Arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -619,7 +619,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7856154739593598399}
   m_Layer: 0
-  m_Name: Left_Hand_LimbSolver2D_Target
+  m_Name: Right_Hand_LimbSolver2D_Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -650,7 +650,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5748974065935795421}
   m_Layer: 0
-  m_Name: Right_Foot
+  m_Name: Left_Foot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -664,7 +664,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8263023499968959028}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.20096879, w: 0.9795976}
+  m_LocalRotation: {x: -0, y: -0, z: 0.17990085, w: 0.9836848}
   m_LocalPosition: {x: 0.2904, y: 0.0117, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -681,7 +681,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6193844006191117668}
   m_Layer: 0
-  m_Name: Right_Shin
+  m_Name: Left_Shin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -695,7 +695,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8278606121717488274}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.14678636, w: 0.9891683}
+  m_LocalRotation: {x: 0, y: 0, z: -0.10597029, w: 0.9943693}
   m_LocalPosition: {x: 0.3423, y: 0.0018, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -804,7 +804,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6797046929603288396}
   m_Layer: 0
-  m_Name: Left_Leg_LimbSolver2D_Target
+  m_Name: Right_Leg_LimbSolver2D_Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -836,7 +836,7 @@ GameObject:
   - component: {fileID: 1513593632587685676}
   - component: {fileID: 46226380106962422}
   m_Layer: 0
-  m_Name: Left_Leg_LimbSolver2D
+  m_Name: Right_Leg_LimbSolver2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1084,7 +1084,7 @@ GameObject:
   - component: {fileID: 6496969148791822114}
   - component: {fileID: 2938684713161147339}
   m_Layer: 0
-  m_Name: Left_Hand_LimbSolver2D
+  m_Name: Right_Hand_LimbSolver2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

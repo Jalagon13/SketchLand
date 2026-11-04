@@ -116,7 +116,7 @@ TextureImporter:
     - name: Base (Hip)
       guid: 272d8664669e64e769587eab4e83949a
       position: {x: 125.64783, y: 187.75505, z: 2}
-      rotation: {x: 0, y: 0, z: 0.70940644, w: 0.70479965}
+      rotation: {x: 0, y: 0, z: 0.7094064, w: 0.7047997}
       length: 75.31728
       parentId: -1
       color:
@@ -124,14 +124,14 @@ TextureImporter:
         rgba: 4278190335
     - name: Spine
       guid: cd8dfd1545c0c48589012a81c17a630b
-      position: {x: 75.31729, y: -0.000021917325, z: 2}
-      rotation: {x: 0, y: 0, z: -0.0032619133, w: 0.99999475}
+      position: {x: 75.31729, y: -0.0000049725772, z: 2}
+      rotation: {x: 0, y: 0, z: -0.0032618288, w: 0.9999947}
       length: 54.36254
       parentId: 0
       color:
         serializedVersion: 2
         rgba: 4278255615
-    - name: Right_Upper_Arm
+    - name: Left_Upper_Arm
       guid: 154077732c2e24fe98f7331bd17e6aed
       position: {x: 43.69778, y: -31.637497, z: 1}
       rotation: {x: 0, y: -0, z: -0.9620753, w: 0.27278405}
@@ -140,7 +140,7 @@ TextureImporter:
       color:
         serializedVersion: 2
         rgba: 4278255360
-    - name: Right_Forearm
+    - name: Left_Forearm
       guid: bdef6b86a84c047148a941d761697dda
       position: {x: 95.164696, y: -14.197813, z: 0}
       rotation: {x: 0, y: 0, z: 0.020930698, w: 0.99978095}
@@ -149,7 +149,7 @@ TextureImporter:
       color:
         serializedVersion: 2
         rgba: 4294967040
-    - name: Right_Hand
+    - name: Left_Hand
       guid: 0e0d299d45f22435b92ed2a11eccfc28
       position: {x: 96.40508, y: -17.751085, z: 0}
       rotation: {x: 0, y: 0, z: 0.07131603, w: 0.9974538}
@@ -158,7 +158,7 @@ TextureImporter:
       color:
         serializedVersion: 2
         rgba: 4294901760
-    - name: Left_Upper_Arm
+    - name: Right_Upper_Arm
       guid: ca76aed59d766430e96ad8f8c1f9d9d9
       position: {x: 43.84643, y: 31.075502, z: 1}
       rotation: {x: 0, y: -0, z: 0.9491657, w: 0.31477693}
@@ -167,7 +167,7 @@ TextureImporter:
       color:
         serializedVersion: 2
         rgba: 4294902015
-    - name: Left_Forearm
+    - name: Right_Forearm
       guid: c24fd70c7de614b22a9d6917102f5f1e
       position: {x: 93.41278, y: 16.822245, z: 0}
       rotation: {x: 0, y: 0, z: 0.047266286, w: 0.99888235}
@@ -176,7 +176,7 @@ TextureImporter:
       color:
         serializedVersion: 2
         rgba: 4278223103
-    - name: Left_Hand
+    - name: Right_Hand
       guid: 9cbafc27d227d48d29ded5ec16f308cd
       position: {x: 96.23423, y: 15.791148, z: 0}
       rotation: {x: 0, y: 0, z: -0.006354695, w: 0.9999798}
@@ -185,7 +185,7 @@ TextureImporter:
       color:
         serializedVersion: 2
         rgba: 4278255488
-    - name: Right_Thigh
+    - name: Left_Thigh
       guid: 102a35a9bbbca403d8f6904beefb1b78
       position: {x: -16.825163, y: -28.626635, z: 0}
       rotation: {x: 0, y: -0, z: -0.98400813, w: 0.17812362}
@@ -194,7 +194,7 @@ TextureImporter:
       color:
         serializedVersion: 2
         rgba: 4286643968
-    - name: Right_Shin
+    - name: Left_Shin
       guid: 27125d285ad9f4166a2867b057be7b7e
       position: {x: 93.30426, y: 31.44228, z: 0}
       rotation: {x: 0, y: 0, z: -0.030832361, w: 0.9995246}
@@ -203,7 +203,7 @@ TextureImporter:
       color:
         serializedVersion: 2
         rgba: 4294934528
-    - name: Right_Foot
+    - name: Left_Foot
       guid: de7faaef43b2c48cc9e14fcd98736b61
       position: {x: 61.18322, y: -44.154175, z: 0}
       rotation: {x: 0, y: 0, z: 0.13450333, w: 0.99091315}
@@ -212,7 +212,7 @@ TextureImporter:
       color:
         serializedVersion: 2
         rgba: 4294901888
-    - name: Left_Thigh
+    - name: Right_Thigh
       guid: 9d03def933fc942b98cabb6d2ddd68a1
       position: {x: -14.242846, y: 29.630919, z: 0}
       rotation: {x: 0, y: -0, z: 0.99133897, w: 0.131328}
@@ -221,7 +221,7 @@ TextureImporter:
       color:
         serializedVersion: 2
         rgba: 4286578943
-    - name: Left_Shin
+    - name: Right_Shin
       guid: 3fcc0f31bce494089bd551160847ac07
       position: {x: 94.013336, y: -31.279728, z: 0}
       rotation: {x: 0, y: 0, z: -0.06729032, w: 0.9977335}
@@ -230,7 +230,7 @@ TextureImporter:
       color:
         serializedVersion: 2
         rgba: 4278255615
-    - name: Left_Foot
+    - name: Right_Foot
       guid: 8f4dc9d6459704e0087f656202a21044
       position: {x: 55.64876, y: 43.32753, z: 0}
       rotation: {x: 0, y: 0, z: 0.7036188, w: 0.71057767}
