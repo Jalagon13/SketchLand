@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abc85213b6c1147d2b936a64cdc4bbd0, type: 3}
+  m_Name: TestHeadVisual
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.WearableVisualSO
+  <HeadPiece>k__BackingField: {fileID: 597171210, guid: 9e2d18de5ad924e289edcfd83e0dd806, type: 3}

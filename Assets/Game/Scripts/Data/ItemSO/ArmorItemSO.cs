@@ -12,6 +12,9 @@ namespace SketchLand
         [field: SerializeField] public ArmorType ArmorPieceType { get; private set; }
         [field: SerializeField] public int Defense { get; private set; } = 2;
 
+        [field: Header("Wearable Visual")]
+        [field: SerializeField] public WearableVisualSO WearableVisual { get; private set; }
+
         [Header("Future Expansion: Secondary Stats")]
         [SerializeField] private List<ArmorStatModifier> _secondaryStats = new();
         public IReadOnlyList<ArmorStatModifier> SecondaryStats => _secondaryStats;
