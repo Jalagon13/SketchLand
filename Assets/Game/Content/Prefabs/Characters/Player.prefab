@@ -501,6 +501,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b497c61b08fb40989d30081c8a7b051, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.PlayerEquipment
+  _wardrobe: {fileID: 1610418577990979259}
 --- !u!114 &8488650257111462904
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1811,6 +1812,10 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.069069825
       objectReference: {fileID: 0}
+    - target: {fileID: 3541712937304042727, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+      propertyPath: _initialItems.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4951745854113215339, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.9999762
@@ -1851,8 +1856,56 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.10616818
       objectReference: {fileID: 0}
+    - target: {fileID: 6204369393428125544, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6204369393428125544, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6204369393428125544, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6419044314874291554, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6419044314874291554, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6419044314874291554, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6421467225835205046, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6741663572377140145, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6741663572377140145, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6741663572377140145, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7049208142892550515, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7049208142892550515, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7049208142892550515, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+      propertyPath: m_WasSpriteAssigned
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7512142265841465953, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
@@ -1918,6 +1971,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30ae93fb156fc6d4c828c64571fc3edd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.2D.IK.Runtime::UnityEngine.U2D.IK.LimbSolver2D
+--- !u!114 &1610418577990979259 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3541712937304042727, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 2846250830082744924}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e43125a9e9e64b60ba0618a518a58e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.StickFigureWardrobe
 --- !u!4 &3334872227861809961 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 664336554490784117, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}

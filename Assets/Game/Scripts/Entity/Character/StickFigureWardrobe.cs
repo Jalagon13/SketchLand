@@ -76,6 +76,7 @@ namespace SketchLand
             SynchronizeInitialItems();
             int id = AddEntry(item);
             ApplyVisuals();
+            
             return new WardrobeHandle(this, id);
         }
 
@@ -92,6 +93,7 @@ namespace SketchLand
             _equippedItems.Remove(handle.Id);
             _initialHandles.Remove(handle.Id);
             ApplyVisuals();
+            
             return true;
         }
 
@@ -100,8 +102,10 @@ namespace SketchLand
             SynchronizeInitialItems();
             var handles = new WardrobeHandle[_equippedItems.Count];
             int index = 0;
+            
             foreach (int id in _equippedItems.Keys)
                 handles[index++] = new WardrobeHandle(this, id);
+                
             return handles;
         }
 
@@ -138,23 +142,28 @@ namespace SketchLand
             // Editing the initial outfit replaces only its entries; runtime entries survive.
             foreach (int id in _initialHandles)
                 _equippedItems.Remove(id);
+                
             _initialHandles.Clear();
             _appliedInitialItems.Clear();
+            
             foreach (WearableItemSO item in _initialItems)
             {
                 _appliedInitialItems.Add(item);
                 if (item != null)
                     _initialHandles.Add(AddEntry(item));
             }
+            
             _initialized = true;
         }
 
         public void ApplyVisuals()
         {
             SynchronizeInitialItems();
+            
             _previousPoints.Clear();
             _previousPoints.AddRange(_points.Values);
             _points.Clear();
+            
             foreach (VisualAttachmentPoint point in _attachmentPoints)
             {
                 if (point == null || point.Id == VisualAttachmentPointId.None)
@@ -162,22 +171,25 @@ namespace SketchLand
                 // First registration owns the identity if it is accidentally duplicated.
                 _points.TryAdd(point.Id, point);
             }
+            
             foreach (VisualAttachmentPoint previous in _previousPoints)
                 if (previous != null && !_points.ContainsValue(previous))
                     previous.SetSprite(null);
 
             _winners.Clear();
+            
             foreach (var entry in _equippedItems)
             {
                 WearableVisualData visuals = entry.Value != null ? entry.Value.Visuals : null;
+                
                 if (visuals == null)
                     continue;
 
                 _itemPoints.Clear();
+                
                 foreach (WearableVisualPiece piece in visuals.Pieces)
                 {
-                    if (piece == null || piece.Sprite == null || !_points.ContainsKey(piece.AttachmentPoint)
-                        || !_itemPoints.Add(piece.AttachmentPoint))
+                    if (piece == null || piece.Sprite == null || !_points.ContainsKey(piece.AttachmentPoint) || !_itemPoints.Add(piece.AttachmentPoint))
                         continue;
 
                     if (!_winners.TryGetValue(piece.AttachmentPoint, out WinningPiece winner)
@@ -191,8 +203,10 @@ namespace SketchLand
                         };
                 }
             }
+            
             foreach (var point in _points)
                 point.Value.SetSprite(_winners.TryGetValue(point.Key, out WinningPiece winner) ? winner.Sprite : null);
+                
             _visualDirty = false;
         }
     }

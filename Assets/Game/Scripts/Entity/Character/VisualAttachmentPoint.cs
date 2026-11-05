@@ -8,7 +8,9 @@ namespace SketchLand
         Head = 10,
         Torso = 20,
         LeftShoulder = 30,
-        RightShoulder = 40
+        RightShoulder = 40,
+        LeftFoot = 50,
+        RightFoot = 60
     }
 
     [DisallowMultipleComponent]

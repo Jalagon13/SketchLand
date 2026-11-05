@@ -8,6 +8,11 @@ namespace SketchLand
     {
         public event Action OnEquipmentChanged;
 
+        [Header("Equipment Visuals")]
+        [SerializeField] private StickFigureWardrobe _wardrobe;
+        private readonly Dictionary<ArmorType, WardrobeHandle> _armorVisualHandles = new();
+        private readonly Dictionary<int, WardrobeHandle> _accessoryVisualHandles = new();
+
         // Armor
         public InventorySlot EquippedHelmet { get; private set; } = new();
         public InventorySlot EquippedChestplate { get; private set; } = new();
@@ -17,6 +22,41 @@ namespace SketchLand
         // Accessories
         public List<InventorySlot> EquippedAccessories { get; private set; } = new(); // Dynamic list of accessory slots that automatically expands
         private readonly Dictionary<int, List<(StatType stat, StatModifier mod)>> _appliedAccessoryModifiers = new(); // Tracks active stat modifiers per slot index so they can be cleanly removed
+
+        private void Awake()
+        {
+            if (_wardrobe == null)
+                _wardrobe = GetComponentInChildren<StickFigureWardrobe>(true);
+        }
+
+        private void OnDestroy()
+        {
+            if (_wardrobe == null) return;
+
+            foreach (WardrobeHandle handle in _armorVisualHandles.Values)
+                _wardrobe.UnequipVisual(handle);
+                
+            foreach (WardrobeHandle handle in _accessoryVisualHandles.Values)
+                _wardrobe.UnequipVisual(handle);
+        }
+
+        private void EquipVisual<T>(Dictionary<T, WardrobeHandle> handles, T slot, WearableItemSO item)
+        {
+            UnequipVisual(handles, slot);
+            
+            if (_wardrobe != null && item != null)
+                handles[slot] = _wardrobe.EquipVisual(item);
+        }
+
+        private void UnequipVisual<T>(Dictionary<T, WardrobeHandle> handles, T slot)
+        {
+            if (!handles.TryGetValue(slot, out WardrobeHandle handle)) return;
+
+            if (_wardrobe != null)
+                _wardrobe.UnequipVisual(handle);
+                
+            handles.Remove(slot);
+        }
 
         public InventorySlot GetAccessorySlot(int index)
         {
@@ -36,6 +76,7 @@ namespace SketchLand
         {
             var slot = GetAccessorySlot(index);
             if (slot == null || slot.IsEmpty) return null;
+            
             return GameDataRegistry.Instance.GetItemSOFromItemId(slot.ItemId) as AccessoryItemSO;
         }
         
@@ -44,11 +85,13 @@ namespace SketchLand
             for (int i = 0; i < EquippedAccessories.Count; i++)
             {
                 if (i == ignoreIndex) continue;
+                
                 if (!EquippedAccessories[i].IsEmpty && EquippedAccessories[i].ItemId == itemId)
                 {
                     return true;
                 }
             }
+            
             return false;
         }
         
@@ -79,12 +122,16 @@ namespace SketchLand
                 // Trigger special ability lifecycle hook
                 accessorySO.OnEquip(Player.Instance.Character);
             }
+            
+            EquipVisual(_accessoryVisualHandles, index, accessorySO);
             RefreshEquipment();
         }
         
         public void UnequipAccessory(int index, bool refresh = true)
         {
             if (index < 0 || index >= EquippedAccessories.Count) return;
+
+            UnequipVisual(_accessoryVisualHandles, index);
             
             var slot = EquippedAccessories[index];
             if (slot.IsEmpty) return;
@@ -149,11 +196,14 @@ namespace SketchLand
                 armorSO.OnEquip(Player.Instance.Character);
             }
             
+            EquipVisual(_armorVisualHandles, type, armorSO);
             CheckSetBonus();
             RefreshEquipment();
         }
+        
         public void UnequipArmor(ArmorType type, bool refresh = true)
         {
+            UnequipVisual(_armorVisualHandles, type);
             var slot = GetArmorSlot(type);
             if (slot == null || slot.IsEmpty) return;
             var armorSO = GetEquippedArmorSO(type);

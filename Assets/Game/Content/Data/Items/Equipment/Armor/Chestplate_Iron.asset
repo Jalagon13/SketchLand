@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.ArmorItemSO
   <ItemName>k__BackingField: Iron Chestplate
   <Description>k__BackingField: 
-  <DisplayIcon>k__BackingField: {fileID: -625146933121040131, guid: 38dfef1188c9d472f8fbfab414a92717, type: 3}
+  <DisplayIcon>k__BackingField: {fileID: -1134669434, guid: 9e2d18de5ad924e289edcfd83e0dd806, type: 3}
   <IsStackable>k__BackingField: 1
   <HeldPosition>k__BackingField: {x: 0, y: 0, z: 0}
   <HeldRotation>k__BackingField: 0
