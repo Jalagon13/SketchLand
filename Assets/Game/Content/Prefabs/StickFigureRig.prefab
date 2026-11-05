@@ -1003,7 +1003,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 6e3186381a2544cd09813bc013030e75, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1088,7 +1088,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.StickFigureVisuals
   _bodyRenderer: {fileID: 324555733581372175}
   _headFillRenderer: {fileID: 6421467225835205046}
-  _bodyColor: {r: 1, g: 1, b: 1, a: 1}
+  _bodyColor: {r: 0, g: 0, b: 0, a: 1}
   _headFillColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &8933972922888300943
 GameObject:
