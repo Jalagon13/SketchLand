@@ -5,11 +5,8 @@ using UnityEngine;
 namespace SketchLand
 {
     [CreateAssetMenu(fileName = "New AccessoryItem", menuName = "OceanGame/Item/AccessoryItemSO")]
-    public class AccessoryItemSO : ItemSO
+    public class AccessoryItemSO : WearableItemSO
     {
-        [field: Header("Wearable Visual")]
-        [field: SerializeField] public WearableVisualSO WearableVisual { get; private set; }
-
         [Header("Stat Boosts")]
         [Tooltip("Configure any number of stat boosts granted while worn (e.g., +MoveSpeed, +Defense, +MaxHealth).")]
         [SerializeField] private List<AccessoryStatModifier> _statModifiers = new();

@@ -10,12 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c870073cee61e43189d4c6df2d5b2835, type: 3}
-  m_Name: Armor_Helmet
+  m_Name: Helmet_Iron
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.ArmorItemSO
-  <ItemName>k__BackingField: Helmet
+  <ItemName>k__BackingField: Iron Helmet
   <Description>k__BackingField: 
-  <DisplayIcon>k__BackingField: {fileID: -957767216328091078, guid: 38dfef1188c9d472f8fbfab414a92717, type: 3}
+  <DisplayIcon>k__BackingField: {fileID: -1134669434, guid: 9e2d18de5ad924e289edcfd83e0dd806, type: 3}
   <IsStackable>k__BackingField: 1
+  <HeldPosition>k__BackingField: {x: 0, y: 0, z: 0}
+  <HeldRotation>k__BackingField: 0
+  <HeldScale>k__BackingField: {x: 1, y: 1, z: 1}
+  <Visuals>k__BackingField:
+    <Priority>k__BackingField: 0
+    _pieces:
+    - <AttachmentPoint>k__BackingField: 10
+      <Sprite>k__BackingField: {fileID: -1134669434, guid: 9e2d18de5ad924e289edcfd83e0dd806, type: 3}
   <ArmorPieceType>k__BackingField: 0
   <Defense>k__BackingField: 2
   _secondaryStats: []

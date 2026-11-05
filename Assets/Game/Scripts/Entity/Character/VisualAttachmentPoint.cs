@@ -5,7 +5,10 @@ namespace SketchLand
     public enum VisualAttachmentPointId
     {
         None = 0,
-        Head = 10
+        Head = 10,
+        Torso = 20,
+        LeftShoulder = 30,
+        RightShoulder = 40
     }
 
     [DisallowMultipleComponent]
@@ -25,8 +28,10 @@ namespace SketchLand
             if (_spriteRenderer == null)
                 _spriteRenderer = GetComponent<SpriteRenderer>();
 
-            _spriteRenderer.sprite = sprite;
-            _spriteRenderer.enabled = sprite != null;
+            if (_spriteRenderer.sprite != sprite)
+                _spriteRenderer.sprite = sprite;
+            if (_spriteRenderer.enabled != (sprite != null))
+                _spriteRenderer.enabled = sprite != null;
         }
     }
 }

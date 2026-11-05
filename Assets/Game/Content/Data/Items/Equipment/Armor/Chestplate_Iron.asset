@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c870073cee61e43189d4c6df2d5b2835, type: 3}
+  m_Name: Chestplate_Iron
+  m_EditorClassIdentifier: Assembly-CSharp::OceanGame.ArmorItemSO
+  <ItemName>k__BackingField: Iron Chestplate
+  <Description>k__BackingField: 
+  <DisplayIcon>k__BackingField: {fileID: -625146933121040131, guid: 38dfef1188c9d472f8fbfab414a92717, type: 3}
+  <IsStackable>k__BackingField: 1
+  <HeldPosition>k__BackingField: {x: 0, y: 0, z: 0}
+  <HeldRotation>k__BackingField: 0
+  <HeldScale>k__BackingField: {x: 1, y: 1, z: 1}
+  <Visuals>k__BackingField:
+    <Priority>k__BackingField: 0
+    _pieces:
+    - <AttachmentPoint>k__BackingField: 20
+      <Sprite>k__BackingField: {fileID: 184825950, guid: 9e2d18de5ad924e289edcfd83e0dd806, type: 3}
+    - <AttachmentPoint>k__BackingField: 30
+      <Sprite>k__BackingField: {fileID: -724094166, guid: 9e2d18de5ad924e289edcfd83e0dd806, type: 3}
+    - <AttachmentPoint>k__BackingField: 40
+      <Sprite>k__BackingField: {fileID: -1327560853, guid: 9e2d18de5ad924e289edcfd83e0dd806, type: 3}
+  <ArmorPieceType>k__BackingField: 1
+  <Defense>k__BackingField: 4
+  _secondaryStats: []
