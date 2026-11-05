@@ -903,6 +903,7 @@ GameObject:
   - component: {fileID: 324555733581372175}
   - component: {fileID: 2275962227442813550}
   - component: {fileID: 6959830517768074124}
+  - component: {fileID: 7512142265841465953}
   m_Layer: 0
   m_Name: StickFigureRig
   m_TagString: Untagged
@@ -1073,6 +1074,22 @@ MonoBehaviour:
     showGizmo: 1
   - color: {r: 0, g: 1, b: 0, a: 1}
     showGizmo: 1
+--- !u!114 &7512142265841465953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8849329897733449738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62808de94de0a4262afa21be429870ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.StickFigureVisuals
+  _bodyRenderer: {fileID: 324555733581372175}
+  _headFillRenderer: {fileID: 6421467225835205046}
+  _bodyColor: {r: 1, g: 1, b: 1, a: 1}
+  _headFillColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &8933972922888300943
 GameObject:
   m_ObjectHideFlags: 0
