@@ -4129,7 +4129,7 @@ MonoBehaviour:
   _prefetchChunks: 1
   _foregroundSettings:
     SortingLayerName: Default
-    SortingOrder: 0
+    SortingOrder: -1
     Tint: {r: 1, g: 1, b: 1, a: 1}
     GameObjectLayer: 0
     Z: 0

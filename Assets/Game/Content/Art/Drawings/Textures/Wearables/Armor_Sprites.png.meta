@@ -197,6 +197,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Boot_Iron_Sprite
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 777
+        width: 60
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e8fccf7d423b4c5eb5bf373774d24dc
+      internalID: 1474123889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -211,6 +233,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
+      Boot_Iron_Sprite: 1474123889
       Chestplate_Iron_Sprite: -274888901
       Helmet_Iron_Sprite: -307853390
       Shouldplate_Iron_Left_Sprite: 172163005

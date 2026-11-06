@@ -23,9 +23,9 @@ MonoBehaviour:
     <Priority>k__BackingField: 0
     _pieces:
     - <AttachmentPoint>k__BackingField: 50
-      <Sprite>k__BackingField: {fileID: -468342210, guid: af72724c96ecc40658e48b9f124fb21c, type: 3}
+      <Sprite>k__BackingField: {fileID: 1474123889, guid: 2b34a418d3788484eb06a0e82b114c04, type: 3}
     - <AttachmentPoint>k__BackingField: 60
-      <Sprite>k__BackingField: {fileID: -468342210, guid: af72724c96ecc40658e48b9f124fb21c, type: 3}
+      <Sprite>k__BackingField: {fileID: 1474123889, guid: 2b34a418d3788484eb06a0e82b114c04, type: 3}
   <ArmorPieceType>k__BackingField: 2
   <Defense>k__BackingField: 3
   _secondaryStats:
