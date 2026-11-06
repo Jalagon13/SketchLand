@@ -1247,7 +1247,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 13
+  orthographic size: 14
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -4426,12 +4426,14 @@ MonoBehaviour:
     _amount: 1
   - _ingredient: {fileID: 11400000, guid: dbcbcd20bffa749e2920a1db8a6a1792, type: 2}
     _amount: 999
-  - _ingredient: {fileID: 11400000, guid: 02132e62956c84c0bb16dd58284ffc00, type: 2}
-    _amount: 1
   - _ingredient: {fileID: 11400000, guid: d86b50bd74a1a43efbc5d95c02f509e0, type: 2}
+    _amount: 1
+  - _ingredient: {fileID: 11400000, guid: 02132e62956c84c0bb16dd58284ffc00, type: 2}
     _amount: 1
   - _ingredient: {fileID: 11400000, guid: 4fcd6e93ddb604f51af1026081d52a6b, type: 2}
     _amount: 1
+  - _ingredient: {fileID: 11400000, guid: 81a74ab6b5b314aa5a95260481a734d8, type: 2}
+    _amount: 999
 --- !u!114 &1178486984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6951,7 +6953,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51cdf8c1b5c244ce08d3e4b8e345a306, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.LightManager
-  _showLight: 0
+  _showLight: 1
   _multiplyMaterial: {fileID: 2100000, guid: c9c44d8d34d4a42d59d850f4cc9d34f9, type: 2}
   _fullBrightness: 6
   _extraLightmapPadding: 8

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.ArmorItemSO
   <ItemName>k__BackingField: Iron Chestplate
   <Description>k__BackingField: 
-  <DisplayIcon>k__BackingField: {fileID: -1134669434, guid: 9e2d18de5ad924e289edcfd83e0dd806, type: 3}
+  <DisplayIcon>k__BackingField: {fileID: 422360216, guid: af72724c96ecc40658e48b9f124fb21c, type: 3}
   <IsStackable>k__BackingField: 1
   <HeldPosition>k__BackingField: {x: 0, y: 0, z: 0}
   <HeldRotation>k__BackingField: 0
@@ -23,11 +23,11 @@ MonoBehaviour:
     <Priority>k__BackingField: 0
     _pieces:
     - <AttachmentPoint>k__BackingField: 20
-      <Sprite>k__BackingField: {fileID: 184825950, guid: 9e2d18de5ad924e289edcfd83e0dd806, type: 3}
-    - <AttachmentPoint>k__BackingField: 30
-      <Sprite>k__BackingField: {fileID: -724094166, guid: 9e2d18de5ad924e289edcfd83e0dd806, type: 3}
+      <Sprite>k__BackingField: {fileID: -274888901, guid: 2b34a418d3788484eb06a0e82b114c04, type: 3}
     - <AttachmentPoint>k__BackingField: 40
-      <Sprite>k__BackingField: {fileID: -1327560853, guid: 9e2d18de5ad924e289edcfd83e0dd806, type: 3}
+      <Sprite>k__BackingField: {fileID: -1498177833, guid: 2b34a418d3788484eb06a0e82b114c04, type: 3}
+    - <AttachmentPoint>k__BackingField: 30
+      <Sprite>k__BackingField: {fileID: 172163005, guid: 2b34a418d3788484eb06a0e82b114c04, type: 3}
   <ArmorPieceType>k__BackingField: 1
   <Defense>k__BackingField: 4
   _secondaryStats: []
