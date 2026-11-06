@@ -113,6 +113,9 @@ namespace SingularityGroup.HotReload.Editor {
                 config = new Config();
             }
             init = true;
+            // consume before any early return so the flag can't leak into a later domain reload (e.g. entering play mode)
+            var recompiledBeforeDomainReload = HotReloadState.RecompiledBeforeDomainReload;
+            HotReloadState.RecompiledBeforeDomainReload = false;
             UnityHelper.Init();
             //Use synchonization context if possible because it's more reliable.
             ThreadUtility.InitEditor();
@@ -154,6 +157,14 @@ namespace SingularityGroup.HotReload.Editor {
             
             AssemblyReloadEvents.beforeAssemblyReload += () => {
                 HotReloadTimelineHelper.PersistTimeline().Forget();
+#if ENABLE_CORECLR
+                // Unity 7 (CoreCLR) unloads this code's AssemblyLoadContext but doesn't stop threads, so the timer would
+                // keep running this code next to the reloaded code until the editor exits. Main thread callbacks of this
+                // code are never called after this event, so only what runs on other threads needs stopping.
+                // Mono unloads the domain with all its threads, the timer included.
+                timer?.Dispose();
+                timer = null;
+#endif
             };
             
             ServerHealthCheck.instance.CheckHealth();
@@ -220,7 +231,9 @@ namespace SingularityGroup.HotReload.Editor {
             DetectEditorStart();
             DetectVersionUpdate();
             CodePatcher.I.fieldHandler = new FieldHandler(FieldDrawerUtil.StoreField, UnityFieldHelper.HideField, UnityFieldHelper.RegisterInspectorFieldAttributes);
-            if (EditorApplication.isPlayingOrWillChangePlaymode) {
+            // isPlayingOrWillChangePlaymode is already true when play was requested during compilation,
+            // but in that case this reload loads freshly compiled assemblies and the persisted patches are stale
+            if (EditorApplication.isPlayingOrWillChangePlaymode && !recompiledBeforeDomainReload) {
                 CodePatcher.I.InitPatchesBlocked();
             }
 
@@ -629,6 +642,10 @@ namespace SingularityGroup.HotReload.Editor {
         //only disabled for integration tests
         internal static bool disableInlineChecks = false;
         internal static HashSet<MethodBase> inlinedMethodsFound = new HashSet<MethodBase>();
+#if ENABLE_CORECLR
+        // how many of CodePatcher.ReplacedPatchMethods CheckInlinedMethods went through
+        static int checkedReplacedPatchMethods;
+#endif
         internal static void CheckInlinedMethods() {
             if (MultiplayerPlaymodeHelper.IsClone) {
                 return;
@@ -638,7 +655,17 @@ namespace SingularityGroup.HotReload.Editor {
             }
             HashSet<MethodBase> newInlinedMethods = null;
             try {
+#if ENABLE_CORECLR
+                // CoreCLR counts every small method as inlined (CoreClrInlining), so this skips the methods added by a
+                // patch that no later patch modified. Mono reports the methods it really inlined.
+                // A method's answer never changes on CoreCLR, so each method is checked once: this continues where the
+                // last check stopped. Mono checks every method each time, since it can inline one later.
+                var patchedMethods = CodePatcher.I.ReplacedPatchMethods;
+                while (checkedReplacedPatchMethods < patchedMethods.Count) {
+                    var method = patchedMethods[checkedReplacedPatchMethods++];
+#else
                 foreach (var method in CodePatcher.I.OriginalPatchMethods) {
+#endif
                     if (inlinedMethodsFound.Contains(method)) {
                         continue;
                     }
@@ -664,7 +691,9 @@ namespace SingularityGroup.HotReload.Editor {
                     foreach (var newInlinedMethod in newInlinedMethods) {
                         inlinedMethodsFound.Add(newInlinedMethod);
                     }
-                    SendEditorTelemetryIfEnabled(new Stat(StatSource.Client, StatLevel.Debug, StatFeature.Patching, StatEventType.Inlined));
+                    SendEditorTelemetryIfEnabled(new Stat(StatSource.Client, StatLevel.Debug, StatFeature.Patching, StatEventType.Inlined), new EditorExtraData {
+                        { StatKey.UnityVersion, Application.unityVersion },
+                    });
                 }
             } catch (Exception e) {
                 Log.Warning(Translations.Errors.WarningInlineMethodChecker, e.Message);
@@ -968,7 +997,11 @@ namespace SingularityGroup.HotReload.Editor {
                     foreach (var failure in patchResult.patchFailures) {
                         SMethod method = failure.Item1;
                         string error = failure.Item2;
-                        HotReloadTimelineHelper.CreatePatchFailureEventEntry(error, methodName: GetMethodName(method), methodSimpleName: method.simpleName, entryType: EntryType.Child);
+                        var switchToDebugMode = false;
+#if ENABLE_CORECLR
+                        switchToDebugMode = patchResult.neverReturnedMethods.Contains(method);
+#endif
+                        HotReloadTimelineHelper.CreatePatchFailureEventEntry(error, methodName: GetMethodName(method), methodSimpleName: method.simpleName, entryType: EntryType.Child, switchToDebugMode: switchToDebugMode);
                     }
                 }
                 if (patchResult?.patchExceptions.Count > 0) {
@@ -1053,7 +1086,7 @@ namespace SingularityGroup.HotReload.Editor {
             
             // attempt to recompile if previous Unity compilation had compilation errors
             // because new changes might've fixed those errors
-            if (compileChecker.hasCompileErrors) {
+            if (compileChecker.hasCompileErrors && !MultiplayerPlaymodeHelper.IsClone) {
                 HotReloadRunTab.Recompile();
             }
 

@@ -33,9 +33,7 @@ namespace SingularityGroup.HotReload {
         /// In Player code you can assume this is set (not null)
         public static BuildInfo PlayerBuildInfo => buildInfo;
 
-        #if ENABLE_MONO
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-        #endif
         private static void InitOnAppLoad() {
             UnityHelper.Init();
             Translations.LoadDefaultLocalization();
@@ -141,21 +139,11 @@ namespace SingularityGroup.HotReload {
 
         public static bool IsPlayerWithHotReload(out bool onlyPrefabMissing) {
             onlyPrefabMissing = false;
-            if (!IsPlayer() || !RuntimeSupportsHotReload || !HotReloadSettingsObject.I.IncludeInBuild) {
+            if (!IsPlayer() || !HotReloadSettingsObject.I.IncludeInBuild) {
                 return false;
             }
             onlyPrefabMissing = !HotReloadSettingsObject.I.PromptsPrefab;
             return !onlyPrefabMissing;
-        }
-        
-        public static bool RuntimeSupportsHotReload {
-            get {
-                #if DEVELOPMENT_BUILD && ENABLE_MONO
-                return true;
-                #else
-                return false;
-                #endif
-            }
         }
     }
 }
