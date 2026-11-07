@@ -54,5 +54,5 @@ MonoBehaviour:
       data:
         <GravityForce>k__BackingField: 25
         <TerminalVelocity>k__BackingField: -40
-        <MinJumpSpeed>k__BackingField: 10
-        <AirborneMoveSpeedMultiplier>k__BackingField: 0.75
+        <MinJumpSpeed>k__BackingField: 11
+        <AirborneMoveSpeedMultiplier>k__BackingField: 0.65
