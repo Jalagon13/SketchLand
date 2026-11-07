@@ -219,6 +219,72 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: TatteredShirt_Shoulder_Right_Sprite
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 593
+        width: 50
+        height: 83
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8cce43faeeefd4e649a202165ade952e
+      internalID: 203301495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TatteredShirt_Shoulder_Left_Sprite
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 596
+        width: 52
+        height: 77
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a66e7abdb8caa4cd3902c22e82b15e76
+      internalID: 1415531814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TatteredShirt_Sprite
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 534
+        width: 72
+        height: 136
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 767f910735234486db04dfd54b77e4ac
+      internalID: -1473609787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -238,6 +304,9 @@ TextureImporter:
       Helmet_Iron_Sprite: -307853390
       Shouldplate_Iron_Left_Sprite: 172163005
       Shouldplate_Iron_Right_Sprite: -1498177833
+      TatteredShirt_Shoulder_Left_Sprite: 1415531814
+      TatteredShirt_Shoulder_Right_Sprite: 203301495
+      TatteredShirt_Sprite: -1473609787
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
