@@ -9,6 +9,7 @@ namespace SketchLand
     public class ZombieRootState : CharacterRootState
     {
         private static readonly int DamagedAnimation = Animator.StringToHash("Base Layer.Zombie_Damaged");
+        private static readonly int IsAirborne = Animator.StringToHash("IsAirborne");
 
         [field: Header("Gravity Settings")]
         [field: SerializeField] public float GravityForce { get; private set; }
@@ -52,7 +53,14 @@ namespace SketchLand
 
         protected override void OnEnter()
         {
+            SetAirborneAnimation(false);
             UpdatePursuitDirection();
+        }
+
+        public void SetAirborneAnimation(bool airborne)
+        {
+            if (_ctx.Animator != null)
+                _ctx.Animator.SetBool(IsAirborne, airborne);
         }
 
         protected override void OnExit()
@@ -152,6 +160,16 @@ namespace SketchLand
         public ZombieAirborneState(StateMachine m, State parent, ServerCharacter ctx) : base(m, parent)
         {
             _ctx = ctx;
+        }
+
+        protected override void OnEnter()
+        {
+            ((ZombieRootState)Parent).SetAirborneAnimation(true);
+        }
+
+        protected override void OnExit()
+        {
+            ((ZombieRootState)Parent).SetAirborneAnimation(false);
         }
 
         protected override State GetTransition()
