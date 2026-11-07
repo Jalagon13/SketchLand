@@ -15,6 +15,7 @@ namespace SketchLand
         public NetworkVariable<LifeState> CurrentLifeState = new(default, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
         
         public event EventHandler<HealthChangedArgs> OnHealthChanged;
+        public event Action OnDamaged;
         public class HealthChangedArgs : EventArgs
         {
             public int MaxHP { get; }
@@ -83,7 +84,7 @@ namespace SketchLand
             if(CurrentHealth.Value > 0)
             {
                 AudioManager.Instance.PlayOneShot(_character.Data.CharacterDamagedSFX, transform.position);
-                PlayDamageAnimationRpc();
+                NotifyDamagedRpc();
             }
 
             if (triggerIFrame && CurrentLifeState.Value == LifeState.Alive)
@@ -93,12 +94,9 @@ namespace SketchLand
         }
 
         [Rpc(SendTo.ClientsAndHost)]
-        private void PlayDamageAnimationRpc() // TEMP solution
+        private void NotifyDamagedRpc()
         {
-            if (_character.RootState is ZombieRootState zombie)
-            {
-                zombie.PlayDamageAnimation();
-            }
+            OnDamaged?.Invoke();
         }
 
         public void RestoreHealth(int amount)

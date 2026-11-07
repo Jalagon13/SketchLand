@@ -8,6 +8,8 @@ namespace SketchLand
     [Serializable]
     public class PlayerRootState : CharacterRootState
     {
+        private static readonly int DamagedAnimation = Animator.StringToHash("Base Layer.StickFigure_Damaged");
+
         public PlayerGroundedState Grounded { get; private set; }
         public PlayerAirborneState Airborne { get; private set; }
         public float MovementSpeed { get; private set; }
@@ -30,6 +32,11 @@ namespace SketchLand
         }
 
         protected override State GetInitialState() => Grounded;
+
+        protected override void OnDamaged()
+        {
+            PlayDamageAnimation(DamagedAnimation);
+        }
 
         protected override void OnEnter()
         {

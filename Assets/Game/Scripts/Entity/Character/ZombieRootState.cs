@@ -45,14 +45,9 @@ namespace SketchLand
 
         protected override State GetInitialState() => Grounded;
 
-        public void PlayDamageAnimation()
+        protected override void OnDamaged()
         {
-            var animator = _ctx.Animator;
-            if (animator == null || !animator.isActiveAndEnabled) return;
-
-            // Play at time zero even when already hurt: each hit is a hard restart.
-            animator.Play(DamagedAnimation, 0, 0f);
-            animator.Update(0f);
+            PlayDamageAnimation(DamagedAnimation);
         }
 
         protected override void OnEnter()

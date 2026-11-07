@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace SketchLand
 {
@@ -72,24 +71,6 @@ namespace SketchLand
         public IEnumerable<State> PathToRoot()
         {
             for(State s = this; s != null; s = s.Parent) yield return s;
-        }
-    }
-
-    [Serializable]
-    public abstract class CharacterRootState : State
-    {
-        protected ServerCharacter _ctx;
-        
-        // Parameterless constructor so Unity can instantiate it in the inspector
-        public CharacterRootState() : base(null, null) { }
-
-        // Create a runtime state from the template's configuration, without sharing runtime state.
-        public abstract CharacterRootState CreateInstance();
-        
-        // Called on spawn to hook up the character context and initialize child states
-        public virtual void Initialize(ServerCharacter ctx)
-        {
-            _ctx = ctx;
         }
     }
 }

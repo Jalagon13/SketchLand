@@ -46,6 +46,7 @@ namespace SketchLand
 
         public override void OnNetworkSpawn()
         {
+            RootState?.Dispose();
             RootState = _data.RootState?.CreateInstance();
             Machine = null;
 
@@ -54,6 +55,14 @@ namespace SketchLand
             RootState.Initialize(this);
             Machine = new StateMachineBuilder(RootState).Build(_debugStateOn);
             Machine.Start();
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            RootState?.Dispose();
+            RootState = null;
+            Machine = null;
+            base.OnNetworkDespawn();
         }
 
         private void OnEnable() 
