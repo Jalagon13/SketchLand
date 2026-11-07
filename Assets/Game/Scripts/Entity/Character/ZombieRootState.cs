@@ -8,6 +8,8 @@ namespace SketchLand
     [Serializable]
     public class ZombieRootState : CharacterRootState
     {
+        private static readonly int DamagedAnimation = Animator.StringToHash("Base Layer.Zombie_Damaged");
+
         [field: Header("Gravity Settings")]
         [field: SerializeField] public float GravityForce { get; private set; }
         [field: SerializeField] public float TerminalVelocity { get; private set; }
@@ -42,6 +44,16 @@ namespace SketchLand
         }
 
         protected override State GetInitialState() => Grounded;
+
+        public void PlayDamageAnimation()
+        {
+            var animator = _ctx.Animator;
+            if (animator == null || !animator.isActiveAndEnabled) return;
+
+            // Play at time zero even when already hurt: each hit is a hard restart.
+            animator.Play(DamagedAnimation, 0, 0f);
+            animator.Update(0f);
+        }
 
         protected override void OnEnter()
         {

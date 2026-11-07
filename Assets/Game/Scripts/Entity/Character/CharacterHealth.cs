@@ -83,11 +83,21 @@ namespace SketchLand
             if(CurrentHealth.Value > 0)
             {
                 AudioManager.Instance.PlayOneShot(_character.Data.CharacterDamagedSFX, transform.position);
+                PlayDamageAnimationRpc();
             }
 
             if (triggerIFrame && CurrentLifeState.Value == LifeState.Alive)
             {
                 StartCoroutine(IFrameRoutine());
+            }
+        }
+
+        [Rpc(SendTo.ClientsAndHost)]
+        private void PlayDamageAnimationRpc() // TEMP solution
+        {
+            if (_character.RootState is ZombieRootState zombie)
+            {
+                zombie.PlayDamageAnimation();
             }
         }
 
