@@ -6957,12 +6957,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.LightManager
   _showLight: 1
   _multiplyMaterial: {fileID: 2100000, guid: c9c44d8d34d4a42d59d850f4cc9d34f9, type: 2}
-  _fullBrightness: 6
+  _fullBrightness: 10
   _extraLightmapPadding: 8
   _lightCellsPerTile: 1
-  _lightContrast: 2.154
-  _solidFgTransmission: 0.8
-  _bgTransmission: 0.5
+  _lightContrast: 2
+  _tileAmountBeforeAttenuationBegins: 0
+  _solidForegroundAttenuation: 1.5
+  _backgroundOnlyAttenuation: 0.75
+  _enableForegroundBlur: 1
+  _foregroundBlurRadius: 1
+  _foregroundBlurPasses: 1
   _backgroundOverlay: {fileID: 2097336594}
   _backgroundLightOverlay: {fileID: 2097336592}
   _backgroundLightmapFilterMode: 1
