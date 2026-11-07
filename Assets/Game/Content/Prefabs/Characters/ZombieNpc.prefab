@@ -179,15 +179,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 324555733581372175, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_Color.b
-      value: 0.11420517
+      value: 0.094339624
       objectReference: {fileID: 0}
     - target: {fileID: 324555733581372175, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_Color.g
-      value: 0.23584908
+      value: 0.3773585
       objectReference: {fileID: 0}
     - target: {fileID: 324555733581372175, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_Color.r
-      value: 0.112362064
+      value: 0.094339624
       objectReference: {fileID: 0}
     - target: {fileID: 493969628389232457, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_LocalRotation.w
@@ -295,39 +295,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6421467225835205046, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_Color.b
-      value: 0.34950522
+      value: 0.41731116
       objectReference: {fileID: 0}
     - target: {fileID: 6421467225835205046, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_Color.g
-      value: 0.6698113
+      value: 0.764151
       objectReference: {fileID: 0}
     - target: {fileID: 6421467225835205046, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_Color.r
-      value: 0.28751335
+      value: 0.34963512
       objectReference: {fileID: 0}
     - target: {fileID: 7512142265841465953, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: _bodyColor.b
-      value: 0.11420517
+      value: 0.026432898
       objectReference: {fileID: 0}
     - target: {fileID: 7512142265841465953, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: _bodyColor.g
-      value: 0.23584908
+      value: 0.20754719
       objectReference: {fileID: 0}
     - target: {fileID: 7512142265841465953, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: _bodyColor.r
-      value: 0.112362064
+      value: 0.026432898
       objectReference: {fileID: 0}
     - target: {fileID: 7512142265841465953, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: _headFillColor.b
-      value: 0.34950522
+      value: 0.2756323
       objectReference: {fileID: 0}
     - target: {fileID: 7512142265841465953, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: _headFillColor.g
-      value: 0.6698113
+      value: 0.6132076
       objectReference: {fileID: 0}
     - target: {fileID: 7512142265841465953, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: _headFillColor.r
-      value: 0.28751335
+      value: 0.21115166
       objectReference: {fileID: 0}
     - target: {fileID: 7948005462350632689, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_LocalRotation.w
