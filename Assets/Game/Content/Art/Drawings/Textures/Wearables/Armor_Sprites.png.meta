@@ -285,6 +285,50 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: TatteredShorts_Right_Sprite
+      rect:
+        serializedVersion: 2
+        x: 268
+        y: 589
+        width: 51
+        height: 89
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d5418b28b52b412b987373fbabbe86d
+      internalID: 474762929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TatteredShorts_Left_Sprite
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 587
+        width: 49
+        height: 88
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9bfc59dff488b4d299084d405f3dcba4
+      internalID: -1847749494
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -307,6 +351,8 @@ TextureImporter:
       TatteredShirt_Shoulder_Left_Sprite: 1415531814
       TatteredShirt_Shoulder_Right_Sprite: 203301495
       TatteredShirt_Sprite: -1473609787
+      TatteredShorts_Left_Sprite: -1847749494
+      TatteredShorts_Right_Sprite: 474762929
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

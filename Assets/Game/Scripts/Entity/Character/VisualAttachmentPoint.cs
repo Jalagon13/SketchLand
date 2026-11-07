@@ -10,7 +10,9 @@ namespace SketchLand
         LeftShoulder = 30,
         RightShoulder = 40,
         LeftFoot = 50,
-        RightFoot = 60
+        RightFoot = 60,
+        LeftThigh = 70,
+        RightThigh = 80
     }
 
     [DisallowMultipleComponent]
