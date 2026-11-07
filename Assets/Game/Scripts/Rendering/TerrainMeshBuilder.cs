@@ -240,14 +240,15 @@ namespace SketchLand
             float aWobble = Mathf.Max(0f, a.OutlineWobble);
             float bWobble = Mathf.Max(0f, b.OutlineWobble);
 
-            if (aWobble < bWobble)
+            // The more pronounced outline supplies the shared boundary style.
+            if (aWobble > bWobble)
                 return a;
 
-            if (bWobble < aWobble)
+            if (bWobble > aWobble)
                 return b;
 
             // Stable tie-breaker, independent of processing order.
-            return aId <= bId ? a : b;
+            return aId >= bId ? a : b;
         }
 
         private void BuildEdgePoints(Vector2 a, Vector2 b, float startCut, float endCut, bool boundary, TerrainTileConfigSO style)
