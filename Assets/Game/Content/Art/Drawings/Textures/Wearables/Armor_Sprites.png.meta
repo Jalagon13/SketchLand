@@ -267,9 +267,9 @@ TextureImporter:
       name: TatteredShirt_Sprite
       rect:
         serializedVersion: 2
-        x: 81
+        x: 86
         y: 534
-        width: 72
+        width: 63
         height: 136
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
