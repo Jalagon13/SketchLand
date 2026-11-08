@@ -271,7 +271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3042516918
+  GlobalObjectIdHash: 3082536240
   InScenePlacedSourceGlobalObjectIdHash: 0
   m_InScenePlacedDisabledByDefault: 0
   DeferredDespawnTick: 0
@@ -341,7 +341,7 @@ MonoBehaviour:
   _debugStateOn: 0
   _data: {fileID: 11400000, guid: 2a9db1f511b6a4888a49dd1d2f56bd26, type: 2}
   _visuals: {fileID: 5907841507912977926}
-  _animator: {fileID: 0}
+  _animator: {fileID: 7391017610496724148}
   DesiredDirection: {x: 0, y: 0}
   KnockbackVelocity: {x: 0, y: 0}
 --- !u!1 &2044227844382353809

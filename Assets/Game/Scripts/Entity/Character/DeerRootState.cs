@@ -60,6 +60,7 @@ namespace SketchLand
         protected override void OnEnter()
         {
             BeginWander();
+            UpdateLocomotionAnimation();
         }
 
         protected override void OnExit()
@@ -69,10 +70,20 @@ namespace SketchLand
 
         protected override void OnFixedUpdate(float fixedDeltaTime)
         {
+            UpdateLocomotionAnimation();
+
             if (_ctx.IsKnockedBack) return;
 
             _wanderTimer = Mathf.Max(0f, _wanderTimer - fixedDeltaTime);
             _ctx.DesiredDirection = IsWandering ? Vector2.right * _wanderDirection : Vector2.zero;
+        }
+
+        public void UpdateLocomotionAnimation()
+        {
+            if (_ctx.Animator == null) return;
+
+            float horizontalSpeedSquared = _ctx.Velocity.x * _ctx.Velocity.x;
+            _ctx.Animator.SetFloat("Velocity", horizontalSpeedSquared);
         }
 
         public float GetRandomWanderTime()

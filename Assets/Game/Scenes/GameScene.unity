@@ -2338,6 +2338,8 @@ MonoBehaviour:
   _tempSpawnEntries:
   - _character: {fileID: 11400000, guid: 2a9db1f511b6a4888a49dd1d2f56bd26, type: 2}
     _weight: 1
+  - _character: {fileID: 11400000, guid: e8ced5de931fd400da6f4da2853b1d16, type: 2}
+    _weight: 1
 --- !u!114 &653184667
 MonoBehaviour:
   m_ObjectHideFlags: 0
