@@ -68,6 +68,7 @@ MonoBehaviour:
       data:
         RunStep: 1
         _dirtTile: {fileID: 11400000, guid: b63dc996a25c44ec7b9a9572bf76ccca, type: 2}
+        _belowSurfaceOffset: 1
     - rid: 2783294373672517735
       type: {class: CaveGenStep, ns: SketchLand, asm: Assembly-CSharp}
       data:
