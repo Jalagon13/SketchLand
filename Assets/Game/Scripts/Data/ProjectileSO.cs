@@ -9,7 +9,6 @@ namespace SketchLand
         [field: Header("Physics & Lifetime")]
         [field: SerializeField] public Vector2 ColliderSize { get; private set; } = new(0.4f, 0.4f);
         [field: SerializeField] public float BaseLifetime { get; private set; } = 5f;
-        [field: SerializeField] public float BaseSpeed { get; private set; } = 15f;
         [field: SerializeField] public bool IgnoreTileCollision { get; private set; } = false;
 
         [field: Header("Combat Stats")]

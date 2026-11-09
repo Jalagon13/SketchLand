@@ -13,9 +13,11 @@ namespace SketchLand
         private enum ItemPose { Held, Raising, Swinging, Returning }
 
         private PlayerArmHandler _armHandler;
-        private PlayerHandGripIK _handGripIK;
+        [SerializeField] private PlayerHandGripIK _handGripIK;
+        private PlayerRangedHandler _rangedHandler;
         private ServerCharacter _character;
         private ItemSO _selectedItem;
+        private bool _bowPoseActive;
         private Vector3 _defaultSpritePosition;
         private Quaternion _defaultSpriteRotation;
         private Vector3 _defaultSpriteScale;
@@ -32,7 +34,7 @@ namespace SketchLand
         private void Awake()
         {
             _armHandler = GetComponent<PlayerArmHandler>();
-            _handGripIK = GetComponent<PlayerHandGripIK>();
+            _rangedHandler = GetComponent<PlayerRangedHandler>();
             _character = GetComponent<ServerCharacter>();
 
             // Item adjustments affect only the sprite, leaving the grip, hand IK,
@@ -77,6 +79,7 @@ namespace SketchLand
             if (_selectedItem != item)
             {
                 _selectedItem = item;
+                _rangedHandler.CancelCharge();
                 if (_armHandler.IsSwinging)
                     _armHandler.CancelSwing();
             }
@@ -95,7 +98,13 @@ namespace SketchLand
                 item != null ? Quaternion.Euler(0f, 0f, item.HeldRotation) : _defaultSpriteRotation);
             spriteTransform.localScale = item != null ? item.HeldScale : _defaultSpriteScale;
             _heldItemSprite.sprite = item != null ? item.DisplayIcon : null;
-            _heldItemSprite.enabled = _heldItemSprite.sprite != null;
+            _heldItemSprite.enabled = !_bowPoseActive && _heldItemSprite.sprite != null;
+        }
+
+        public void SetBowPoseActive(bool active)
+        {
+            _bowPoseActive = active;
+            ShowItem(_selectedItem);
         }
 
         public void BeginSwing(ToolItemSO tool)

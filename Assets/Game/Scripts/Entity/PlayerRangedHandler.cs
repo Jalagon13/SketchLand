@@ -4,67 +4,129 @@ namespace SketchLand
 {
     public class PlayerRangedHandler : MonoBehaviour
     {
-        private const float ShootingRotationPadding = 0.15f;
+        private PlayerBowPose _bowPose;
+        private PlayerArmHandler _armHandler;
+        private ServerCharacter _character;
+        private BowItemSO _weapon;
+        private ArrowItemSO _arrow;
+        private InventorySlot _sourceSlot;
+        private float _chargeTime;
 
-        private float _shotCooldownTimer;
-        private float _shootingRotationTimer;
+        public bool IsCharging => _weapon != null;
+        public bool IsAiming => IsCharging || (_bowPose != null && _bowPose.IsActive);
+        public bool IsShooting => IsAiming;
+        public float Charge => _weapon == null ? 0f : Mathf.Clamp01(_chargeTime / Mathf.Max(0.01f, _weapon.ChargeDuration));
 
-        public bool IsShooting => _shootingRotationTimer > 0f;
+        private void Awake()
+        {
+            _bowPose = GetComponent<PlayerBowPose>();
+            _armHandler = GetComponent<PlayerArmHandler>();
+            _character = GetComponent<ServerCharacter>();
+        }
 
         private void Update()
         {
-            // Tick down the cooldown every frame
-            if (_shotCooldownTimer > 0f)
+            if (!IsCharging) return;
+
+            if (!CanContinueCharge())
             {
-                _shotCooldownTimer -= Time.deltaTime;
+                CancelCharge();
+                return;
             }
 
-            if (_shootingRotationTimer > 0f)
+            _chargeTime += Time.deltaTime;
+            _bowPose.SetCharge(Charge);
+        }
+
+        public void StartPrimaryAction(BowItemSO weapon)
+        {
+            if (weapon == null || IsCharging || _bowPose == null) return;
+            if (_character.Health.CurrentLifeState.Value == LifeState.Dead || InventoryInputManager.Instance.IsInventoryOpen) return;
+
+            ArrowItemSO arrow = FindArrow();
+            if (arrow == null) return;
+
+            _armHandler.CancelSwing();
+            // A fresh press can interrupt release/recovery and begin charging immediately.
+            _bowPose.ResetPose();
+            _sourceSlot = InventoryInputManager.Instance.GetActiveInvSlot();
+            _weapon = weapon;
+            _arrow = arrow;
+            _chargeTime = 0f;
+            _bowPose.BeginDraw(weapon, arrow);
+        }
+
+        public void HoldPrimaryAction(BowItemSO weapon)
+        {
+            // Update owns the charge clock. Holding never repeats a shot.
+        }
+
+        public void ReleasePrimaryAction(BowItemSO weapon)
+        {
+            if (!IsCharging || weapon != _weapon) return;
+            if (!CanContinueCharge() || WorldManager.Instance.MouseOverUI || Charge < weapon.MinimumCharge)
             {
-                _shootingRotationTimer -= Time.deltaTime;
+                CancelCharge();
+                return;
             }
-        }
 
-        public void StartPrimaryAction(RangedWeaponItemSO weapon)
-        {
-            // Fire immediately on first press
-            TryShoot(weapon);
-        }
-
-        public void HoldPrimaryAction(RangedWeaponItemSO weapon)
-        {
-            // Fire repeatedly while held, respecting cooldown
-            TryShoot(weapon);
-        }
-
-        public void ReleasePrimaryAction(RangedWeaponItemSO weapon)
-        {
-            // Nothing needed on release for a basic ranged weapon
-        }
-
-        private void TryShoot(RangedWeaponItemSO weapon)
-        {
-            if (_shotCooldownTimer > 0f) return;
-            if (weapon.Projectile == null) return;
-            if (weapon.Aummunition != null && InventoryManager.Instance.GetTotalItemCount(weapon.Aummunition) <= 0) return;
-
-            // Aim direction from player toward the mouse
-            Vector2 spawnPos = transform.position;
-            Vector2 aimDir = (WorldManager.MouseWorldPosition - spawnPos).normalized;
-            Vector2 velocity = aimDir * weapon.Projectile.BaseSpeed;
-            
-            AudioManager.Instance.PlayOneShot(weapon.ShootSFX, transform.position);
-            ProjectileManager.SpawnProjectile(projectileSO: weapon.Projectile, position: spawnPos, initialVelocity: velocity, sourceEntity: Player.Instance.Character);
-
-            // Start the cooldown
-            _shotCooldownTimer = weapon.ShotCooldown;
-            _shootingRotationTimer = weapon.ShotCooldown + ShootingRotationPadding;
-            
-            // Take away ammunition if needed
-            if(weapon.Aummunition != null)
+            // Resolve aim now, rather than using the preceding frame's pose.
+            _bowPose.UpdateAim();
+            Vector2 velocity = _bowPose.AimDirection * weapon.GetLaunchSpeed(Charge);
+            Projectile projectile = ProjectileManager.SpawnProjectile(_arrow.Projectile,
+                _bowPose.LaunchPosition, velocity, _character);
+            if (projectile == null)
             {
-                InventoryManager.Instance.RemoveItem(weapon.Aummunition, 1);
+                CancelCharge();
+                return;
             }
+
+            InventoryManager.Instance.RemoveItem(_arrow, 1);
+            if (!weapon.ShootSFX.IsNull)
+                AudioManager.Instance.PlayOneShot(weapon.ShootSFX, transform.position);
+            ClearCharge();
+            _bowPose.ReleaseDraw();
+        }
+
+        public void CancelCharge()
+        {
+            ClearCharge();
+            if (_bowPose != null)
+                _bowPose.ResetPose();
+        }
+
+        private bool CanContinueCharge()
+        {
+            if (_character.Health.CurrentLifeState.Value == LifeState.Dead || InventoryInputManager.Instance.IsInventoryOpen) return false;
+            var slot = InventoryInputManager.Instance.GetActiveInvSlot();
+            return slot == _sourceSlot && !slot.IsEmpty && slot.GetItemSO() == _weapon
+                && _arrow != null && _arrow.Projectile != null && _arrow.Projectile.ProjectilePrefab != null
+                && InventoryManager.Instance.GetTotalItemCount(_arrow) > 0;
+        }
+
+        private static ArrowItemSO FindArrow()
+        {
+            foreach (var slot in InventoryManager.Instance.PlayerInventory)
+            {
+                if (!slot.IsEmpty && slot.GetItemSO() is ArrowItemSO arrow
+                    && arrow.Projectile != null && arrow.Projectile.ProjectilePrefab != null)
+                    return arrow;
+            }
+            return null;
+        }
+
+        private void ClearCharge()
+        {
+            _weapon = null;
+            _arrow = null;
+            _sourceSlot = null;
+            _chargeTime = 0f;
+        }
+
+        private void OnDisable() => CancelCharge();
+        private void OnApplicationFocus(bool focused)
+        {
+            if (!focused) CancelCharge();
         }
     }
 }

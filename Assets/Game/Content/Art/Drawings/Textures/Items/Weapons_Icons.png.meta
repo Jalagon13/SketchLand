@@ -220,7 +220,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Weapons_5
+      name: Bow_Wood_Sprite
       rect:
         serializedVersion: 2
         x: 256
@@ -479,6 +479,7 @@ TextureImporter:
     nameFileIdTable:
       Arrow_Wood: 989592332
       Bow_Wood: 1970053439
+      Bow_Wood_Sprite: -342073340
       Sword_Wood: 99703789
       Weapons_10: -930004384
       Weapons_11: -1402786335
@@ -488,7 +489,6 @@ TextureImporter:
       Weapons_15: -1573782227
       Weapons_3: -165532887
       Weapons_4: 867077656
-      Weapons_5: -342073340
       Weapons_6: -532144968
       Weapons_7: 1897738478
       Weapons_8: 1941435459

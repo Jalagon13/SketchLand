@@ -17,22 +17,30 @@ namespace SketchLand
 
         private Transform _animatedTarget;
         private Transform _blendTarget;
+        private Transform _activeGrip;
         private float _gripWeight;
         private bool _wantsGrip;
         private bool _isDriving;
+        private bool _originalFlip;
 
         private void Awake()
         {
             _animatedTarget = _solver.GetChain(0).target;
         }
 
-        public void BeginGrip()
+        public void BeginGrip() => BeginGrip(_gripPoint);
+
+        public void BeginGrip(Transform gripPoint, bool? elbowFlip = null)
         {
+            _activeGrip = gripPoint;
             _wantsGrip = true;
 
             if (_isDriving)
                 return;
 
+            _originalFlip = _solver.flip;
+            if (elbowFlip.HasValue)
+                _solver.flip = elbowFlip.Value;
             _gripWeight = 0f;
             _isDriving = true;
 
@@ -40,7 +48,7 @@ namespace SketchLand
             // runtime so there is no extra target to configure in the prefab.
             if (_blendTarget == null)
             {
-                _blendTarget = new GameObject("R_Hand_BlendTarget").transform;
+                _blendTarget = new GameObject(_solver.name + "_BlendTarget").transform;
                 _blendTarget.SetParent(transform, false);
             }
 
@@ -55,6 +63,8 @@ namespace SketchLand
 
         public void ResetGrip()
         {
+            if (_isDriving && _solver != null)
+                _solver.flip = _originalFlip;
             _wantsGrip = false;
             _isDriving = false;
             _gripWeight = 0f;
@@ -75,13 +85,13 @@ namespace SketchLand
             // Ease the transition without changing its duration.
             float blend = Mathf.SmoothStep(0f, 1f, _gripWeight);
 
-            Vector3 position = Vector3.Lerp(_animatedTarget.position, _gripPoint.position, blend);
-            Quaternion quaternion = Quaternion.Slerp(_animatedTarget.rotation, _gripPoint.rotation, blend);
+            Vector3 position = Vector3.Lerp(_animatedTarget.position, _activeGrip.position, blend);
+            Quaternion quaternion = Quaternion.Slerp(_animatedTarget.rotation, _activeGrip.rotation, blend);
             _blendTarget.SetPositionAndRotation(position, quaternion);
 
             // Once the transition finishes, follow the actual grip directly.
             _solver.GetChain(0).target = _wantsGrip && _gripWeight >= 1f
-                ? _gripPoint
+                ? _activeGrip
                 : _blendTarget;
 
             if (!_wantsGrip && _gripWeight <= 0f)

@@ -32,6 +32,7 @@ namespace SketchLand
         public virtual void OnPrimaryActionStarted(Player player) { }
         public virtual void OnPrimaryActionHeld(Player player) { }
         public virtual void OnPrimaryActionRelease(Player player) { }
+        public virtual void OnPrimaryActionCancelled(Player player) => OnPrimaryActionRelease(player);
 
         public virtual void OnSecondaryActionStarted(Player player) { }
         public virtual void OnSecondaryActionHeld(Player player) { }

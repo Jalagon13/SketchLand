@@ -20,11 +20,13 @@ namespace SketchLand
         private ToolItemSO _currentTool;
         private ServerCharacter _character;
         private PlayerHeldItemDisplay _heldItemDisplay;
+        private PlayerRangedHandler _rangedHandler;
         private static readonly int LocomotionPlayback = Animator.StringToHash("LocomotionPlayback");
 
         private void Awake() 
         {
             _character = GetComponent<ServerCharacter>();
+            _rangedHandler = GetComponent<PlayerRangedHandler>();
             _heldItemDisplay = GetComponent<PlayerHeldItemDisplay>();
             _armPivot.gameObject.SetActive(false);
         }
@@ -51,7 +53,7 @@ namespace SketchLand
         {
             // Use actual motion so reversing input does not reverse the
             // footsteps before the character has changed travel direction.
-            bool isMovingBackwards = IsSwinging && _character.Velocity.x * _character.FacingDirection < -0.05f;
+            bool isMovingBackwards = (IsSwinging || _rangedHandler.IsAiming) && _character.Velocity.x * _character.FacingDirection < -0.05f;
             
             _character.Animator.SetFloat(LocomotionPlayback, isMovingBackwards ? -1f : 1f);
         }
@@ -67,6 +69,7 @@ namespace SketchLand
 
         public void StartPrimaryAction(ToolItemSO tool)
         {
+            _rangedHandler.CancelCharge();
             IsActionHeld = true;
             ExecuteSwing(tool);
         }

@@ -53,8 +53,10 @@ namespace SketchLand
             if (_primaryActionItem != null &&
                 (ActiveSlot != _primaryActionSlot || ActiveSlot.IsEmpty || ActiveSlot.GetItemSO() != _primaryActionItem))
             {
-                ReleasePrimaryAction();
+                CancelPrimaryAction();
             }
+            if (_primaryActionItem != null && (IsInventoryOpen || Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead))
+                CancelPrimaryAction();
             if(ActiveSlot.IsEmpty) return;
             
             if(Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead) return;
@@ -78,12 +80,18 @@ namespace SketchLand
             // or the player died before releasing the button.
             if (context.phase == InputActionPhase.Canceled)
             {
-                ReleasePrimaryAction();
+                if (IsInventoryOpen || WorldManager.Instance.MouseOverUI
+                    || Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead
+                    || GetActiveInvSlot() != _primaryActionSlot)
+                    CancelPrimaryAction();
+                else
+                    ReleasePrimaryAction();
                 return;
             }
 
             if (context.phase != InputActionPhase.Started) return;
-            ReleasePrimaryAction();
+            CancelPrimaryAction();
+            if (IsInventoryOpen) return;
             if (Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead) return;
 
             var activeSlot = GetActiveInvSlot();
@@ -92,6 +100,20 @@ namespace SketchLand
             _primaryActionSlot = activeSlot;
             _primaryActionItem = activeSlot.GetItemSO();
             _primaryActionItem.OnPrimaryActionStarted(Player.Instance);
+        }
+
+        private void CancelPrimaryAction()
+        {
+            var item = _primaryActionItem;
+            _primaryActionItem = null;
+            _primaryActionSlot = null;
+            item?.OnPrimaryActionCancelled(Player.Instance);
+        }
+
+        private void OnDisable()
+        {
+            if (Player.Instance != null)
+                CancelPrimaryAction();
         }
 
         private void ReleasePrimaryAction()
@@ -154,6 +176,7 @@ namespace SketchLand
         {
             if (Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead) return;
 
+            CancelPrimaryAction();
             IsInventoryOpen = !IsInventoryOpen;
 
             OnInventoryOpenChanged?.Invoke(IsInventoryOpen);
@@ -164,6 +187,7 @@ namespace SketchLand
         {
             if (Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead) return;
 
+            CancelPrimaryAction();
             IsInventoryOpen = !IsInventoryOpen;
 
             OnInventoryOpenChanged?.Invoke(IsInventoryOpen);
@@ -225,6 +249,7 @@ namespace SketchLand
 
             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.HotbarSlotChangedSFX, default);
 
+            CancelPrimaryAction();
             ActiveHotbarIndex = newIndex;
             OnActiveHotbarIndexChanged?.Invoke(ActiveHotbarIndex);
             // Debug.Log($"Active Hotbar Index is: {newIndex}");

@@ -11,17 +11,43 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 63597c62c68a54755ba3f4c5a8fac296, type: 3}
   m_Name: Bow_Wood
-  m_EditorClassIdentifier: Assembly-CSharp::OceanGame.RangedWeaponItemSO
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.BowItemSO
   <ItemName>k__BackingField: Bow
   <Description>k__BackingField: 
   <DisplayIcon>k__BackingField: {fileID: 1970053439, guid: 299c04dea1eaa4e78b9c26825532306e, type: 3}
   <IsStackable>k__BackingField: 1
   <HeldPosition>k__BackingField: {x: 0, y: 0, z: 0}
   <HeldRotation>k__BackingField: 0
-  <HeldScale>k__BackingField: {x: 1, y: 1, z: 1}
-  <ShotCooldown>k__BackingField: 0.75
-  <Projectile>k__BackingField: {fileID: 11400000, guid: b5e08a065994447879f5911de6519ca2, type: 2}
-  <Aummunition>k__BackingField: {fileID: 11400000, guid: dbcbcd20bffa749e2920a1db8a6a1792, type: 2}
+  <HeldScale>k__BackingField: {x: 0.5, y: 0.5, z: 0.5}
+  <ChargeDuration>k__BackingField: 0.8
+  <MinimumCharge>k__BackingField: 0.15
+  <MinimumSpeed>k__BackingField: 5
+  <MaximumSpeed>k__BackingField: 22
+  <SpeedCurve>k__BackingField:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  <DrawnSprite>k__BackingField: {fileID: -342073340, guid: 299c04dea1eaa4e78b9c26825532306e, type: 3}
   <ShootSFX>k__BackingField:
     Guid:
       Data1: 1895298056

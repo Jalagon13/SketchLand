@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ad5d6c9d626f4a86b10848c127dc8e7, type: 3}
+  m_Script: {fileID: 11500000, guid: 621e0dc42011f4426b72a792903b26b5, type: 3}
   m_Name: Arrow_Wood
-  m_EditorClassIdentifier: Assembly-CSharp::OceanGame.ItemSO
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.ArrowItemSO
   <ItemName>k__BackingField: Arrow
   <Description>k__BackingField: 
   <DisplayIcon>k__BackingField: {fileID: 989592332, guid: 299c04dea1eaa4e78b9c26825532306e, type: 3}
@@ -19,3 +19,4 @@ MonoBehaviour:
   <HeldPosition>k__BackingField: {x: 0.084, y: -0.03, z: 0}
   <HeldRotation>k__BackingField: 167.9009
   <HeldScale>k__BackingField: {x: 1, y: 1, z: 1}
+  <Projectile>k__BackingField: {fileID: 11400000, guid: b5e08a065994447879f5911de6519ca2, type: 2}
