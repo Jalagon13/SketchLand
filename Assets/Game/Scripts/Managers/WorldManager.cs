@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -35,6 +36,15 @@ namespace SketchLand
         public bool MouseOverUI { get; private set; }
         public bool IsWorldReady { get; private set; } = false;
         public int SeaLevel { get; private set; }
+        public IReadOnlyList<WorldZone> Zones { get; private set; } = Array.Empty<WorldZone>();
+
+        public WorldZone GetZoneAtY(float worldY)
+        {
+            // Zones are stored from top to bottom, with no gaps between bands.
+            for (int i = 0; i < Zones.Count; i++)
+                if (worldY >= Zones[i].MinY) return Zones[i];
+            return Zones.Count > 0 ? Zones[Zones.Count - 1] : default;
+        }
 
 
         private TileSupportTracker _tileSupport;
@@ -91,6 +101,7 @@ namespace SketchLand
             var width = context.Width;
             var height = context.Height;
             SeaLevel = context.RoughSurfaceHeight;
+            Zones = Array.AsReadOnly((WorldZone[])context.Zones.Clone());
 
             _tileSupport?.Dispose();
 

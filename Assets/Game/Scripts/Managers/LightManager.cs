@@ -180,7 +180,8 @@ namespace SketchLand
                     var fgTd = world.FgGrid.GetTileData(worldPosX, worldPosY);
                     var bgTd = world.BgGrid.GetTileData(worldPosX, worldPosY);
 
-                    if (((fgTd.HasTile && !fgTd.IsSolid) || !fgTd.HasTile) && !bgTd.HasTile)
+                    if (world.GetZoneAtY(worldPosY).AllowsNaturalDaylight &&
+                        (!fgTd.HasTile || !fgTd.IsSolid) && !bgTd.HasTile)
                     {
                         SeedTile(localX, localY, _fullBrightness);
                     }

@@ -19,6 +19,13 @@ MonoBehaviour:
   Height: 400
   RoughSurfaceHeight: 350
   UndergroundBottomLevel: 275
+  SurfaceZone:
+    Name: Surface
+    BackgroundTerrain: {fileID: 0}
+  LowerZones:
+  - Name: Underground
+    BackgroundTerrain: {fileID: 11400000, guid: de53f42a1a9254889bd3b400b4b4244a, type: 2}
+    StartsBelowY: 312
   Steps:
   - rid: 2783294373672517730
   - rid: 2783294373672517731

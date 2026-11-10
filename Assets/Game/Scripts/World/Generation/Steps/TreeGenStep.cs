@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace SketchLand
 {
+    [System.Serializable]
     public class TreeGenStep : WorldGenStep
     {
         [SerializeField] private TreeTileConfigSO _tree;

@@ -27,6 +27,6 @@ MonoBehaviour:
   <HitboxOffset>k__BackingField: 1.25
   <HitboxSize>k__BackingField: {x: 0.6, y: 0.6}
   <SwingArcAngle>k__BackingField: 110
-  <SwingDuration>k__BackingField: 0.4
+  <SwingDuration>k__BackingField: 0.35
   <SwingEndArcAngle>k__BackingField: 10
   <SwingEndDuration>k__BackingField: 0.1

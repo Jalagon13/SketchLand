@@ -42,6 +42,7 @@ namespace SketchLand
         }
 
         private readonly TerrainMeshBuilder _builder = new();
+        private readonly WorldZoneBackdropRenderer _zoneBackdrops = new();
 
         private readonly Dictionary<TerrainTileConfigSO, Material>
         _fillMaterials = new();
@@ -152,6 +153,11 @@ namespace SketchLand
 
             BindLayer(ref _foreground, world.FgGrid);
             BindLayer(ref _background, world.BgGrid);
+
+            _zoneBackdrops.Render(world, _camera, transform, _paddingCells,
+                _backgroundSettings.GameObjectLayer, SortingLayer.NameToID(_backgroundSettings.SortingLayerName),
+                _backgroundSettings.SortingOrder - 1, _backgroundSettings.Z, _backgroundSettings.Tint,
+                GetFillMaterial, GetInkMaterial());
 
             RectInt visibleChunks = GetVisibleChunkRange(world.FgGrid.Width,world.FgGrid.Height);
 
@@ -425,6 +431,7 @@ namespace SketchLand
 
         private void ReleaseLayers()
         {
+            _zoneBackdrops.Clear();
             ReleaseLayer(_foreground);
             ReleaseLayer(_background);
 
