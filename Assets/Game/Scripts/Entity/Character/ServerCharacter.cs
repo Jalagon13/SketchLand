@@ -20,8 +20,7 @@ namespace SketchLand
         public float FacingDirection => _visuals != null && _visuals.localScale.x < 0f ? -1f : 1f;
 
         [HideInInspector] public Vector2 DesiredDirection;
-        [HideInInspector] public Vector2 KnockbackVelocity;
-        public bool IsKnockedBack => KnockbackVelocity.sqrMagnitude > KnockbackThreshold * KnockbackThreshold;
+        public bool IsKnockedBack => _knockbackTimer > 0f;
 
         public StateMachine Machine { get; private set; }
         
@@ -29,8 +28,16 @@ namespace SketchLand
         public CharacterStats Stats { get; private set; }
         public DamageReceiver DamageReceiver { get; private set; }
 
-        private const float KnockbackThreshold = 3.75f;
-        private const float KnockbackDecay = 2f;
+        public const int MaxKnockbackForce = 100;
+
+        // Shared by every character. Duration scales with strength after resistance.
+        private const float MinKnockbackDuration = 0.15f;
+        private const float MaxKnockbackDuration = 0.5f;
+        private const float HorizontalKnockbackRatio = 0.55f;
+        private const float UpwardKnockbackRatio = 0.45f;
+        private const float KnockbackDirectionEpsilon = 0.001f;
+
+        private float _knockbackTimer;
         private float? _facingOverride;
 
         private void Awake()
@@ -46,6 +53,7 @@ namespace SketchLand
 
         public override void OnNetworkSpawn()
         {
+            ClearKnockback();
             RootState?.Dispose();
             RootState = _data.RootState?.CreateInstance();
             Machine = null;
@@ -59,6 +67,7 @@ namespace SketchLand
 
         public override void OnNetworkDespawn()
         {
+            ClearKnockback();
             RootState?.Dispose();
             RootState = null;
             Machine = null;
@@ -95,29 +104,21 @@ namespace SketchLand
             if (!WorldManager.Instance.IsWorldReady) return;
             if (Machine == null) return;
 
-            if (IsKnockedBack)
-            {
-                Velocity = KnockbackVelocity;
-                DesiredDirection = Vector2.zero;
-            }
-            else
-            {
+            if (!IsKnockedBack)
                 SetFacing(DesiredDirection.x);
-            }
 
             Machine.FixedTick(fixedDeltaTime);
-
-            // State may apply gravity, drag, etc. to KnockbackVelocity.
-            // Then use the resulting value as final movement.
-            if (IsKnockedBack)
-            {
-                Velocity = KnockbackVelocity;
-                KnockbackVelocity = Vector2.Lerp(KnockbackVelocity, Vector2.zero, KnockbackDecay * fixedDeltaTime);
-
-                if (!IsKnockedBack) KnockbackVelocity = Vector2.zero;
-            }
-
             base.FixedTick(fixedDeltaTime);
+
+            // Grid physics resolves position; discard momentum into the surfaces it hit.
+            if ((CollisionResult.TouchingLeft && Velocity.x < 0f) || (CollisionResult.TouchingRight && Velocity.x > 0f))
+                Velocity.x = 0f;
+
+            if ((CollisionResult.TouchingBottom && Velocity.y < 0f) || (CollisionResult.TouchingTop && Velocity.y > 0f))
+                Velocity.y = 0f;
+
+            // Keep the final knockback tick intact. Movement resumes next tick from this velocity.
+            _knockbackTimer = Mathf.Max(0f, _knockbackTimer - fixedDeltaTime);
         }
 
         public override void OnEntityOverlap(Entity other)
@@ -164,11 +165,38 @@ namespace SketchLand
             _facingOverride = null;
         }
 
-        public void ApplyKnockback(Vector2 velocity)
+        public void UpdateHorizontalMovement(float targetSpeed, float fixedDeltaTime)
         {
-            DesiredDirection = Vector2.zero;
-            KnockbackVelocity = velocity;
-            Velocity = velocity;
+            if (IsKnockedBack) return;
+
+            float acceleration = Mathf.Max(1f, Mathf.Max(Data.BaseSpeed, Mathf.Abs(targetSpeed))) * Data.BaseTurnSharpness;
+            Velocity.x = Mathf.MoveTowards(Velocity.x, targetSpeed, acceleration * fixedDeltaTime);
+        }
+
+        public void ApplyGravity(float gravityForce, float terminalVelocity, float fixedDeltaTime)
+        {
+            Velocity.y = Mathf.Max(Velocity.y - gravityForce * fixedDeltaTime, terminalVelocity);
+        }
+
+        public void ApplyKnockback(int force, Vector2 sourcePosition)
+        {
+            if (!Data.CanBeKnockedBacked || Health.CurrentLifeState.Value == LifeState.Dead) return;
+
+            float strength = Mathf.Clamp(force, 0, MaxKnockbackForce) * (1f - Mathf.Clamp01(Data.BaseKbResist));
+            if (strength <= 0f) return;
+
+            float horizontalDistance = transform.position.x - sourcePosition.x;
+            float direction = Mathf.Abs(horizontalDistance) <= KnockbackDirectionEpsilon
+                ? (Random.value < 0.5f ? -1f : 1f)
+                : Mathf.Sign(horizontalDistance);
+
+            Velocity = new Vector2(strength * HorizontalKnockbackRatio * direction, strength * UpwardKnockbackRatio);
+            _knockbackTimer = Mathf.Lerp(MinKnockbackDuration, MaxKnockbackDuration, strength / MaxKnockbackForce);
+        }
+
+        public void ClearKnockback()
+        {
+            _knockbackTimer = 0f;
         }
     }
 }

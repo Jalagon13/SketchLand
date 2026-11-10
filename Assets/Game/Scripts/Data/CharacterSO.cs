@@ -16,7 +16,7 @@ namespace SketchLand
         [field: SerializeField] public int BaseMaxHealth { get; private set; }
         [field: SerializeField] public int BaseDefense { get; private set; }
         [field: SerializeField] public int BaseDamage { get; private set; }
-        [field: SerializeField, Range(0, 100)] public int KnockbackForce { get; private set; }
+        [field: SerializeField, Range(0, ServerCharacter.MaxKnockbackForce)] public int KnockbackForce { get; private set; }
         [field: SerializeField, Range(0f, 1f)] public float BaseKbResist { get; private set; }
         [field: SerializeField] public int BaseSpeed { get; private set; }
         [field: SerializeField] public float BaseIFrameDuration { get; private set; }

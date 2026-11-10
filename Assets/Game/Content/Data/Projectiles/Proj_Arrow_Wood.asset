@@ -18,7 +18,7 @@ MonoBehaviour:
   <DefaultFaction>k__BackingField: 0
   <BaseDamage>k__BackingField: 8
   <BasePenetration>k__BackingField: 1
-  <BaseKnockbackForce>k__BackingField: 8
+  <BaseKnockbackForce>k__BackingField: 50
   <HitImpactPrefab>k__BackingField: {fileID: 0}
   <ImpactSFX>k__BackingField:
     Guid:

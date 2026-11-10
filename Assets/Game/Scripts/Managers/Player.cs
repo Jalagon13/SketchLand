@@ -80,10 +80,7 @@ namespace SketchLand
             // If player is not dead and is holding down move input keep updating desired direction with it
             if (Character.Health.CurrentLifeState.Value == LifeState.Dead) return;
 
-            if (GameInput.Instance.MoveInput != Vector2.zero)
-            {
-                Character.DesiredDirection = GameInput.Instance.MoveInput;
-            }
+            Character.DesiredDirection = GameInput.Instance.MoveInput;
         }
 
         private void InitializeSpawn()
@@ -97,7 +94,7 @@ namespace SketchLand
                 Character.transform.position = Character.transform.position;
                 Character.Velocity = Vector2.zero;
                 Character.DesiredDirection = Vector2.zero;
-                Character.KnockbackVelocity = Vector2.zero;
+                Character.ClearKnockback();
 
                 RespawnPoint = Character.transform.position;
                 _hasInitialSpawn = true;
@@ -107,7 +104,7 @@ namespace SketchLand
             Character.transform.position = spawnPosition;
             Character.Velocity = Vector2.zero;
             Character.DesiredDirection = Vector2.zero;
-            Character.KnockbackVelocity = Vector2.zero;
+            Character.ClearKnockback();
 
             RespawnPoint = spawnPosition;
             _hasInitialSpawn = true;
@@ -147,7 +144,7 @@ namespace SketchLand
         {
             if(newValue == LifeState.Dead)
             {
-                Character.KnockbackVelocity = Vector2.zero;
+                Character.ClearKnockback();
                 Character.DesiredDirection = Vector2.zero;
                 Character.Velocity = Vector2.zero;
             }
@@ -176,7 +173,7 @@ namespace SketchLand
 
         private void OnJumpPressed()
         {
-            if(!WorldManager.Instance.IsWorldReady || Character.Health.CurrentLifeState.Value == LifeState.Dead) return;
+            if(!WorldManager.Instance.IsWorldReady || Character.Health.CurrentLifeState.Value == LifeState.Dead || Character.IsKnockedBack) return;
         
             bool canJumpFromGround = Character.CollisionResult.TouchingBottom;
 

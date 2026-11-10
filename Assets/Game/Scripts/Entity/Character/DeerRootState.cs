@@ -72,8 +72,6 @@ namespace SketchLand
         {
             UpdateLocomotionAnimation();
 
-            if (_ctx.IsKnockedBack) return;
-
             _wanderTimer = Mathf.Max(0f, _wanderTimer - fixedDeltaTime);
             _ctx.DesiredDirection = IsWandering ? Vector2.right * _wanderDirection : Vector2.zero;
         }
@@ -109,7 +107,7 @@ namespace SketchLand
 
             _ctx.DesiredDirection = IsWandering ? Vector2.right * _wanderDirection : Vector2.zero;
             var currentSpeed = _ctx.Data.BaseSpeed * speedMultiplier;
-            _ctx.Velocity.x = Mathf.Lerp(_ctx.Velocity.x, _ctx.DesiredDirection.x * currentSpeed, fixedDeltaTime * _ctx.Data.BaseTurnSharpness);
+            _ctx.UpdateHorizontalMovement(_ctx.DesiredDirection.x * currentSpeed, fixedDeltaTime);
 
             if (!IsWandering && Mathf.Abs(_ctx.Velocity.x) <= 0.01f)
             {
@@ -159,7 +157,12 @@ namespace SketchLand
 
         protected override void OnFixedUpdate(float fixedDeltaTime)
         {
-            if (_ctx.IsKnockedBack) return;
+            if (_ctx.IsKnockedBack)
+            {
+                var root = (DeerRootState)Parent;
+                _ctx.ApplyGravity(root.GravityForce, root.TerminalVelocity, fixedDeltaTime);
+                return;
+            }
 
             _ctx.Velocity.y = -0.1f; // Keep the deer pressed to the floor
         }
@@ -192,18 +195,12 @@ namespace SketchLand
         {
             var root = (DeerRootState)Parent;
 
-            if (_ctx.IsKnockedBack)
-            {
-                _ctx.KnockbackVelocity.y = Mathf.Max(_ctx.KnockbackVelocity.y - root.GravityForce * fixedDeltaTime, root.TerminalVelocity);
-                return;
-            }
-
             if (_ctx.CollisionResult.TouchingTop && _ctx.Velocity.y > 0f)
             {
                 _ctx.Velocity.y = 0f;
             }
 
-            _ctx.Velocity.y = Mathf.Max(_ctx.Velocity.y - root.GravityForce * fixedDeltaTime, root.TerminalVelocity);
+            _ctx.ApplyGravity(root.GravityForce, root.TerminalVelocity, fixedDeltaTime);
             root.UpdateHorizontalMovement(fixedDeltaTime, root.AirborneMoveSpeedMultiplier);
         }
     }

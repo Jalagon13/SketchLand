@@ -8,8 +8,6 @@ namespace SketchLand
     public class DamageReceiver : NetworkBehaviour
     {
         private ServerCharacter _character;
-        private const float MinKnockbackForce = 0f;
-        private const float MaxKnockbackForce = 100f;
 
         private void Awake()
         {
@@ -27,7 +25,7 @@ namespace SketchLand
         [Rpc(SendTo.Server)]
         private void ReceiveHitServerRpc(SyncHitData hit)
         {
-            if(_character.Health.CurrentLifeState.Value == LifeState.IFrame) return;
+            if(_character.Health.CurrentLifeState.Value != LifeState.Alive) return;
         
             float difficultyMult = 0.5f; // Placeholder for difficulty multiplier, 0.5 for normal, 0.75 for hard, 1 for insane TENT mults
             int defense = Mathf.RoundToInt(_character.Stats.Defense.GetValue() * difficultyMult);
@@ -45,22 +43,14 @@ namespace SketchLand
                 WorldTextPopupManager.Instance.SpawnCharacterDamageNumbers(_character.transform.position, netDamage);
             }
             
-            if (!_character.Data.CanBeKnockedBacked || _character.Health.CurrentLifeState.Value == LifeState.Dead) return;
-
-            float resistance = Mathf.Clamp01(_character.Data.BaseKbResist);
-            float finalForce = hit.KnockbackForce * (1f - resistance);
-            finalForce = Mathf.Clamp(finalForce, MinKnockbackForce, MaxKnockbackForce);
-
-            Vector2 direction = ((Vector2)_character.transform.position - hit.SourcePosition).normalized;
-
-            _character.ApplyKnockback(direction * finalForce);
+            _character.ApplyKnockback(hit.KnockbackForce, hit.SourcePosition);
         }
     }
     
     public struct SyncHitData : IEquatable<SyncHitData>, INetworkSerializable
     {
         public int Damage;
-        public int KnockbackForce;
+        [Range(0, ServerCharacter.MaxKnockbackForce)] public int KnockbackForce;
         public Vector2 SourcePosition;
         
         public SyncHitData(int damage, int knockbackForce, Vector2 sourcePosition)

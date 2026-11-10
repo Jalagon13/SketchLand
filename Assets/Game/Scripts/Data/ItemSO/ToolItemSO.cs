@@ -12,7 +12,7 @@ namespace SketchLand
 
         [field: Header("Melee & Hitbox Settings")]
         [field: SerializeField] public int MeleeDamage { get; private set; } = 10;
-        [field: SerializeField] public int KnockbackForce { get; private set; } = 15;
+        [field: SerializeField, Range(0, ServerCharacter.MaxKnockbackForce)] public int KnockbackForce { get; private set; } = 4;
         [field: SerializeField] public float HitboxOffset { get; private set; } = 1.0f; // Distance from pivot to blade center
         [field: SerializeField] public Vector2 HitboxSize { get; private set; } = new Vector2(1.2f, 1.2f);
 

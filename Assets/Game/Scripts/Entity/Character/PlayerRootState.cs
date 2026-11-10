@@ -95,6 +95,14 @@ namespace SketchLand
 
         protected override State GetTransition()
         {
+            if (_ctx.IsKnockedBack)
+            {
+                _player.JumpPressed = false;
+                return !_ctx.CollisionResult.TouchingBottom || _ctx.Velocity.y > 0f
+                    ? (Parent as PlayerRootState).Airborne
+                    : null;
+            }
+
             if(_player.JumpPressed)
             {
                 _player.JumpPressed = false;
@@ -103,7 +111,7 @@ namespace SketchLand
                 return (Parent as PlayerRootState).Airborne;
             }
         
-            if(!_ctx.CollisionResult.TouchingBottom)
+            if(!_ctx.CollisionResult.TouchingBottom || _ctx.Velocity.y > 0f)
             {
                 return (Parent as PlayerRootState).Airborne;
             }
@@ -128,6 +136,7 @@ namespace SketchLand
         {
             if(_ctx.IsKnockedBack)
             {
+                _ctx.ApplyGravity(_player.GravityForce, _player.TerminalVelocity, fixedDeltaTime);
                 return;
             }
         
@@ -182,7 +191,7 @@ namespace SketchLand
             ((PlayerRootState)Parent).UpdateLocomotionAnimation(false);
 
             // On Jump Animation set here
-            if (GameInput.Instance.JumpHold && _ctx.Velocity.y > 0)
+            if (!_ctx.IsKnockedBack && GameInput.Instance.JumpHold && _ctx.Velocity.y > 0)
             {
                 _jumpHoldTimer = _player.MaxJumpHoldDuration;
                 _jumpHoldEnded = false;
@@ -207,13 +216,13 @@ namespace SketchLand
         {
             if (_ctx.IsKnockedBack)
             {
-                _ctx.KnockbackVelocity.y -= _player.GravityForce * fixedDeltaTime;
-
-                if (_ctx.KnockbackVelocity.y < _player.TerminalVelocity)
-                {
-                    _ctx.KnockbackVelocity.y = _player.TerminalVelocity;
-                }
-
+                // A hit cancels jump assistance; holding jump must not extend the launch.
+                _jumpHoldTimer = 0f;
+                _jumpHoldEnded = true;
+                _coyoteTimer = 0f;
+                _coyoteJumpRequested = false;
+                _jumpBufferTimer = 0f;
+                _ctx.ApplyGravity(_player.GravityForce, _player.TerminalVelocity, fixedDeltaTime);
                 return;
             }
 
@@ -263,11 +272,13 @@ namespace SketchLand
         
             // Allow horizontal movement while airborne
             var currentSpeed = ((PlayerRootState)Parent).MovementSpeed * _player.AirborneMoveSpeedMultiplier;
-            _ctx.Velocity.x = Mathf.Lerp(_ctx.Velocity.x, _ctx.DesiredDirection.x * currentSpeed, fixedDeltaTime * _ctx.Data.BaseTurnSharpness);
+            _ctx.UpdateHorizontalMovement(_ctx.DesiredDirection.x * currentSpeed, fixedDeltaTime);
         }
 
         private void OnJumpPressed()
         {
+            if (_ctx.IsKnockedBack) return;
+
             if (_coyoteTimer > 0f)
             {
                 _coyoteJumpRequested = true;
@@ -309,7 +320,7 @@ namespace SketchLand
 
         protected override void OnEnter()
         {
-            _ctx.Velocity.y = 0f;
+            if (!_ctx.IsKnockedBack) _ctx.Velocity.y = 0f;
         }
 
         protected override void OnExit()
@@ -323,7 +334,7 @@ namespace SketchLand
                 return;
 
             var currentSpeed = ((PlayerRootState)Parent.Parent).MovementSpeed;
-            _ctx.Velocity = Vector2.Lerp(_ctx.Velocity, _ctx.DesiredDirection * currentSpeed, fixedDeltaTime * _ctx.Data.BaseTurnSharpness);
+            _ctx.UpdateHorizontalMovement(_ctx.DesiredDirection.x * currentSpeed, fixedDeltaTime);
 
         }
     }
@@ -362,7 +373,7 @@ namespace SketchLand
                 return;
 
             var currentSpeed = ((PlayerRootState)Parent.Parent).MovementSpeed;
-            _ctx.Velocity = Vector2.Lerp(_ctx.Velocity, _ctx.DesiredDirection * currentSpeed, fixedDeltaTime * _ctx.Data.BaseTurnSharpness);
+            _ctx.UpdateHorizontalMovement(_ctx.DesiredDirection.x * currentSpeed, fixedDeltaTime);
         }
     }
 

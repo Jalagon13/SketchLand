@@ -15,7 +15,7 @@ namespace SketchLand
         [field: SerializeField] public ProjectileFaction DefaultFaction { get; private set; } = ProjectileFaction.Friendly;
         [field: SerializeField] public int BaseDamage { get; private set; } = 10;
         [field: SerializeField] public int BasePenetration { get; private set; } = 1; // 1 = dies on first hit, -1 = infinite
-        [field: SerializeField, Range(0, 100)] public int BaseKnockbackForce { get; private set; } = 15;
+        [field: SerializeField, Range(0, ServerCharacter.MaxKnockbackForce)] public int BaseKnockbackForce { get; private set; } = 7;
 
         [field: Header("Feel")]
         [field: SerializeField] public GameObject HitImpactPrefab { get; private set; }

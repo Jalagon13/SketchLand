@@ -79,7 +79,7 @@ namespace SketchLand
 
             UpdatePursuitDirection();
             var currentSpeed = _ctx.Data.BaseSpeed * speedMultiplier;
-            _ctx.Velocity.x = Mathf.Lerp(_ctx.Velocity.x, _ctx.DesiredDirection.x * currentSpeed, fixedDeltaTime * _ctx.Data.BaseTurnSharpness);
+            _ctx.UpdateHorizontalMovement(_ctx.DesiredDirection.x * currentSpeed, fixedDeltaTime);
 
             if (_ctx.DesiredDirection.x == 0f && Mathf.Abs(_ctx.Velocity.x) <= 0.01f)
             {
@@ -91,7 +91,7 @@ namespace SketchLand
         {
             var player = Player.Instance;
 
-            if (_ctx.IsKnockedBack || player == null || player.Character == null)
+            if (player == null || player.Character == null)
             {
                 _ctx.DesiredDirection = Vector2.zero;
                 return;
@@ -143,7 +143,12 @@ namespace SketchLand
 
         protected override void OnFixedUpdate(float fixedDeltaTime)
         {
-            if (_ctx.IsKnockedBack) return;
+            if (_ctx.IsKnockedBack)
+            {
+                var root = (ZombieRootState)Parent;
+                _ctx.ApplyGravity(root.GravityForce, root.TerminalVelocity, fixedDeltaTime);
+                return;
+            }
 
             _ctx.Velocity.y = -0.1f; // Keep the zombie pressed to the floor
         }
@@ -186,18 +191,12 @@ namespace SketchLand
         {
             var root = (ZombieRootState)Parent;
 
-            if (_ctx.IsKnockedBack)
-            {
-                _ctx.KnockbackVelocity.y = Mathf.Max(_ctx.KnockbackVelocity.y - root.GravityForce * fixedDeltaTime, root.TerminalVelocity);
-                return;
-            }
-
             if (_ctx.CollisionResult.TouchingTop && _ctx.Velocity.y > 0f)
             {
                 _ctx.Velocity.y = 0f;
             }
 
-            _ctx.Velocity.y = Mathf.Max(_ctx.Velocity.y - root.GravityForce * fixedDeltaTime, root.TerminalVelocity);
+            _ctx.ApplyGravity(root.GravityForce, root.TerminalVelocity, fixedDeltaTime);
             root.UpdateHorizontalMovement(fixedDeltaTime, root.AirborneMoveSpeedMultiplier);
         }
     }
