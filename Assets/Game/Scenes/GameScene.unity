@@ -2318,7 +2318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d58df6de50ce94e08a6db50f9a63e04c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.CharacterManager
-  _enableSpawning: 1
+  _enableSpawning: 0
   _globalMaxCharacterCap: 200
   _durationTillCharacterDespawns: 15
 --- !u!114 &653184666
@@ -4127,6 +4127,7 @@ MonoBehaviour:
   _terrainShader: {fileID: 4800000, guid: 35d73e86d717b45fab240059019cb08a, type: 3}
   _paddingCells: 2
   _prefetchChunks: 1
+  _buildBudgetMs: 2
   _foregroundSettings:
     SortingLayerName: Default
     SortingOrder: -1

@@ -8,7 +8,7 @@ namespace SketchLand
     [DisallowMultipleComponent]
     public sealed class TerrainChunkRenderer : MonoBehaviour
     {
-        public const int ChunkSize = 16;
+        public const int ChunkSize = 8;
 
         [Header("Rendering")]
         [SerializeField] private Camera _camera;
@@ -16,7 +16,10 @@ namespace SketchLand
 
         [Header("Camera coverage")]
         [SerializeField, Min(1)] private int _paddingCells = 2;
+        [Tooltip("Extra 16-tile bands around the camera, preserving the original prefetch distance.")]
         [SerializeField, Range(0, 3)] private int _prefetchChunks = 1;
+        [Tooltip("Soft CPU budget shared by both terrain layers. A single chunk finishes before yielding.")]
+        [SerializeField, Min(0.1f)] private float _buildBudgetMs = 2f;
 
         private sealed class Chunk
         {
@@ -35,6 +38,7 @@ namespace SketchLand
             public SortingGroup Sorting;
             public Action<Vector2Int> Changed;
             public readonly Dictionary<Vector2Int, Chunk> Chunks = new();
+            public readonly Stack<Chunk> Pool = new();
         }
 
         private readonly TerrainMeshBuilder _builder = new();
@@ -43,6 +47,23 @@ namespace SketchLand
         _fillMaterials = new();
 
         private readonly List<Vector2Int> _removeKeys = new();
+        private readonly List<BuildRequest> _pending = new();
+        private readonly System.Diagnostics.Stopwatch _buildTimer = new();
+
+        private struct BuildRequest
+        {
+            public Layer Layer;
+            public Vector2Int Key;
+            public LayerSettings Settings;
+            public int Priority;
+            public float Distance;
+        }
+
+        private static readonly Comparison<BuildRequest> BuildOrder = (a, b) =>
+        {
+            int priority = a.Priority.CompareTo(b.Priority);
+            return priority != 0 ? priority : a.Distance.CompareTo(b.Distance);
+        };
         private MaterialPropertyBlock _properties;
 
         private Material _inkMaterial;
@@ -134,8 +155,21 @@ namespace SketchLand
 
             RectInt visibleChunks = GetVisibleChunkRange(world.FgGrid.Width,world.FgGrid.Height);
 
-            RenderLayer(_background, visibleChunks, "Background", _backgroundSettings);
-            RenderLayer(_foreground, visibleChunks, "Foreground", _foregroundSettings);
+            _pending.Clear();
+            QueueLayer(_background, visibleChunks, _backgroundSettings);
+            QueueLayer(_foreground, visibleChunks, _foregroundSettings);
+            _pending.Sort(BuildOrder);
+
+            // Resolve the desired set anew each frame, so reversing direction or teleporting
+            // cannot leave stale work ahead of terrain that is now on screen.
+            _buildTimer.Restart();
+            foreach (BuildRequest request in _pending)
+            {
+                BuildChunk(request);
+                if (_buildTimer.Elapsed.TotalMilliseconds >= Mathf.Max(0.1f, _buildBudgetMs))
+                    break;
+            }
+            _buildTimer.Stop();
         }
 
         private void BindLayer(ref Layer layer, TileGrid grid)
@@ -182,13 +216,13 @@ namespace SketchLand
                 }
             }
 
-            int firstX = Mathf.FloorToInt((minX - _paddingCells) / ChunkSize) - _prefetchChunks;
+            int firstX = Mathf.FloorToInt((minX - _paddingCells) / ChunkSize) - _prefetchChunks * (16 / ChunkSize);
 
-            int firstY = Mathf.FloorToInt((minY - _paddingCells) / ChunkSize) - _prefetchChunks;
+            int firstY = Mathf.FloorToInt((minY - _paddingCells) / ChunkSize) - _prefetchChunks * (16 / ChunkSize);
 
-            int lastX = Mathf.FloorToInt((maxX + _paddingCells) / ChunkSize) + _prefetchChunks;
+            int lastX = Mathf.FloorToInt((maxX + _paddingCells) / ChunkSize) + _prefetchChunks * (16 / ChunkSize);
 
-            int lastY = Mathf.FloorToInt((maxY + _paddingCells) / ChunkSize) + _prefetchChunks;
+            int lastY = Mathf.FloorToInt((maxY + _paddingCells) / ChunkSize) + _prefetchChunks * (16 / ChunkSize);
 
             firstX = Mathf.Max(0, firstX);
             firstY = Mathf.Max(0, firstY);
@@ -199,10 +233,9 @@ namespace SketchLand
             return new RectInt(firstX, firstY, Mathf.Max(0, lastX - firstX + 1), Mathf.Max(0, lastY - firstY + 1));
         }
 
-        private void RenderLayer(Layer layer, RectInt visibleChunks, string layerName, LayerSettings settings)
+        private void QueueLayer(Layer layer, RectInt visibleChunks, LayerSettings settings)
         {
             _removeKeys.Clear();
-
             foreach (var entry in layer.Chunks)
             {
                 if (!visibleChunks.Contains(entry.Key))
@@ -211,60 +244,85 @@ namespace SketchLand
 
             foreach (Vector2Int key in _removeKeys)
             {
-                DestroyChunk(layer.Chunks[key]);
+                Chunk chunk = layer.Chunks[key];
+                chunk.Root.SetActive(false);
+                // Bound retained memory after zooming in or crossing world edges.
+                if (layer.Pool.Count < 32)
+                    layer.Pool.Push(chunk);
+                else
+                    DestroyChunk(chunk);
                 layer.Chunks.Remove(key);
             }
 
-            int sortingLayerId = SortingLayer.NameToID(settings.SortingLayerName);
-
             layer.Root.layer = settings.GameObjectLayer;
-
-            layer.Sorting.sortingLayerID = sortingLayerId;
+            layer.Sorting.sortingLayerID = SortingLayer.NameToID(settings.SortingLayerName);
             layer.Sorting.sortingOrder = settings.SortingOrder;
-
-            _properties.Clear();
-            _properties.SetColor("_LayerTint", settings.Tint);
 
             for (int cy = visibleChunks.yMin; cy < visibleChunks.yMax; cy++)
             {
                 for (int cx = visibleChunks.xMin; cx < visibleChunks.xMax; cx++)
                 {
-                    Vector2Int key = new Vector2Int(cx, cy);
-
-                    int startX = cx * ChunkSize;
-                    int startY = cy * ChunkSize;
-
-                    RectInt region = new RectInt(startX, startY, Mathf.Min(ChunkSize, layer.Grid.Width - startX), Mathf.Min(ChunkSize, layer.Grid.Height - startY));
-
-                    if (!layer.Chunks.TryGetValue(key, out Chunk chunk))
-                    {
-                        chunk = CreateChunk(layer, layerName, key);
-                        layer.Chunks.Add(key, chunk);
-                    }
-
-                    chunk.Root.layer = settings.GameObjectLayer;
-                    chunk.InkRenderer.gameObject.layer = settings.GameObjectLayer;
-
-                    chunk.Root.transform.position = new Vector3(startX, startY, settings.Z);
-
-                    chunk.Renderer.sortingLayerID = sortingLayerId;
-                    chunk.Renderer.sortingOrder = 0;
-
-                    chunk.InkRenderer.sortingLayerID = sortingLayerId;
-                    chunk.InkRenderer.sortingOrder = 1;
-
-                    chunk.Renderer.SetPropertyBlock(_properties);
-                    chunk.InkRenderer.SetPropertyBlock(_properties);
-
-                    if (!chunk.Dirty)
+                    var key = new Vector2Int(cx, cy);
+                    bool exists = layer.Chunks.TryGetValue(key, out Chunk chunk);
+                    if (exists && !chunk.Dirty)
                         continue;
 
-                    chunk.Renderer.sharedMaterials = _builder.Build(layer.Grid, region, chunk.Mesh, chunk.InkMesh, GetFillMaterial, layer == _background);
-                    chunk.Renderer.enabled = chunk.Mesh.subMeshCount > 0;
-                    chunk.InkRenderer.enabled = chunk.InkMesh.vertexCount > 0;
-                    chunk.Dirty = false;
+                    Vector3 center = new Vector3((cx + 0.5f) * ChunkSize, (cy + 0.5f) * ChunkSize, settings.Z);
+                    // Viewport AABB includes rotated cameras; padding handles edge chunks.
+                    Vector3 viewport = _camera.WorldToViewportPoint(center);
+                    // Project the chunk's half extents into the camera's rotated axes.
+                    Vector3 right = _camera.transform.right;
+                    Vector3 up = _camera.transform.up;
+                    float marginX = ChunkSize * (Mathf.Abs(right.x) + Mathf.Abs(right.y))
+                        / (4f * _camera.orthographicSize * _camera.aspect);
+                    float marginY = ChunkSize * (Mathf.Abs(up.x) + Mathf.Abs(up.y))
+                        / (4f * _camera.orthographicSize);
+                    bool onScreen = viewport.x >= -marginX && viewport.x <= 1f + marginX
+                        && viewport.y >= -marginY && viewport.y <= 1f + marginY;
+                    _pending.Add(new BuildRequest
+                    {
+                        Layer = layer, Key = key, Settings = settings,
+                        Priority = onScreen ? (exists ? 0 : 1) : 2,
+                        Distance = (center - _camera.transform.position).sqrMagnitude
+                    });
                 }
             }
+        }
+
+        private void BuildChunk(BuildRequest request)
+        {
+            Layer layer = request.Layer;
+            Vector2Int key = request.Key;
+            LayerSettings settings = request.Settings;
+            if (!layer.Chunks.TryGetValue(key, out Chunk chunk))
+            {
+                chunk = layer.Pool.Count > 0 ? layer.Pool.Pop()
+                    : CreateChunk(layer, layer == _background ? "Background" : "Foreground", key);
+                layer.Chunks.Add(key, chunk);
+            }
+
+            int startX = key.x * ChunkSize;
+            int startY = key.y * ChunkSize;
+            var region = new RectInt(startX, startY, Mathf.Min(ChunkSize, layer.Grid.Width - startX),
+                Mathf.Min(ChunkSize, layer.Grid.Height - startY));
+            chunk.Root.layer = settings.GameObjectLayer;
+            chunk.InkRenderer.gameObject.layer = settings.GameObjectLayer;
+            chunk.Root.transform.position = new Vector3(startX, startY, settings.Z);
+            int sortingLayerId = SortingLayer.NameToID(settings.SortingLayerName);
+            chunk.Renderer.sortingLayerID = sortingLayerId;
+            chunk.Renderer.sortingOrder = 0;
+            chunk.InkRenderer.sortingLayerID = sortingLayerId;
+            chunk.InkRenderer.sortingOrder = 1;
+            _properties.Clear();
+            _properties.SetColor("_LayerTint", settings.Tint);
+            chunk.Renderer.SetPropertyBlock(_properties);
+            chunk.InkRenderer.SetPropertyBlock(_properties);
+            chunk.Renderer.sharedMaterials = _builder.Build(layer.Grid, region, chunk.Mesh, chunk.InkMesh,
+                GetFillMaterial, layer == _background);
+            chunk.Renderer.enabled = chunk.Mesh.subMeshCount > 0;
+            chunk.InkRenderer.enabled = chunk.InkMesh.vertexCount > 0;
+            chunk.Dirty = false;
+            chunk.Root.SetActive(true);
         }
 
         private Chunk CreateChunk(Layer layer, string layerName, Vector2Int key)
@@ -372,6 +430,7 @@ namespace SketchLand
 
             _foreground = null;
             _background = null;
+            _pending.Clear();
         }
 
         private void ReleaseLayer(Layer layer)
@@ -385,6 +444,9 @@ namespace SketchLand
                 DestroyChunk(chunk);
 
             layer.Chunks.Clear();
+            foreach (Chunk chunk in layer.Pool)
+                DestroyChunk(chunk);
+            layer.Pool.Clear();
             if (layer.Root != null)
             {
                 layer.Root.SetActive(false);

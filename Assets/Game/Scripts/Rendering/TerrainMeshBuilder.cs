@@ -29,6 +29,7 @@ namespace SketchLand
 
         private readonly List<Material> _materials = new();
         private readonly List<List<int>> _triangles = new();
+        private readonly Stack<List<int>> _trianglePool = new();
         private readonly Dictionary<Material, int> _materialIndices = new();
 
         private readonly List<int> _inkTriangles = new();
@@ -63,6 +64,11 @@ namespace SketchLand
             _colors.Clear();
 
             _materials.Clear();
+            foreach (List<int> triangles in _triangles)
+            {
+                triangles.Clear();
+                _trianglePool.Push(triangles);
+            }
             _triangles.Clear();
             _materialIndices.Clear();
             _inkTriangles.Clear();
@@ -131,7 +137,7 @@ namespace SketchLand
 
             _materialIndices.Add(material, index);
             _materials.Add(material);
-            _triangles.Add(new List<int>());
+            _triangles.Add(_trianglePool.Count > 0 ? _trianglePool.Pop() : new List<int>());
 
             return index;
         }
@@ -327,24 +333,23 @@ namespace SketchLand
             float feather = 0.012f;
             float halfWidth = width * 0.5f;
 
-            float[] distances =
-            {
-                -halfWidth - feather,
-                -halfWidth,
-                halfWidth,
-                halfWidth + feather
-            };
-
             int first = _vertices.Count;
 
-            for (int i = 0; i < distances.Length; i++)
+            for (int i = 0; i < 4; i++)
             {
                 Color vertexColor = color;
 
-                if (i == 0 || i == distances.Length - 1)
+                if (i == 0 || i == 3)
                     vertexColor.a = 0f;
 
-                Vector2 offset = inward * distances[i];
+                float distance = i switch
+                {
+                    0 => -halfWidth - feather,
+                    1 => -halfWidth,
+                    2 => halfWidth,
+                    _ => halfWidth + feather
+                };
+                Vector2 offset = inward * distance;
 
                 AddVertex(a + offset, Vector2.zero, vertexColor);
                 AddVertex(b + offset, Vector2.zero, vertexColor);
