@@ -198,6 +198,8 @@ namespace SketchLand
             if (Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead) return;
 
             Vector2 scrollDelta = context.ReadValue<Vector2>();
+            // Down/right advance; up/left go back. Shift may redirect the wheel to X.
+            float scroll = scrollDelta.y != 0f ? scrollDelta.y : -scrollDelta.x;
             int itemCount = InventoryManager.Instance.HotbarSize;
             if (itemCount == 0)
             {
@@ -206,13 +208,13 @@ namespace SketchLand
 
             int selectedSlotIndex = ActiveHotbarIndex;
 
-            if (scrollDelta.y > 0f)
+            if (scroll > 0f)
             {
                 int upcomingIndex = selectedSlotIndex - 1;
                 selectedSlotIndex = upcomingIndex < 0 ? itemCount - 1 : selectedSlotIndex - 1;
                 SelectHotbarSlot(selectedSlotIndex);
             }
-            else if (scrollDelta.y < 0f)
+            else if (scroll < 0f)
             {
                 int upcomingIndex = selectedSlotIndex + 1;
                 selectedSlotIndex = upcomingIndex >= itemCount ? 0 : selectedSlotIndex + 1;
