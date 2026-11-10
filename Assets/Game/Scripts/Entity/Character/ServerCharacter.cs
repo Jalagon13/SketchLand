@@ -29,7 +29,7 @@ namespace SketchLand
         public CharacterStats Stats { get; private set; }
         public DamageReceiver DamageReceiver { get; private set; }
 
-        private const float KnockbackThreshold = 1.5f;
+        private const float KnockbackThreshold = 3.75f;
         private const float KnockbackDecay = 2f;
         private float? _facingOverride;
 

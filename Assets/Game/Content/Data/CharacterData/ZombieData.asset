@@ -19,7 +19,7 @@ MonoBehaviour:
   <BaseDefense>k__BackingField: 4
   <BaseDamage>k__BackingField: 6
   <KnockbackForce>k__BackingField: 10
-  <BaseKbResist>k__BackingField: 0.05
+  <BaseKbResist>k__BackingField: 0
   <BaseSpeed>k__BackingField: 2
   <BaseIFrameDuration>k__BackingField: 0.17
   <BaseTurnSharpness>k__BackingField: 5

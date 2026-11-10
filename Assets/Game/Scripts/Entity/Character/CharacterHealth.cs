@@ -61,7 +61,7 @@ namespace SketchLand
         {
             OnHealthChanged?.Invoke(this, new(_character.Stats.MaxHealth.GetValue(), CurrentHealth.Value, previousValue));
             
-            if (CurrentHealth.Value <= 0 && CurrentLifeState.Value != LifeState.Dead)
+            if (_character.Data.CanDie && CurrentHealth.Value <= 0 && CurrentLifeState.Value != LifeState.Dead)
             {
                 CurrentLifeState.Value = LifeState.Dead;
                 AudioManager.Instance.PlayOneShot(_character.Data.CharacterDeathSFX, transform.position);
@@ -79,7 +79,8 @@ namespace SketchLand
             if (!IsServer || netDamage <= 0) return;
             if (triggerIFrame && CurrentLifeState.Value == LifeState.IFrame) return;
 
-            CurrentHealth.Value = Mathf.Max(0, CurrentHealth.Value - netDamage);
+            int minimumHealth = _character.Data.CanDie ? 0 : 1;
+            CurrentHealth.Value = Mathf.Max(minimumHealth, CurrentHealth.Value - netDamage);
             
             if(CurrentHealth.Value > 0)
             {

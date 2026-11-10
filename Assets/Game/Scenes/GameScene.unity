@@ -2333,13 +2333,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8f52762262d413e849637a1b15c3fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.CharacterSpawnRules
-  _tempMaxCharCount: 6
-  _tempPerSecSpawnChance: 0.125
+  _tempMaxCharCount: 12
+  _tempPerSecSpawnChance: 0.25
   _tempSpawnEntries:
   - _character: {fileID: 11400000, guid: 2a9db1f511b6a4888a49dd1d2f56bd26, type: 2}
-    _weight: 1
+    _weight: 0.25
   - _character: {fileID: 11400000, guid: e8ced5de931fd400da6f4da2853b1d16, type: 2}
-    _weight: 0.5
+    _weight: 1
 --- !u!114 &653184667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4422,20 +4422,14 @@ MonoBehaviour:
     _amount: 1
   - _ingredient: {fileID: 11400000, guid: 56e413806c6d64ffa868bcf95d2c3967, type: 2}
     _amount: 1
-  - _ingredient: {fileID: 11400000, guid: 1c2c9103005254e2096a71428bc94070, type: 2}
-    _amount: 999
-  - _ingredient: {fileID: 11400000, guid: 81a74ab6b5b314aa5a95260481a734d8, type: 2}
-    _amount: 999
   - _ingredient: {fileID: 11400000, guid: e7abd829c61264bd08d0508539b98356, type: 2}
     _amount: 1
+  - _ingredient: {fileID: 11400000, guid: 81a74ab6b5b314aa5a95260481a734d8, type: 2}
+    _amount: 999
+  - _ingredient: {fileID: 11400000, guid: 1c2c9103005254e2096a71428bc94070, type: 2}
+    _amount: 999
   - _ingredient: {fileID: 11400000, guid: dbcbcd20bffa749e2920a1db8a6a1792, type: 2}
     _amount: 999
-  - _ingredient: {fileID: 11400000, guid: d86b50bd74a1a43efbc5d95c02f509e0, type: 2}
-    _amount: 1
-  - _ingredient: {fileID: 11400000, guid: 02132e62956c84c0bb16dd58284ffc00, type: 2}
-    _amount: 1
-  - _ingredient: {fileID: 11400000, guid: 4fcd6e93ddb604f51af1026081d52a6b, type: 2}
-    _amount: 1
 --- !u!114 &1178486984
 MonoBehaviour:
   m_ObjectHideFlags: 0
