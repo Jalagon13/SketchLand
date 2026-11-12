@@ -143,7 +143,7 @@ namespace SketchLand
             }
             // Closed mitered ink ring, including all newly cut edges, with a soft outer edge.
             int ring = _vertices.Count;
-            float halfWidth = Mathf.Clamp(config.OutlineWidth * 0.4f, 0.006f, 0.025f);
+            float halfWidth = Mathf.Clamp(config.OutlineWidth * 0.4f, 0.006f, 0.025f) * 1.2f;
             for (int i = 0; i < polygon.Count; i++)
             {
                 Vector2 point = polygon[i];

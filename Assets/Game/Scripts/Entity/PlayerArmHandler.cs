@@ -72,9 +72,9 @@ namespace SketchLand
             EndSwing();
         }
 
-        public void Swing(ItemSO item)
+        public void Swing(ItemSO item, bool applyDamage = true)
         {
-            if (IsSwinging || Time.time < _nextSwingTime)
+            if (IsSwinging || (applyDamage && Time.time < _nextSwingTime))
                 return;
 
             // Clean up any previous sequence before initializing this swing.
@@ -84,7 +84,7 @@ namespace SketchLand
             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PlayerAirThrustSFX, transform.position);
 
             IsSwinging = true;
-            var tool = item as ToolItemSO;
+            var tool = applyDamage ? item as ToolItemSO : null;
             var player = Player.Instance;
             _currentTool = tool;
             _rangedHandler.CancelCharge();
@@ -135,7 +135,7 @@ namespace SketchLand
             _swingSequence.AppendCallback(() =>
             {
                 _heldItemDisplay.FinishRaise();
-                _isHitboxActive = true;
+                _isHitboxActive = applyDamage;
             });
 
             float duration = tool?.SwingDuration ?? player.SwingDuration;
@@ -152,17 +152,21 @@ namespace SketchLand
 
             // One mining attempt per swing, halfway through the active arc.
             // Killing the sequence before impact also cancels the mining hit.
-            _swingSequence.InsertCallback(miningImpactTime, () =>
+            if (applyDamage)
             {
-                if (Player.Instance != null && Player.Instance.Character == _character)
-                    MiningManager.Instance?.TryPerformMine(tool);
-            });
+                _swingSequence.InsertCallback(miningImpactTime, () =>
+                {
+                    if (Player.Instance != null && Player.Instance.Character == _character)
+                        MiningManager.Instance?.TryPerformMine(tool);
+                });
+            }
 
             // Bring the same item back to the animated hand before reattaching.
             _swingSequence.AppendCallback(() =>
             {
                 _isHitboxActive = false;
-                _nextSwingTime = Time.time + (tool?.SwingCooldown ?? player.SwingCooldown);
+                if (applyDamage)
+                    _nextSwingTime = Time.time + (tool?.SwingCooldown ?? player.SwingCooldown);
                 _heldItemDisplay.BeginReturn();
                 _handGripIK.ReleaseGrip();
             });

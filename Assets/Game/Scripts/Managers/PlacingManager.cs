@@ -118,6 +118,10 @@ namespace SketchLand
             InventoryInputManager.Instance.GetActiveInvSlot().RemoveFromCurrentAmount(1);
             InventoryManager.Instance.RefreshInventory();
 
+            // Resolve selection after consumption so the last item doesn't cancel the swing.
+            var activeSlot = InventoryInputManager.Instance.GetActiveInvSlot();
+            Player.Instance.ArmHandler.Swing(activeSlot.IsEmpty ? null : activeSlot.GetItemSO(), applyDamage: false);
+
             float interval = _placementsPerSecond > 0f ? 1f / _placementsPerSecond : 0.25f;
             _nextPlaceTime = Time.time + interval;
             
