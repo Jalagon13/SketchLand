@@ -18,7 +18,7 @@ MonoBehaviour:
   <IsStackable>k__BackingField: 0
   <HeldPosition>k__BackingField: {x: 0.226, y: -0.328, z: 0}
   <HeldRotation>k__BackingField: 167.9009
-  <HeldScale>k__BackingField: {x: 1, y: 1, z: 1}
+  <HeldScale>k__BackingField: {x: 0.9, y: 0.9, z: 0.9}
   <HarvestType>k__BackingField: 1
   <MiningDamage>k__BackingField: 25
   <MeleeDamage>k__BackingField: 3
