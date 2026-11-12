@@ -17,23 +17,7 @@ namespace SketchLand
 
         [field: Header("Swing Settings")]
         [field: SerializeField] public int SwingArcAngle { get; private set; } = 120;
-        [field: SerializeField] public float SwingDuration { get; private set; } = 0.5f;
-        [field: SerializeField] public int SwingEndArcAngle { get; private set; } = 10;
-        [field: SerializeField] public float SwingEndDuration { get; private set; } = 0.25f;
-
-        public override void OnPrimaryActionStarted(Player player)
-        {
-            player.ArmHandler.StartPrimaryAction(this);
-        }
-        
-        public override void OnPrimaryActionHeld(Player player)
-        {
-            player.ArmHandler.HoldPrimaryAction(this);
-        }
-        
-        public override void OnPrimaryActionRelease(Player player)
-        {
-            player.ArmHandler.ReleasePrimaryAction(this);
-        }
+        [field: SerializeField] public float SwingDuration { get; private set; } = 0.3f;
+        [field: SerializeField, Min(0f)] public float SwingCooldown { get; private set; } = 0.25f;
     }
 }

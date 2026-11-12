@@ -19,8 +19,9 @@ namespace SketchLand
         
         public InventorySlot ActiveSlot { get; private set; }
 
-        private ItemSO _primaryActionItem;
-        private InventorySlot _primaryActionSlot;
+        private bool _swingHeld;
+        private ItemSO _secondaryActionItem;
+        private InventorySlot _secondaryActionSlot;
 
         private void Awake()
         {
@@ -48,104 +49,90 @@ namespace SketchLand
         private void Update()
         {
             ActiveSlot = GetActiveInvSlot();
-            // Consuming the cursor stack can reveal the selected hotbar tool.
-            // That tool must not inherit the placement press.
-            if (_primaryActionItem != null &&
-                (ActiveSlot != _primaryActionSlot || ActiveSlot.IsEmpty || ActiveSlot.GetItemSO() != _primaryActionItem))
-            {
-                CancelPrimaryAction();
-            }
-            if (_primaryActionItem != null && (IsInventoryOpen || Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead))
-                CancelPrimaryAction();
-            if(ActiveSlot.IsEmpty) return;
-            
-            if(Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead) return;
-            if (WorldManager.Instance.MouseOverUI) return;
-            
             var player = Player.Instance;
+            if (!CanAct())
+            {
+                _swingHeld = false;
+                CancelSecondaryAction();
+                return;
+            }
 
-            if (GameInput.Instance.PrimaryActionHeld)
-            {
-                _primaryActionItem?.OnPrimaryActionHeld(player);
-            }
-            else if(GameInput.Instance.SecondaryActionHeld)
-            {
-                ActiveSlot.GetItemSO().OnSecondaryActionHeld(player);
-            }
+            if (_secondaryActionItem != null && !HasSecondaryActionItem())
+                CancelSecondaryAction();
+
+            if (WorldManager.Instance.MouseOverUI) return;
+            if (_swingHeld)
+                player.ArmHandler.Swing(ActiveSlot.IsEmpty ? null : ActiveSlot.GetItemSO());
+            else
+                _secondaryActionItem?.OnSecondaryActionHeld(player);
+        }
+
+        private bool CanAct()
+        {
+            return WorldManager.Instance.IsWorldReady && Player.Instance.Character != null
+                && Player.Instance.Character.Health.CurrentLifeState.Value != LifeState.Dead;
+        }
+
+        private bool HasSecondaryActionItem()
+        {
+            var slot = GetActiveInvSlot();
+            return slot == _secondaryActionSlot && !slot.IsEmpty && slot.GetItemSO() == _secondaryActionItem;
         }
 
         private void OnPrimaryActionPressed(InputAction.CallbackContext context)
         {
-            // Release the item that received the press, even if selection changed
-            // or the player died before releasing the button.
-            if (context.phase == InputActionPhase.Canceled)
-            {
-                if (IsInventoryOpen || WorldManager.Instance.MouseOverUI
-                    || Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead
-                    || GetActiveInvSlot() != _primaryActionSlot)
-                    CancelPrimaryAction();
-                else
-                    ReleasePrimaryAction();
-                return;
-            }
+            _swingHeld = context.started && CanAct() && !IsInventoryOpen && !WorldManager.Instance.MouseOverUI;
+            if (!_swingHeld) return;
 
-            if (context.phase != InputActionPhase.Started) return;
-            CancelPrimaryAction();
-            if (IsInventoryOpen) return;
-            if (Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead) return;
-
-            var activeSlot = GetActiveInvSlot();
-            if (activeSlot.IsEmpty || WorldManager.Instance.MouseOverUI) return;
-
-            _primaryActionSlot = activeSlot;
-            _primaryActionItem = activeSlot.GetItemSO();
-            _primaryActionItem.OnPrimaryActionStarted(Player.Instance);
+            CancelSecondaryAction();
+            var slot = GetActiveInvSlot();
+            Player.Instance.ArmHandler.Swing(slot.IsEmpty ? null : slot.GetItemSO());
         }
 
-        private void CancelPrimaryAction()
+        private void CancelSecondaryAction()
         {
-            var item = _primaryActionItem;
-            _primaryActionItem = null;
-            _primaryActionSlot = null;
-            item?.OnPrimaryActionCancelled(Player.Instance);
+            var item = _secondaryActionItem;
+            _secondaryActionItem = null;
+            _secondaryActionSlot = null;
+            item?.OnSecondaryActionCancelled(Player.Instance);
         }
 
         private void OnDisable()
         {
+            _swingHeld = false;
             if (Player.Instance != null)
-                CancelPrimaryAction();
+                CancelSecondaryAction();
         }
 
-        private void ReleasePrimaryAction()
+        private void ReleaseSecondaryAction()
         {
-            var item = _primaryActionItem;
-            _primaryActionItem = null;
-            _primaryActionSlot = null;
-            item?.OnPrimaryActionRelease(Player.Instance);
+            var item = _secondaryActionItem;
+            _secondaryActionItem = null;
+            _secondaryActionSlot = null;
+            item?.OnSecondaryActionRelease(Player.Instance);
         }
 
         private void OnSecondaryActionPressed(InputAction.CallbackContext context)
         {
-            if (Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead) return;
-
-            var activeSlot = GetActiveInvSlot();
-            
-            if (!activeSlot.IsEmpty)
+            if (context.canceled)
             {
-                var player = Player.Instance;
-
-                if (context.phase == InputActionPhase.Started)
-                {
-                    if (WorldManager.Instance.MouseOverUI) return;
-
-                    activeSlot.GetItemSO().OnSecondaryActionStarted(player);
-                }
-                else if (context.phase == InputActionPhase.Canceled)
-                {
-                    activeSlot.GetItemSO().OnSecondaryActionRelease(player);
-                }
-
+                if (_secondaryActionItem != null && CanAct() && !WorldManager.Instance.MouseOverUI && HasSecondaryActionItem())
+                    ReleaseSecondaryAction();
+                else
+                    CancelSecondaryAction();
+                return;
             }
+
+            if (!context.started || !CanAct() || WorldManager.Instance.MouseOverUI || _swingHeld) return;
+            var cursor = InventoryCursorManager.Instance.CursorSlot;
+            if (cursor.IsEmpty && Player.Instance.TryInteractWithObject()) return;
+            if (IsInventoryOpen && cursor.IsEmpty) return;
+
+            var slot = GetActiveInvSlot();
+            if (slot.IsEmpty) return;
+            _secondaryActionSlot = slot;
+            _secondaryActionItem = slot.GetItemSO();
+            _secondaryActionItem.OnSecondaryActionStarted(Player.Instance);
         }
 
         public InventorySlot GetActiveInvSlot()
@@ -176,7 +163,8 @@ namespace SketchLand
         {
             if (Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead) return;
 
-            CancelPrimaryAction();
+            CancelSecondaryAction();
+            _swingHeld = false;
             IsInventoryOpen = !IsInventoryOpen;
 
             OnInventoryOpenChanged?.Invoke(IsInventoryOpen);
@@ -187,7 +175,8 @@ namespace SketchLand
         {
             if (Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead) return;
 
-            CancelPrimaryAction();
+            CancelSecondaryAction();
+            _swingHeld = false;
             IsInventoryOpen = !IsInventoryOpen;
 
             OnInventoryOpenChanged?.Invoke(IsInventoryOpen);
@@ -251,7 +240,7 @@ namespace SketchLand
 
             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.HotbarSlotChangedSFX, default);
 
-            CancelPrimaryAction();
+            CancelSecondaryAction();
             ActiveHotbarIndex = newIndex;
             OnActiveHotbarIndexChanged?.Invoke(ActiveHotbarIndex);
             // Debug.Log($"Active Hotbar Index is: {newIndex}");

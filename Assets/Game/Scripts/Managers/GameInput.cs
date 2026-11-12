@@ -46,6 +46,7 @@ namespace SketchLand
             _playerInput.Player.ToggleBuildLayer.started += GameInput_OnToggleBuildLayer;
             _playerInput.Player.Sprint.started += GameInput_OnSprintAction;
             _playerInput.Player.Sprint.canceled += GameInput_OnSprintAction;
+            _playerInput.Player.ThrowItem.started += GameInput_OnThrowItem;
             
             _playerInput.UI.ScrollWheel.performed += PlayerInput_OnScrollWheel;
             _playerInput.UI.SelectSlot.started += PlayerInput_OnSelectSlot;
@@ -72,6 +73,7 @@ namespace SketchLand
             _playerInput.Player.ToggleBuildLayer.started -= GameInput_OnToggleBuildLayer;
             _playerInput.Player.Sprint.started -= GameInput_OnSprintAction;
             _playerInput.Player.Sprint.canceled -= GameInput_OnSprintAction;
+            _playerInput.Player.ThrowItem.started -= GameInput_OnThrowItem;
 
             _playerInput.UI.ScrollWheel.performed -= PlayerInput_OnScrollWheel;
             _playerInput.UI.SelectSlot.started -= PlayerInput_OnSelectSlot;
@@ -79,6 +81,11 @@ namespace SketchLand
             _playerInput.UI.TogglePauseMenu.started -= PlayerInput_OnTogglePauseMenu;
 
             _playerInput.Disable();
+        }
+
+        private void GameInput_OnThrowItem(InputAction.CallbackContext context)
+        {
+            throw new NotImplementedException();
         }
 
         private void GameInput_OnSprintAction(InputAction.CallbackContext context)

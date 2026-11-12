@@ -15,7 +15,7 @@ namespace SketchLand
         // so moving the mouse during windup changes which tile receives the hit.
         public bool TryPerformMine(ToolItemSO tool)
         {
-            if (!isActiveAndEnabled || tool == null) return false;
+            if (!isActiveAndEnabled) return false;
             if (WorldManager.Instance == null || !WorldManager.Instance.IsWorldReady || WorldManager.Instance.MouseOverUI) return false;
             if (Player.Instance == null || Player.Instance.Character == null) return false;
             if (Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead) return false;
@@ -38,13 +38,9 @@ namespace SketchLand
                 TileConfigSO tileConfig = tileData.TileConfig;
                 if (tileConfig == null) return false;
 
-                // If the tile requires a specific tool, verify the equipped tool matches
-                if (tileConfig.RequiredHarvestType != HarvestType.None && tool.HarvestType != tileConfig.RequiredHarvestType)
-                {
-                    return false; // Incompatible tool (e.g. pickaxe hitting tree, axe hitting stone)
-                }
-
-                WorldManager.Instance.DamageTile(targetPosition, tool.MiningDamage, targetLayer, refreshCurrentBounds: true);
+                bool preferredTool = tool != null && tool.HarvestType != HarvestType.None && tool.HarvestType == tileConfig.RequiredHarvestType;
+                int damage = preferredTool ? tool.MiningDamage : Player.Instance.MiningDamage;
+                WorldManager.Instance.DamageTile(targetPosition, damage, targetLayer, refreshCurrentBounds: true);
                 
                 return true;
             }

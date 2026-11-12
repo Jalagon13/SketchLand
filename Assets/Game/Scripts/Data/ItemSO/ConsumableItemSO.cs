@@ -28,7 +28,7 @@ namespace SketchLand
             return string.IsNullOrWhiteSpace(Description) ? restoreDescription : $"{Description}<br>{restoreDescription}";
         }
 
-        public override void OnPrimaryActionStarted(Player player)
+        public override void OnSecondaryActionStarted(Player player)
         {
             if (player == null || player.Character == null) return;
             if (player.Character.Health.CurrentLifeState.Value == LifeState.Dead) return;

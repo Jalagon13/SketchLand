@@ -153,6 +153,16 @@ namespace SketchLand
                     ""interactions"": """",
                     ""initialStateCheck"": false,
                     ""priority"": 0
+                },
+                {
+                    ""name"": ""ThrowItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""8bd75745-0148-4fdc-8d70-139decb24ccb"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false,
+                    ""priority"": 0
                 }
             ],
             ""bindings"": [
@@ -362,6 +372,17 @@ namespace SketchLand
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""34f15f34-432a-41a6-96e3-3387126a38f7"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ThrowItem"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -630,6 +651,7 @@ namespace SketchLand
             m_Player_SecondaryAction = m_Player.FindAction("SecondaryAction", throwIfNotFound: true);
             m_Player_ToggleBuildLayer = m_Player.FindAction("ToggleBuildLayer", throwIfNotFound: true);
             m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
+            m_Player_ThrowItem = m_Player.FindAction("ThrowItem", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
@@ -723,6 +745,7 @@ namespace SketchLand
         private readonly InputAction m_Player_SecondaryAction;
         private readonly InputAction m_Player_ToggleBuildLayer;
         private readonly InputAction m_Player_Sprint;
+        private readonly InputAction m_Player_ThrowItem;
         /// <summary>
         /// Provides access to input actions defined in input action map "Player".
         /// </summary>
@@ -758,6 +781,10 @@ namespace SketchLand
             /// Provides access to the underlying input action "Player/Sprint".
             /// </summary>
             public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
+            /// <summary>
+            /// Provides access to the underlying input action "Player/ThrowItem".
+            /// </summary>
+            public InputAction @ThrowItem => m_Wrapper.m_Player_ThrowItem;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -802,6 +829,9 @@ namespace SketchLand
                 @Sprint.started += instance.OnSprint;
                 @Sprint.performed += instance.OnSprint;
                 @Sprint.canceled += instance.OnSprint;
+                @ThrowItem.started += instance.OnThrowItem;
+                @ThrowItem.performed += instance.OnThrowItem;
+                @ThrowItem.canceled += instance.OnThrowItem;
             }
 
             /// <summary>
@@ -831,6 +861,9 @@ namespace SketchLand
                 @Sprint.started -= instance.OnSprint;
                 @Sprint.performed -= instance.OnSprint;
                 @Sprint.canceled -= instance.OnSprint;
+                @ThrowItem.started -= instance.OnThrowItem;
+                @ThrowItem.performed -= instance.OnThrowItem;
+                @ThrowItem.canceled -= instance.OnThrowItem;
             }
 
             /// <summary>
@@ -1107,6 +1140,13 @@ namespace SketchLand
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnSprint(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "ThrowItem" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnThrowItem(InputAction.CallbackContext context);
         }
         /// <summary>
         /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

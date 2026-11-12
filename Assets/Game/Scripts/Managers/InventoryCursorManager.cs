@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace SketchLand
 {
@@ -19,16 +18,6 @@ namespace SketchLand
             Instance = this;
         }
         
-        private void Start() 
-        {
-            GameInput.Instance.OnSecondaryActionPressed += TryToThrowCursorSlotItem;
-        }
-        
-        private void OnDestroy()
-        {
-            GameInput.Instance.OnSecondaryActionPressed -= TryToThrowCursorSlotItem;
-        }
-
         public void RefreshCursorSlot()
         {
             OnCursorSlotChanged?.Invoke();
@@ -40,10 +29,10 @@ namespace SketchLand
             InventoryManager.Instance.RefreshInventory();
         }
 
-        private void TryToThrowCursorSlotItem(InputAction.CallbackContext context)
+        public void ThrowCursorSlotItem()
         {
-            if(CursorSlot.IsEmpty || WorldManager.Instance.MouseOverUI || context.phase != InputActionPhase.Started) return;
-            
+            if (CursorSlot.IsEmpty) return;
+
             Vector2 aimDirection = WorldManager.MouseWorldPosition - (Vector2)Player.Instance.Character.transform.position;
             aimDirection.Normalize();
             aimDirection *= _throwItemForce;

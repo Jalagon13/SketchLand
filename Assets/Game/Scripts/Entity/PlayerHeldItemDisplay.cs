@@ -107,7 +107,7 @@ namespace SketchLand
             ShowItem(_selectedItem);
         }
 
-        public void BeginSwing(ToolItemSO tool)
+        public void BeginSwing(ItemSO item)
         {
             // Detach BEFORE enabling grip IK: a target beneath R_Hand would
             // make the hand chase its own descendant.
@@ -118,7 +118,8 @@ namespace SketchLand
             _itemRoot.localScale = _startScale;
             _transitionProgress = 0f;
             _pose = ItemPose.Raising;
-            ShowItem(tool);
+            _selectedItem = item;
+            ShowItem(item);
         }
 
         public void SetTransitionProgress(float progress)
@@ -171,9 +172,23 @@ namespace SketchLand
                 ReadLocalPose(restPose, out position, out rotation, out scale);
             }
 
-            float blend = Mathf.SmoothStep(0f, 1f, _transitionProgress);
+            float blend = _pose == ItemPose.Returning ? _transitionProgress : Mathf.SmoothStep(0f, 1f, _transitionProgress);
+            Vector3 handPosition = Vector3.Lerp(_startPosition, position, blend);
+            if (_pose == ItemPose.Raising)
+            {
+                // Sweep around the arm pivot as the hand extends into the windup.
+                Vector2 start = _startPosition;
+                Vector2 end = _swingPosition;
+                float startAngle = Mathf.Atan2(start.y, start.x) * Mathf.Rad2Deg;
+                float endAngle = Mathf.Atan2(end.y, end.x) * Mathf.Rad2Deg;
+                float angle = Mathf.LerpAngle(startAngle, endAngle, blend) * Mathf.Deg2Rad;
+                float reach = Mathf.Lerp(start.magnitude, end.magnitude, blend);
+                handPosition.x = Mathf.Cos(angle) * reach;
+                handPosition.y = Mathf.Sin(angle) * reach;
+            }
+
             _itemRoot.SetLocalPositionAndRotation(
-                Vector3.Lerp(_startPosition, position, blend),
+                handPosition,
                 Quaternion.Slerp(_startRotation, rotation, blend));
             _itemRoot.localScale = Vector3.Lerp(_startScale, scale, blend);
         }

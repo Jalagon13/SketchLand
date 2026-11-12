@@ -20,13 +20,11 @@ MonoBehaviour:
   <HeldRotation>k__BackingField: 167.9009
   <HeldScale>k__BackingField: {x: 1, y: 1, z: 1}
   <HarvestType>k__BackingField: 2
-  <TargetLayer>k__BackingField: 0
   <MiningDamage>k__BackingField: 25
   <MeleeDamage>k__BackingField: 3
   <KnockbackForce>k__BackingField: 2
-  <HitboxOffset>k__BackingField: 1.25
+  <HitboxOffset>k__BackingField: 1.5
   <HitboxSize>k__BackingField: {x: 0.6, y: 0.6}
-  <SwingArcAngle>k__BackingField: 110
-  <SwingDuration>k__BackingField: 0.35
-  <SwingEndArcAngle>k__BackingField: 10
-  <SwingEndDuration>k__BackingField: 0.1
+  <SwingArcAngle>k__BackingField: 120
+  <SwingDuration>k__BackingField: 0.25
+  <SwingCooldown>k__BackingField: 0.2

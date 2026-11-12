@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace SketchLand
 {
@@ -16,6 +15,17 @@ namespace SketchLand
         [field: SerializeField] public Vector2 WalkingBoxColliderSize { get; private set; }
         [field: SerializeField] public float SprintSpeed { get; private set; } = 6;
         [field: SerializeField, Min(0f)] public float SprintTransitionSharpness { get; private set; } = 5f;
+
+        [field: Header("Default Swing Settings")]
+        [field: SerializeField] public int MiningDamage { get; private set; } = 1;
+        [field: SerializeField] public int MeleeDamage { get; private set; } = 1;
+        [field: SerializeField, Range(0, ServerCharacter.MaxKnockbackForce)] public int KnockbackForce { get; private set; } = 1;
+        [field: SerializeField] public float HitboxOffset { get; private set; } = 1.0f; // Distance from pivot to blade center
+        [field: SerializeField] public Vector2 HitboxSize { get; private set; } = new Vector2(1.2f, 1.2f);
+
+        [field: SerializeField] public int SwingArcAngle { get; private set; } = 120;
+        [field: SerializeField] public float SwingDuration { get; private set; } = 0.5f;
+        [field: SerializeField, Min(0f)] public float SwingCooldown { get; private set; } = 0.25f;
 
         [field: Header("Jump Settings")]
         [field: SerializeField] public float MinJumpSpeed { get; private set; }
@@ -51,7 +61,6 @@ namespace SketchLand
         {
             GameInput.Instance.OnMoveInputPressed += OnMoveInputPressed;
             GameInput.Instance.OnJumpPressed += OnJumpPressed;
-            GameInput.Instance.OnSecondaryActionPressed += InteractWithObject;
             WorldManager.Instance.OnWorldReady += InitializeSpawn;
             AudioManager.Instance.StartSurfaceAmbience(FMODEvents.Instance.SurfaceAmbience);
 
@@ -62,7 +71,6 @@ namespace SketchLand
         {
             GameInput.Instance.OnMoveInputPressed -= OnMoveInputPressed;
             GameInput.Instance.OnJumpPressed -= OnJumpPressed;
-            GameInput.Instance.OnSecondaryActionPressed -= InteractWithObject;
             WorldManager.Instance.OnWorldReady -= InitializeSpawn;
 
             if (Character != null) Character.Health.CurrentLifeState.OnValueChanged -= OnLifeStateChanged;
@@ -157,18 +165,17 @@ namespace SketchLand
             }
         }
 
-        private void InteractWithObject(InputAction.CallbackContext context)
+        public bool TryInteractWithObject()
         {
-            // Interact with interactable logic here
-            if (!WorldManager.Instance.IsWorldReady || WorldManager.Instance.MouseOverUI || !InventoryCursorManager.Instance.CursorSlot.IsEmpty || context.phase != InputActionPhase.Started || Character.Health.CurrentLifeState.Value == LifeState.Dead) return;
-
             var pos = WorldManager.MouseWorldTilePosition;
             var fgtd = WorldManager.Instance.FgGrid.GetTileData(pos.x, pos.y);
 
             if(fgtd.HasTile && fgtd.TileConfig.InteractBehavior != null)
             {
                 fgtd.TileConfig.InteractBehavior.Interact(pos.x, pos.y);
+                return true;
             }
+            return false;
         }
 
         private void OnJumpPressed()

@@ -12,9 +12,9 @@ namespace SketchLand
         [SerializeField] private PlayerHandGripIK _handGripIK;
 
         public bool IsSwinging { get; private set; }
-        public bool IsActionHeld { get; private set; }
 
         private Sequence _swingSequence;
+        private float _nextSwingTime;
         private readonly HashSet<Entity> _hitEntitiesThisSwing = new();
         private bool _isHitboxActive;
         private ToolItemSO _currentTool;
@@ -35,7 +35,6 @@ namespace SketchLand
         {
             _swingSequence?.Kill();
             EndSwing();
-            IsActionHeld = false;
             if (_character != null && _character.Animator != null)
                 _character.Animator.SetFloat(LocomotionPlayback, 1f);
         }
@@ -44,7 +43,7 @@ namespace SketchLand
         {
             UpdateLocomotionPlayback();
 
-            if (!_isHitboxActive || _currentTool == null) return;
+            if (!_isHitboxActive) return;
             
             CheckWeaponHits();
         }
@@ -60,40 +59,22 @@ namespace SketchLand
 
         private void OnDrawGizmos()
         {
-            if (_hitboxPoint != null && _isHitboxActive && _currentTool != null)
+            if (_hitboxPoint != null && _isHitboxActive)
             {
                 Gizmos.color = Color.red;
-                Gizmos.DrawWireCube(_hitboxPoint.position, _currentTool.HitboxSize);
+                Gizmos.DrawWireCube(_hitboxPoint.position, _currentTool?.HitboxSize ?? Player.Instance.HitboxSize);
             }
-        }
-
-        public void StartPrimaryAction(ToolItemSO tool)
-        {
-            _rangedHandler.CancelCharge();
-            IsActionHeld = true;
-            ExecuteSwing(tool);
-        }
-        
-        public void HoldPrimaryAction(ToolItemSO tool)
-        {
-            ExecuteSwing(tool);
-        }
-        
-        public void ReleasePrimaryAction(ToolItemSO tool)
-        {
-            IsActionHeld = false;
         }
 
         public void CancelSwing()
         {
             _swingSequence?.Kill();
             EndSwing();
-            IsActionHeld = false;
         }
 
-        private void ExecuteSwing(ToolItemSO tool)
+        public void Swing(ItemSO item)
         {
-            if (IsSwinging || tool == null)
+            if (IsSwinging || Time.time < _nextSwingTime)
                 return;
 
             // Clean up any previous sequence before initializing this swing.
@@ -103,7 +84,10 @@ namespace SketchLand
             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PlayerAirThrustSFX, transform.position);
 
             IsSwinging = true;
+            var tool = item as ToolItemSO;
+            var player = Player.Instance;
             _currentTool = tool;
+            _rangedHandler.CancelCharge();
 
             // Convert world-space aim into the mirrored Visuals local space.
             Vector3 worldAim = (Vector3)WorldManager.MouseWorldPosition - transform.position;
@@ -120,12 +104,11 @@ namespace SketchLand
                 localAim = Vector3.right;
 
             float centerAngle = Mathf.Atan2(localAim.y, localAim.x) * Mathf.Rad2Deg;
-            float halfArc = tool.SwingArcAngle * 0.5f;
+            float halfArc = (tool?.SwingArcAngle ?? player.SwingArcAngle) * 0.5f;
             float startAngle = centerAngle + halfArc;
             float endAngle = centerAngle - halfArc;
-            float recoveryAngle = endAngle - tool.SwingEndArcAngle;
 
-            _hitboxPoint.localPosition = new Vector3(tool.HitboxOffset, 0f, 0f);
+            _hitboxPoint.localPosition = new Vector3(tool?.HitboxOffset ?? player.HitboxOffset, 0f, 0f);
 
             // Keep the old working RIGHT-facing art orientation constant.
             // Visuals now supplies the character's left/right reflection.
@@ -135,7 +118,7 @@ namespace SketchLand
             _armPivot.localRotation = Quaternion.Euler(0f, 0f, startAngle);
             _armPivot.gameObject.SetActive(true);
 
-            _heldItemDisplay.BeginSwing(tool);
+            _heldItemDisplay.BeginSwing(item);
 
             _hitEntitiesThisSwing.Clear();
             _isHitboxActive = false;
@@ -155,16 +138,17 @@ namespace SketchLand
                 _isHitboxActive = true;
             });
 
-            float miningImpactTime = _swingSequence.Duration() + tool.SwingDuration * 0.5f;
+            float duration = tool?.SwingDuration ?? player.SwingDuration;
+            float miningImpactTime = _swingSequence.Duration() + duration * 0.5f;
 
             _swingSequence.Append(
             DOVirtual.Float(
                 startAngle,
                 endAngle,
-                tool.SwingDuration,
+                duration,
                 angle => _armPivot.localRotation =
                     Quaternion.Euler(0f, 0f, angle))
-            .SetEase(Ease.InOutCubic));
+            .SetEase(Ease.Linear));
 
             // One mining attempt per swing, halfway through the active arc.
             // Killing the sequence before impact also cancels the mining hit.
@@ -174,20 +158,11 @@ namespace SketchLand
                     MiningManager.Instance?.TryPerformMine(tool);
             });
 
-            _swingSequence.AppendCallback(() => _isHitboxActive = false);
-
-            _swingSequence.Append(
-            DOVirtual.Float(
-                endAngle,
-                recoveryAngle,
-                tool.SwingEndDuration,
-                angle => _armPivot.localRotation =
-                    Quaternion.Euler(0f, 0f, angle))
-            .SetEase(Ease.Linear));
-
             // Bring the same item back to the animated hand before reattaching.
             _swingSequence.AppendCallback(() =>
             {
+                _isHitboxActive = false;
+                _nextSwingTime = Time.time + (tool?.SwingCooldown ?? player.SwingCooldown);
                 _heldItemDisplay.BeginReturn();
                 _handGripIK.ReleaseGrip();
             });
@@ -235,16 +210,15 @@ namespace SketchLand
                 if (_hitEntitiesThisSwing.Contains(entity)) continue;
 
                 // Check AABB overlap
-                bool isOverlapping = GridPhysics.IsOverlapping(hitCenter, _currentTool.HitboxSize, entity.transform.position, entity.ColliderSize);
+                bool isOverlapping = GridPhysics.IsOverlapping(hitCenter, _currentTool?.HitboxSize ?? Player.Instance.HitboxSize, entity.transform.position, entity.ColliderSize);
 
                 if (isOverlapping)
                 {
-                    // Debug.Log($"Hitting {entity.name} for {_currentTool.MeleeDamage} damage");
                     _hitEntitiesThisSwing.Add(entity);
 
                     if (entity is ServerCharacter enemy && enemy.DamageReceiver != null)
                     {
-                        var hitData = new SyncHitData(_currentTool.MeleeDamage, _currentTool.KnockbackForce, Player.Instance.Character.transform.position);
+                        var hitData = new SyncHitData(_currentTool?.MeleeDamage ?? Player.Instance.MeleeDamage, _currentTool?.KnockbackForce ?? Player.Instance.KnockbackForce, Player.Instance.Character.transform.position);
                         enemy.DamageReceiver.ReceiveHit(hitData);
                     }
                 }

@@ -29,13 +29,12 @@ namespace SketchLand
             return Description;
         }
 
-        public virtual void OnPrimaryActionStarted(Player player) { }
-        public virtual void OnPrimaryActionHeld(Player player) { }
-        public virtual void OnPrimaryActionRelease(Player player) { }
-        public virtual void OnPrimaryActionCancelled(Player player) => OnPrimaryActionRelease(player);
-
-        public virtual void OnSecondaryActionStarted(Player player) { }
+        public virtual void OnSecondaryActionStarted(Player player)
+        {
+            InventoryCursorManager.Instance.ThrowCursorSlotItem();
+        }
         public virtual void OnSecondaryActionHeld(Player player) { }
         public virtual void OnSecondaryActionRelease(Player player) { }
+        public virtual void OnSecondaryActionCancelled(Player player) => OnSecondaryActionRelease(player);
     }
 }
