@@ -144,6 +144,40 @@ namespace SketchLand
 
         private void AddCell(TerrainRenderLayout layout, int x, int y, TileData tile, TerrainTileConfigSO config, int materialIndex)
         {
+            BuildCellPolygon(layout, x, y, tile, config, true);
+            Rect cell = layout.GetCellBounds(x, y);
+
+            Vector2 textureSize = new Vector2(Mathf.Max(0.01f, config.TextureWorldSize.x), Mathf.Max(0.01f, config.TextureWorldSize.y));
+
+            int center = AddFillVertex(cell.center, config, textureSize);
+
+            List<int> triangles = _triangles[materialIndex];
+
+            for (int i = 0; i < _polygon.Count; i++)
+            {
+                int a = AddFillVertex(_polygon[i], config, textureSize);
+
+                int b = AddFillVertex(_polygon[(i + 1) % _polygon.Count], config, textureSize);
+
+                triangles.Add(center);
+                triangles.Add(a);
+                triangles.Add(b);
+            }
+        }
+
+        // Capture the same silhouette before the source tile leaves the grid.
+        public Vector2[] CaptureTileOutline(TileGrid grid, Vector2Int position)
+        {
+            TileData tile = grid.GetTileData(position.x, position.y);
+            TerrainTileConfigSO config = GetVisualConfig(tile);
+            if (config == null) return Array.Empty<Vector2>();
+            BuildCellPolygon(new TerrainRenderLayout(grid, false), position.x, position.y, tile, config, false);
+            return _polygon.ToArray();
+        }
+
+        private void BuildCellPolygon(TerrainRenderLayout layout, int x, int y, TileData tile,
+            TerrainTileConfigSO config, bool drawInk)
+        {
             for (int i = 0; i < 4; i++)
             {
                 Vector2Int offset = Neighbours[i];
@@ -187,7 +221,7 @@ namespace SketchLand
                 // Each shared edge is owned by its left/bottom cell.
                 bool ownsBoundary = exposed || edge == 1 || edge == 2;
 
-                if (boundary && ownsBoundary)
+                if (drawInk && boundary && ownsBoundary)
                 {
                     float width = edgeStyle.OutlineWidth;
 
@@ -214,28 +248,12 @@ namespace SketchLand
                         if (i < 6)
                             _polygon.Add(point);
                             
-                        AddInkStrip(last, point, config.OutlineWidth, config.OutlineColor);
+                        if (drawInk) AddInkStrip(last, point, config.OutlineWidth, config.OutlineColor);
                         last = point;
                     }
                 }
             }
 
-            Vector2 textureSize = new Vector2(Mathf.Max(0.01f, config.TextureWorldSize.x), Mathf.Max(0.01f, config.TextureWorldSize.y));
-
-            int center = AddFillVertex(cell.center, config, textureSize);
-
-            List<int> triangles = _triangles[materialIndex];
-
-            for (int i = 0; i < _polygon.Count; i++)
-            {
-                int a = AddFillVertex(_polygon[i], config, textureSize);
-
-                int b = AddFillVertex(_polygon[(i + 1) % _polygon.Count], config, textureSize);
-
-                triangles.Add(center);
-                triangles.Add(a);
-                triangles.Add(b);
-            }
         }
 
         private static TerrainTileConfigSO ResolveStyle(TerrainTileConfigSO a, ushort aId, TerrainTileConfigSO b, ushort bId)

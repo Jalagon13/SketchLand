@@ -37,6 +37,7 @@ namespace SketchLand
             public GameObject Root;
             public SortingGroup Sorting;
             public Action<Vector2Int> Changed;
+            public Action<Vector2Int> Breaking;
             public readonly Dictionary<Vector2Int, Chunk> Chunks = new();
             public readonly Stack<Chunk> Pool = new();
         }
@@ -67,6 +68,7 @@ namespace SketchLand
         };
         private MaterialPropertyBlock _properties;
 
+        private TerrainDestructionEffect _destruction;
         private Material _inkMaterial;
         private Layer _foreground;
         private Layer _background;
@@ -198,6 +200,22 @@ namespace SketchLand
             layer.Changed = position => MarkDirty(boundLayer, position);
 
             grid.OnTileDataChanged += layer.Changed;
+            layer.Breaking = position => EmitDebris(boundLayer, position);
+            grid.OnTileBreaking += layer.Breaking;
+        }
+
+        private void EmitDebris(Layer layer, Vector2Int position)
+        {
+            var config = TerrainMeshBuilder.GetVisualConfig(layer.Grid.GetTileData(position.x, position.y));
+            if (config == null || _terrainShader == null || _camera == null) return;
+            Vector3 viewport = _camera.WorldToViewportPoint(new Vector3(position.x + 0.5f, position.y + 0.5f));
+            if (viewport.z <= 0f || viewport.x < -0.05f || viewport.x > 1.05f || viewport.y < -0.05f || viewport.y > 1.05f) return;
+            if (_destruction == null) _destruction = gameObject.AddComponent<TerrainDestructionEffect>();
+            LayerSettings settings = layer == _background ? _backgroundSettings : _foregroundSettings;
+            _destruction.Emit(_builder.CaptureTileOutline(layer.Grid, position), config,
+                GetFillMaterial(config), GetInkMaterial(), WorldManager.Instance.FgGrid,
+                SortingLayer.NameToID(settings.SortingLayerName), settings.SortingOrder + 2,
+                settings.GameObjectLayer, settings.Z, settings.Tint);
         }
 
         private RectInt GetVisibleChunkRange(int width, int height)
@@ -423,6 +441,7 @@ namespace SketchLand
 
         public void Clear()
         {
+            if (_destruction != null) _destruction.Clear();
             ReleaseLayers();
             ReleaseMaterials();
 
@@ -445,7 +464,9 @@ namespace SketchLand
             if (layer == null)
                 return;
 
+            if (_destruction != null) _destruction.Clear();
             layer.Grid.OnTileDataChanged -= layer.Changed;
+            layer.Grid.OnTileBreaking -= layer.Breaking;
 
             foreach (Chunk chunk in layer.Chunks.Values)
                 DestroyChunk(chunk);
@@ -477,6 +498,7 @@ namespace SketchLand
 
         private void ReleaseMaterials()
         {
+            if (_destruction != null) _destruction.Clear();
             foreach (Material material in _fillMaterials.Values)
             {
                 if (material != null)

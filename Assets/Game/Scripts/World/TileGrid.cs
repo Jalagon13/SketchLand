@@ -7,6 +7,7 @@ namespace SketchLand
     public class TileGrid
     {
         public event Action<Vector2Int> OnTileDestroyed;
+        public event Action<Vector2Int> OnTileBreaking;
         public event Action<Vector2Int> OnTilePlaced;
         public event Action<Vector2Int> OnTileDataChanged;
         public event Action OnDamageChanged;
@@ -146,6 +147,8 @@ namespace SketchLand
 
             if (tc != null)
             {
+                OnTileBreaking?.Invoke(new Vector2Int(x, y));
+
                 // Let the TileConfig handle clearing the cells and dropping items!
                 tc.OnTileDestroyed(this, x, y, targetTile, refreshCurrentBounds);
 
