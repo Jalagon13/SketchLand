@@ -457,7 +457,6 @@ MonoBehaviour:
   _visuals: {fileID: 1976869152849430371}
   _animator: {fileID: 6169355257030218549}
   DesiredDirection: {x: 0, y: 0}
-  KnockbackVelocity: {x: 0, y: 0}
 --- !u!114 &4397858196725711225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -488,7 +487,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.PlayerHandGripIK
   _solver: {fileID: 1132554295202898327}
   _gripPoint: {fileID: 4929472780235366128}
-  _blendDuration: 0.1
+  _blendDuration: 0.08
 --- !u!114 &8607429953159819184
 MonoBehaviour:
   m_ObjectHideFlags: 0
