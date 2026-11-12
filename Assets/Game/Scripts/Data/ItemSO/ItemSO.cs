@@ -29,10 +29,7 @@ namespace SketchLand
             return Description;
         }
 
-        public virtual void OnSecondaryActionStarted(Player player)
-        {
-            InventoryCursorManager.Instance.ThrowCursorSlotItem();
-        }
+        public virtual void OnSecondaryActionStarted(Player player) { }
         public virtual void OnSecondaryActionHeld(Player player) { }
         public virtual void OnSecondaryActionRelease(Player player) { }
         public virtual void OnSecondaryActionCancelled(Player player) => OnSecondaryActionRelease(player);

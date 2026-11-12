@@ -64,6 +64,7 @@ namespace SketchLand
             // Deduct 1 potion from the active slot
             AudioManager.Instance.PlayOneShot(ConsumeSFX, Player.Instance.transform.position);
             InventoryInputManager.Instance.GetActiveInvSlot().RemoveFromCurrentAmount(1);
+            InventoryManager.Instance.RefreshInventory();
         }
     }
 }

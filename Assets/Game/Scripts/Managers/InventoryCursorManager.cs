@@ -29,17 +29,12 @@ namespace SketchLand
             InventoryManager.Instance.RefreshInventory();
         }
 
-        public void ThrowCursorSlotItem()
+        public void ThrowItem(InventorySlot slot)
         {
-            if (CursorSlot.IsEmpty) return;
-
-            Vector2 aimDirection = WorldManager.MouseWorldPosition - (Vector2)Player.Instance.Character.transform.position;
-            aimDirection.Normalize();
-            aimDirection *= _throwItemForce;
-            
-            GameManager.Instance.SpawnItem(GameDataRegistry.Instance.GetItemSOFromItemId(CursorSlot.ItemId), CursorSlot.Amount, Player.Instance.Character.transform.position, aimDirection);
-            CursorSlot.Clear();
-
+            Vector2 position = Player.Instance.Character.transform.position;
+            Vector2 direction = (WorldManager.MouseWorldPosition - position).normalized;
+            GameManager.Instance.SpawnItem(slot.GetItemSO(), slot.Amount, position, direction * _throwItemForce);
+            slot.Clear();
             InventoryManager.Instance.RefreshInventory();
         }
 

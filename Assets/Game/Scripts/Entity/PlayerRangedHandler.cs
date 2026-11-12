@@ -41,7 +41,7 @@ namespace SketchLand
         public void StartSecondaryAction(BowItemSO weapon)
         {
             if (weapon == null || IsCharging || _bowPose == null) return;
-            if (_character.Health.CurrentLifeState.Value == LifeState.Dead || InventoryInputManager.Instance.IsInventoryOpen) return;
+            if (_character.Health.CurrentLifeState.Value == LifeState.Dead) return;
 
             ArrowItemSO arrow = FindArrow();
             if (arrow == null) return;
@@ -97,7 +97,7 @@ namespace SketchLand
 
         private bool CanContinueCharge()
         {
-            if (_character.Health.CurrentLifeState.Value == LifeState.Dead || InventoryInputManager.Instance.IsInventoryOpen) return false;
+            if (_character.Health.CurrentLifeState.Value == LifeState.Dead) return false;
             var slot = InventoryInputManager.Instance.GetActiveInvSlot();
             return slot == _sourceSlot && !slot.IsEmpty && slot.GetItemSO() == _weapon
                 && _arrow != null && _arrow.Projectile != null && _arrow.Projectile.ProjectilePrefab != null

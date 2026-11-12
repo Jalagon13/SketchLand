@@ -32,6 +32,7 @@ namespace SketchLand
         {
             GameInput.Instance.OnScrollWheel += OnScrollWheel;
             GameInput.Instance.OnSelectSlot += OnSelectSlot;
+            GameInput.Instance.OnThrowItemPressed += OnThrowItemPressed;
             GameInput.Instance.OnToggleInventory += OnToggleInventory;
             GameInput.Instance.OnPrimaryActionPressed += OnPrimaryActionPressed;
             GameInput.Instance.OnSecondaryActionPressed += OnSecondaryActionPressed;
@@ -41,6 +42,7 @@ namespace SketchLand
         {
             GameInput.Instance.OnScrollWheel -= OnScrollWheel;
             GameInput.Instance.OnSelectSlot -= OnSelectSlot;
+            GameInput.Instance.OnThrowItemPressed -= OnThrowItemPressed;
             GameInput.Instance.OnToggleInventory -= OnToggleInventory;
             GameInput.Instance.OnPrimaryActionPressed -= OnPrimaryActionPressed;
             GameInput.Instance.OnSecondaryActionPressed -= OnSecondaryActionPressed;
@@ -79,9 +81,20 @@ namespace SketchLand
             return slot == _secondaryActionSlot && !slot.IsEmpty && slot.GetItemSO() == _secondaryActionItem;
         }
 
+        private void OnThrowItemPressed()
+        {
+            if (!CanAct()) return;
+
+            var slot = GetActiveInvSlot();
+            if (slot.IsEmpty) return;
+
+            CancelSecondaryAction();
+            InventoryCursorManager.Instance.ThrowItem(slot);
+        }
+
         private void OnPrimaryActionPressed(InputAction.CallbackContext context)
         {
-            _swingHeld = context.started && CanAct() && !IsInventoryOpen && !WorldManager.Instance.MouseOverUI;
+            _swingHeld = context.started && CanAct() && !WorldManager.Instance.MouseOverUI;
             if (!_swingHeld) return;
 
             CancelSecondaryAction();
@@ -126,7 +139,6 @@ namespace SketchLand
             if (!context.started || !CanAct() || WorldManager.Instance.MouseOverUI || _swingHeld) return;
             var cursor = InventoryCursorManager.Instance.CursorSlot;
             if (cursor.IsEmpty && Player.Instance.TryInteractWithObject()) return;
-            if (IsInventoryOpen && cursor.IsEmpty) return;
 
             var slot = GetActiveInvSlot();
             if (slot.IsEmpty) return;

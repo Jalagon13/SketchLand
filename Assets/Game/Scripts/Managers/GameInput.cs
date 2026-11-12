@@ -10,6 +10,7 @@ namespace SketchLand
 
         public event Action<Vector2> OnMoveInputPressed;
         public event Action OnJumpPressed;
+        public event Action OnThrowItemPressed;
         public event Action<InputAction.CallbackContext> OnPrimaryActionPressed;
         public event Action<InputAction.CallbackContext> OnSecondaryActionPressed;
         public event Action<InputAction.CallbackContext> OnScrollWheel;
@@ -85,7 +86,7 @@ namespace SketchLand
 
         private void GameInput_OnThrowItem(InputAction.CallbackContext context)
         {
-            throw new NotImplementedException();
+            OnThrowItemPressed?.Invoke();
         }
 
         private void GameInput_OnSprintAction(InputAction.CallbackContext context)
