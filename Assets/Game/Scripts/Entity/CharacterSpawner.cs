@@ -58,10 +58,7 @@ namespace SketchLand
             if (LocalCurrentCharCount >= CurrentCircumstance.MaxCharacterCount)
                 return; // Enforce local cap
 
-            if(!CurrentCircumstance.SpawnPool.TrySelectCharacter(out CharacterSpawnEntry spawnEntry))
-                return;
-            
-            if (!TryToFindSpawnSpot(spawnEntry, out Vector2 spawnSpot)) 
+            if (!TryToFindSpawnSpot(out CharacterSpawnEntry spawnEntry, out Vector2 spawnSpot))
                 return;
             
             if(!CharacterManager.Instance.TrySpawnCharacter(this, spawnEntry.Character.CharacterPrefab, spawnSpot, out ServerCharacter spawnedCharacter))
@@ -72,8 +69,10 @@ namespace SketchLand
             // Debug.Log($"Global Character count: {CharacterManager.Instance.CurrentCharacterCount}/{CharacterManager.Instance.GlobalMaxCharCap}");
         }
 
-        private bool TryToFindSpawnSpot(CharacterSpawnEntry spawnEntry, out Vector2 spawnSpot)
+        private bool TryToFindSpawnSpot(out CharacterSpawnEntry spawnEntry, out Vector2 spawnSpot)
         {
+            var world = WorldManager.Instance;
+            spawnEntry = default;
             spawnSpot = default;
 
             for (int attempt = 0; attempt < 50; attempt++)
@@ -94,6 +93,11 @@ namespace SketchLand
                 if(!TryFindGround(candidate, out Vector2Int foundGroundSpot))
                     continue;
                     
+                var zone = world.GetZoneAtY(foundGroundSpot.y);
+                bool openBackground = world.BgGrid.GetTileData(foundGroundSpot.x, foundGroundSpot.y).IsAir;
+                if (!CurrentCircumstance.SpawnPool.TrySelectCharacter(zone, world.Clock.CurrentPhase, openBackground, out spawnEntry))
+                    continue;
+
                 if(!TestSpotForSpace(spawnEntry, foundGroundSpot, out Vector2 spawnPosition))
                     continue;
 

@@ -2382,13 +2382,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8f52762262d413e849637a1b15c3fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.CharacterSpawnRules
-  _tempMaxCharCount: 12
-  _tempPerSecSpawnChance: 0.25
-  _tempSpawnEntries:
+  _maxCharacterCount: 12
+  _perSecondSpawnChance: 0.25
+  _spawnEntries:
   - _character: {fileID: 11400000, guid: 2a9db1f511b6a4888a49dd1d2f56bd26, type: 2}
     _weight: 0.25
+    _surfacePhases: 2
+    _undergroundPhases: 0
+    _requireOpenBackground: 1
   - _character: {fileID: 11400000, guid: e8ced5de931fd400da6f4da2853b1d16, type: 2}
     _weight: 1
+    _surfacePhases: 8
+    _undergroundPhases: 15
+    _requireOpenBackground: 0
 --- !u!114 &653184667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7159,6 +7165,7 @@ MonoBehaviour:
   <WorldGen>k__BackingField: {fileID: 2043979316}
   _surfaceBg: {fileID: 856868902}
   <Clock>k__BackingField:
+    _runTimeOfDay: 0
     _sunriseMinutes: 0.125
     _dayMinutes: 0.25
     _sunsetMinutes: 0.125

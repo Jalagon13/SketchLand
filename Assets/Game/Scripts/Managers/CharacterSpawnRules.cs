@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace SketchLand
 {
@@ -8,29 +8,24 @@ namespace SketchLand
     {
         public static CharacterSpawnRules Instance { get; private set; }
         
-        [SerializeField] private int _tempMaxCharCount = 6;
-        [SerializeField] private float _tempPerSecSpawnChance = 0.1f;
-        [SerializeField] private List<CharacterSpawnEntry> _tempSpawnEntries = new();
+        [FormerlySerializedAs("_tempMaxCharCount")]
+        [SerializeField] private int _maxCharacterCount = 6;
+        [FormerlySerializedAs("_tempPerSecSpawnChance")]
+        [SerializeField] private float _perSecondSpawnChance = 0.1f;
+        [FormerlySerializedAs("_tempSpawnEntries")]
+        [SerializeField] private List<CharacterSpawnEntry> _spawnEntries = new();
         
+        private CharacterSpawnPool _spawnPool;
+
         private void Awake() 
         {
             Instance = this;
+            _spawnPool = new CharacterSpawnPool(_spawnEntries);
         }
         
         public CharacterSpawnCircumstance GetCircumstances(ServerCharacter host)
         {
-            // Quiery various managers for time of day, biome, current events, game states, player buffs, game progression, etc...
-            
-            int maxCharacterCount = _tempMaxCharCount;
-            float perSecondSpawnChance = _tempPerSecSpawnChance;
-            CharacterSpawnPool spawnPool = BuildSpawnPool();
-            
-            return new CharacterSpawnCircumstance(maxCharacterCount, perSecondSpawnChance, spawnPool);
-        }
-
-        private CharacterSpawnPool BuildSpawnPool()
-        {
-            return new CharacterSpawnPool(_tempSpawnEntries);
+            return new CharacterSpawnCircumstance(_maxCharacterCount, _perSecondSpawnChance, _spawnPool);
         }
     }
 }

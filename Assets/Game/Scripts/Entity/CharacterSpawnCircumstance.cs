@@ -21,27 +21,26 @@ namespace SketchLand
 
     public sealed class CharacterSpawnPool
     {
-        private readonly List<CharacterSpawnEntry> _entries = new();
+        private readonly List<CharacterSpawnEntry> _entries;
 
-        public CharacterSpawnPool(IEnumerable<CharacterSpawnEntry> entries)
+        public CharacterSpawnPool(List<CharacterSpawnEntry> entries)
         {
-            _entries.AddRange(entries);
+            _entries = entries;
         }
 
-        public bool TrySelectCharacter(out CharacterSpawnEntry selectedEntry)
+        public bool TrySelectCharacter(WorldZone zone, DayPhase phase, bool openBackground, out CharacterSpawnEntry selectedEntry)
         {
             float totalWeight = 0f;
 
             foreach (CharacterSpawnEntry entry in _entries)
             {
-                if (entry.Weight > 0f)
+                if (entry.CanSpawn(zone, phase, openBackground))
                     totalWeight += entry.Weight;
             }
 
             if (totalWeight <= 0f)
             {
                 selectedEntry = default;
-                Debug.LogError($"Character Spawn Pool [{this}] total weight is 0 or negative so no mob can be found");
                 return false;
             }
 
@@ -49,7 +48,7 @@ namespace SketchLand
 
             foreach (CharacterSpawnEntry entry in _entries)
             {
-                if (entry.Weight <= 0f)
+                if (!entry.CanSpawn(zone, phase, openBackground))
                     continue;
 
                 roll -= entry.Weight;
@@ -66,11 +65,34 @@ namespace SketchLand
         }
     }
 
+    [Flags]
+    public enum SpawnPhases
+    {
+        None = 0,
+        Sunrise = 1 << (int)DayPhase.Sunrise,
+        Day = 1 << (int)DayPhase.Day,
+        Sunset = 1 << (int)DayPhase.Sunset,
+        Night = 1 << (int)DayPhase.Night,
+        All = Sunrise | Day | Sunset | Night
+    }
+
     [Serializable]
     public sealed class CharacterSpawnEntry
     {
         [SerializeField] private CharacterSO _character;
         [SerializeField, Range(0f, 1f)] private float _weight = 1f;
+
+        [SerializeField] private SpawnPhases _surfacePhases = SpawnPhases.All;
+        [SerializeField] private SpawnPhases _undergroundPhases = SpawnPhases.All;
+        [Tooltip("Require an empty background tile at the spawn location just above the ground.")]
+        [SerializeField] private bool _requireOpenBackground;
+
+        public bool CanSpawn(WorldZone zone, DayPhase phase, bool openBackground)
+        {
+            SpawnPhases allowed = zone.AllowsNaturalDaylight ? _surfacePhases : _undergroundPhases;
+            return _character != null && _weight > 0f && (!_requireOpenBackground || openBackground)
+                && (allowed & (SpawnPhases)(1 << (int)phase)) != 0;
+        }
 
         public CharacterSO Character => _character;
         public float Weight => _weight;
