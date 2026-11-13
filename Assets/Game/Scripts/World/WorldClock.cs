@@ -8,6 +8,8 @@ namespace SketchLand
     [Serializable]
     public sealed class WorldClock
     {
+        [Tooltip("Advance the day/night cycle. Toggle during play to pause or resume at the current time.")]
+        [SerializeField] private bool _runTimeOfDay;
         [SerializeField, Min(0.01f)] private float _sunriseMinutes = 2f;
         [SerializeField, Min(0.01f)] private float _dayMinutes = 10f;
         [SerializeField, Min(0.01f)] private float _sunsetMinutes = 2f;
@@ -40,6 +42,10 @@ namespace SketchLand
         public float SunProgress01 => Mathf.Clamp01((float)(CyclePosition / NightStart));
 
         internal void StartNewWorld() => ElapsedMinutes = _sunriseMinutes;
-        internal void Advance(float deltaSeconds) => ElapsedMinutes += deltaSeconds / 60.0;
+        internal void Advance(float deltaSeconds)
+        {
+            if (_runTimeOfDay)
+                ElapsedMinutes += deltaSeconds / 60.0;
+        }
     }
 }
