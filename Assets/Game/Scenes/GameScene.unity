@@ -9231,10 +9231,10 @@ MonoBehaviour:
   _surfaceBg: {fileID: 856868902}
   <Clock>k__BackingField:
     _runTimeOfDay: 1
-    _sunriseMinutes: 2
-    _dayMinutes: 10
-    _sunsetMinutes: 2
-    _nightMinutes: 8
+    _sunriseMinutes: 0.1
+    _dayMinutes: 0.2
+    _sunsetMinutes: 0.1
+    _nightMinutes: 0.2
   _tileRepairDelay: 5
   _debugTreeConfig: {fileID: 11400000, guid: 4f515916d235640d480d2b10b7f502af, type: 2}
   _testProjectile: {fileID: 11400000, guid: b5e08a065994447879f5911de6519ca2, type: 2}
@@ -9270,7 +9270,7 @@ MonoBehaviour:
   _lightCellsPerTile: 1
   _lightContrast: 2
   _dayBrightness: 1
-  _nightBrightness: 0.1125
+  _nightBrightness: 0.15
   _tileAmountBeforeAttenuationBegins: 0
   _solidForegroundAttenuation: 1.5
   _backgroundOnlyAttenuation: 0.75
