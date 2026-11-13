@@ -6,27 +6,24 @@ namespace SketchLand
     [RequireComponent(typeof(CharacterHealth), typeof(DamageReceiver))]
     public class ServerCharacter : Entity
     {
-        public CharacterRootState RootState { get; private set; }
-
         [SerializeField] private bool _debugStateOn;
-        
         [SerializeField] private CharacterSO _data;
         public CharacterSO Data => _data;
 
         [Header("Visuals")]
         [SerializeField] private Transform _visuals;
         [SerializeField] private Animator _animator;
-        public Animator Animator => _animator;
-        public float FacingDirection => _visuals != null && _visuals.localScale.x < 0f ? -1f : 1f;
 
         [HideInInspector] public Vector2 DesiredDirection;
         public bool IsKnockedBack => _knockbackTimer > 0f;
 
         public StateMachine Machine { get; private set; }
-        
         public CharacterHealth Health { get; private set; }
         public CharacterStats Stats { get; private set; }
         public DamageReceiver DamageReceiver { get; private set; }
+        public CharacterRootState RootState { get; private set; }
+        public Animator Animator => _animator;
+        public float FacingDirection => _visuals != null && _visuals.localScale.x < 0f ? -1f : 1f;
 
         public const int MaxKnockbackForce = 100;
 

@@ -78,7 +78,7 @@ namespace SketchLand
                 StatType.MoveSpeed => MoveSpeed,
                 StatType.MaxHealth => MaxHealth,
                 StatType.Defense => Defense,
-                _ => throw new System.ArgumentOutOfRangeException(nameof(type), type, null)
+                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
             };
         }
     }
