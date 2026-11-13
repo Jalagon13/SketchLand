@@ -57,7 +57,7 @@ namespace SketchLand
         #region  just text
         
         //  If font == null -> will use default font
-        public static void JustText(Sprite icon, Color colorOfIcon, string text, Color colorOfTheText, Transform customLayout = null, TMP_FontAsset font = null, float fontSize = 20)
+        public static TMP_Text JustText(Sprite icon, Color colorOfIcon, string text, Color colorOfTheText, Transform customLayout = null, TMP_FontAsset font = null, float fontSize = 20)
         {
             JustTextTT script = InstantiateHandler.InstantiateJustText(customLayout);
             script.icon.sprite = icon;
@@ -67,6 +67,7 @@ namespace SketchLand
             script.text.text = text;
             script.text.color = colorOfTheText;
             script.text.fontSize = fontSize;
+            return script.text;
         }
 
         public static void JustText(Sprite icon, Color colorOfIcon, string text, Color colorOfTheText, float iconScale, Transform customLayout = null, TMP_FontAsset font = null, float fontSize = 20)
@@ -82,9 +83,9 @@ namespace SketchLand
             script.icon.transform.localScale = Vector3.one * iconScale;
         }
 
-        public static void JustText(string text, Color colorOfTheText, TMP_FontAsset font = null, float fontSize = 20, Transform customLayout = null)
+        public static TMP_Text JustText(string text, Color colorOfTheText, TMP_FontAsset font = null, float fontSize = 20, Transform customLayout = null)
         {
-            JustText(icon: null, new(0, 0, 0, 0), text, colorOfTheText, font: font, fontSize: fontSize, customLayout: customLayout);
+            return JustText(icon: null, new(0, 0, 0, 0), text, colorOfTheText, font: font, fontSize: fontSize, customLayout: customLayout);
         }
 
         public static void CraftingRecipeDisplay(RecipeSO recipeSO, Transform customLayout = null, float fontSize = 10, float iconScale = 1)

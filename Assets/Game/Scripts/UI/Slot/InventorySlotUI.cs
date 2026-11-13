@@ -14,6 +14,8 @@ namespace SketchLand
         private InventorySlot _slot;
         private Action _onSlotModified;
         private bool _isPlayerSlot;
+        private bool _isHotbarSlot;
+        private bool CanEatFromSlot => _isPlayerSlot && (_isHotbarSlot || InventoryInputManager.Instance.IsInventoryOpen);
         private TooltipHover _hover;
 
         private ConsumableItemSO _heldFood;
@@ -26,7 +28,7 @@ namespace SketchLand
             if (e.button != PointerEventData.InputButton.Right) return;
             CancelHold();
             _suppressRightClick = false;
-            bool foodPress = _isPlayerSlot && InventoryInputManager.Instance.IsInventoryOpen &&
+            bool foodPress = CanEatFromSlot &&
                 !_slot.IsEmpty && _slot.GetItemSO() is ConsumableItemSO && InventoryCursorManager.Instance.CursorSlot.IsEmpty;
             if (!foodPress) return;
             _heldFood = (ConsumableItemSO)_slot.GetItemSO();
@@ -51,7 +53,7 @@ namespace SketchLand
         private void Update()
         {
             if (_heldFood == null) return;
-            if (!InventoryInputManager.Instance.IsInventoryOpen || _slot.IsEmpty || _slot.GetItemSO() != _heldFood ||
+            if (!CanEatFromSlot || _slot.IsEmpty || _slot.GetItemSO() != _heldFood ||
                 !InventoryCursorManager.Instance.CursorSlot.IsEmpty)
             {
                 _suppressRightClick = true;
@@ -104,6 +106,7 @@ namespace SketchLand
         {
             _slot = InventoryManager.Instance.PlayerInventory[index];
             _isPlayerSlot = true;
+            _isHotbarSlot = index < InventoryManager.Instance.HotbarSize;
             _onSlotModified = null;
             ConfigureTooltipHover();
 
@@ -156,7 +159,8 @@ namespace SketchLand
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead || _slot == null) return;
+            if (!InventoryInputManager.Instance.IsInventoryOpen || _slot == null) return;
+            if (Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead) return;
 
             if (eventData.button == PointerEventData.InputButton.Left)
             {
