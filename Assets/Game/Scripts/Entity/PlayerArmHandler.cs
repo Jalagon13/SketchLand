@@ -81,8 +81,6 @@ namespace SketchLand
             _swingSequence?.Kill();
             _swingSequence = null;
 
-            AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PlayerAirThrustSFX, transform.position);
-
             IsSwinging = true;
             var tool = applyDamage ? item as ToolItemSO : null;
             var player = Player.Instance;
@@ -157,7 +155,10 @@ namespace SketchLand
                 _swingSequence.InsertCallback(miningImpactTime, () =>
                 {
                     if (Player.Instance != null && Player.Instance.Character == _character)
-                        MiningManager.Instance?.TryPerformMine(tool);
+                    {
+                        MiningManager.Instance.TryPerformMine(tool);
+                        AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PlayerAirThrustSFX, transform.position);
+                    }
                 });
             }
 
