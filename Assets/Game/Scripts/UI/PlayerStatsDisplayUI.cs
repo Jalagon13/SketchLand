@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace SketchLand
@@ -7,7 +6,9 @@ namespace SketchLand
     {
         [SerializeField] private StatBarUI _healthBar;
 
-        private PlayerEquipment _equipment;
+        [SerializeField] private StatBarUI _staminaBar;
+
+        private ServerCharacter _character;
 
         private void Start()
         {
@@ -15,6 +16,7 @@ namespace SketchLand
         
             if (player == null) return;
 
+            player.Stamina.OnStaminaChanged += _staminaBar.UpdateBar;
             player.PlayerReady += OnPlayerReady;
 
             if (player.Character != null)
@@ -26,22 +28,32 @@ namespace SketchLand
         {
             var player = Player.Instance;
 
-            if (player != null && player.Character != null)
-            {
-                player.Character.Health.OnHealthChanged -= OnHealthChanged;
-                player.Character.Stats.OnBuffStarted -= UpdateStatBar;
-                player.Character.Stats.OnBuffStopped -= UpdateStatBar;
-            }
+            UnbindCharacter();
 
             if (player != null)
             {
+                player.Stamina.OnStaminaChanged -= _staminaBar.UpdateBar;
                 player.PlayerReady -= OnPlayerReady;
             }
         }
 
+        private void UnbindCharacter()
+        {
+            if (_character == null) return;
+
+            _character.Health.CurrentHealth.OnValueChanged -= OnHealthChanged;
+            _character.Stats.OnBuffStarted -= UpdateStatBar;
+            _character.Stats.OnBuffStopped -= UpdateStatBar;
+            _character = null;
+        }
+
         private void OnPlayerReady(ServerCharacter player)
         {
-            player.Health.OnHealthChanged += OnHealthChanged;
+            UnbindCharacter();
+            _character = player;
+            var stamina = Player.Instance.Stamina;
+            _staminaBar.UpdateBar(stamina.Current, stamina.Max);
+            player.Health.CurrentHealth.OnValueChanged += OnHealthChanged;
             player.Stats.OnBuffStarted += UpdateStatBar;
             player.Stats.OnBuffStopped += UpdateStatBar;
 
@@ -50,12 +62,12 @@ namespace SketchLand
 
         private void UpdateStatBar(Buff buff)
         {
-            _healthBar.UpdateBar(Player.Instance.Character.Health.CurrentHealth.Value, Player.Instance.Character.Stats.MaxHealth.GetValue());
+            _healthBar.UpdateBar(_character.Health.CurrentHealth.Value, _character.Stats.MaxHealth.GetValue());
         }
 
-        private void OnHealthChanged(object sender, CharacterHealth.HealthChangedArgs e)
+        private void OnHealthChanged(int previousHp, int currentHp)
         {
-            _healthBar.UpdateBar(e.CurrentHp, e.MaxHP);
+            _healthBar.UpdateBar(currentHp, _character.Stats.MaxHealth.GetValue());
         }
     }
 }

@@ -77,6 +77,8 @@ namespace SketchLand
             if (IsSwinging || (applyDamage && Time.time < _nextSwingTime))
                 return;
 
+            if (!Player.Instance.Stamina.TrySpendSwing()) return;
+
             // Clean up any previous sequence before initializing this swing.
             _swingSequence?.Kill();
             _swingSequence = null;

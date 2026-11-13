@@ -14,6 +14,9 @@ namespace SketchLand
         public PlayerAirborneState Airborne { get; private set; }
         public float MovementSpeed { get; private set; }
 
+        private bool _isSprinting;
+        private bool _sprintExhausted;
+
         // Parameterless constructor for Unity serialization
         public PlayerRootState() : base() { }
 
@@ -53,7 +56,28 @@ namespace SketchLand
         {
             var player = Player.Instance;
             
-            float targetSpeed = GameInput.Instance.SprintHeld ? player.SprintSpeed : _ctx.Data.BaseSpeed;
+            bool sprintHeld = _ctx.IsOwner && GameInput.Instance.SprintHeld;
+            if (!sprintHeld)
+                _sprintExhausted = false;
+
+            var stamina = player.Stamina;
+            if (sprintHeld && stamina.Current <= 0f)
+                _sprintExhausted = true;
+
+            bool moving = Mathf.Abs(_ctx.DesiredDirection.x) > 0.01f
+                && !(_ctx.DesiredDirection.x > 0f ? _ctx.CollisionResult.TouchingRight : _ctx.CollisionResult.TouchingLeft);
+            _isSprinting = sprintHeld && !_sprintExhausted && moving && !_ctx.IsKnockedBack;
+            if (_ctx.IsOwner)
+            {
+                stamina.Tick(fixedDeltaTime, _isSprinting);
+                if (_isSprinting && stamina.Current <= 0f)
+                {
+                    _sprintExhausted = true;
+                    _isSprinting = false;
+                }
+            }
+
+            float targetSpeed = _isSprinting ? player.SprintSpeed : _ctx.Data.BaseSpeed;
             float blend = 1f - Mathf.Exp(-player.SprintTransitionSharpness * fixedDeltaTime);
             
             MovementSpeed = Mathf.Lerp(MovementSpeed, targetSpeed, blend);
@@ -66,7 +90,7 @@ namespace SketchLand
             float horizontalSpeedSquared = _ctx.Velocity.x * _ctx.Velocity.x;
             _ctx.Animator.SetFloat("Velocity", horizontalSpeedSquared);
             _ctx.Animator.SetBool("IsSprinting", isGrounded && !_ctx.IsKnockedBack
-                && GameInput.Instance.SprintHeld && Mathf.Abs(_ctx.DesiredDirection.x) > 0.01f
+                && _isSprinting && Mathf.Abs(_ctx.DesiredDirection.x) > 0.01f
                 && horizontalSpeedSquared > 0.8f);
         }
     }

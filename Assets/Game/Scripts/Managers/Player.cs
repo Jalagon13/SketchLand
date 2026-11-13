@@ -42,6 +42,8 @@ namespace SketchLand
         [field: SerializeField, Min(0)] public float HealthRegenTickDuration { get; private set; } = 1;
         [field: SerializeField, Min(0)] public int HealthRegenPerTick { get; private set; } = 1;
 
+        [field: SerializeField] public PlayerStamina Stamina { get; private set; } = new();
+
         public bool JumpPressed { get; set; }
         public Vector2 RespawnPoint { get; private set; }
         public PlayerArmHandler ArmHandler { get; private set; }
@@ -126,6 +128,7 @@ namespace SketchLand
             if (_healthRegenerationRoutine != null) StopCoroutine(_healthRegenerationRoutine);
 
             Character = character;
+            Stamina.Refill();
             Character.Health.CurrentLifeState.OnValueChanged += OnLifeStateChanged;
 
             Equipment = Character.GetComponent<PlayerEquipment>();
@@ -159,6 +162,7 @@ namespace SketchLand
             
             if(previousValue == LifeState.Dead && newValue == LifeState.Alive)
             {
+                Stamina.Refill();
                 // respawn
                 Character.transform.position = RespawnPoint;
                 Character.Health.CurrentHealth.Value = Character.Stats.MaxHealth.GetValue();
