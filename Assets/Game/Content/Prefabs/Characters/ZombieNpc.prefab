@@ -120,7 +120,6 @@ MonoBehaviour:
   _visuals: {fileID: 5907841507912977926}
   _animator: {fileID: 6945325739209296434}
   DesiredDirection: {x: 0, y: 0}
-  KnockbackVelocity: {x: 0, y: 0}
 --- !u!1 &6902626330650952792
 GameObject:
   m_ObjectHideFlags: 0

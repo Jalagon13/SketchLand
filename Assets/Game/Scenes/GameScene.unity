@@ -1245,109 +1245,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &285757405
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 285757409}
-  - component: {fileID: 285757408}
-  - component: {fileID: 285757407}
-  - component: {fileID: 285757406}
-  m_Layer: 5
-  m_Name: LightmapCanvas
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &285757406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 285757405}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 63
---- !u!114 &285757407
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 285757405}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
-  m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
-  m_PhysicalUnit: 3
-  m_FallbackScreenDPI: 96
-  m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
---- !u!223 &285757408
-Canvas:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 285757405}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 0
-  m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
-  m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: -242339037
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
---- !u!224 &285757409
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 285757405}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 2097336593}
-  - {fileID: 328273111}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 800, y: 450}
-  m_SizeDelta: {x: 1600, y: 900}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &298503624
 GameObject:
   m_ObjectHideFlags: 0
@@ -1439,78 +1336,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!1 &328273110
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 328273111}
-  - component: {fileID: 328273113}
-  - component: {fileID: 328273112}
-  m_Layer: 5
-  m_Name: FgLightOverlay
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &328273111
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 328273110}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 285757409}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &328273112
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 328273110}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RawImage
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Texture: {fileID: 0}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
---- !u!222 &328273113
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 328273110}
-  m_CullTransparentMesh: 1
 --- !u!1001 &329800746
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3083,6 +2908,7 @@ GameObject:
   - component: {fileID: 656673141}
   - component: {fileID: 656673142}
   - component: {fileID: 656673143}
+  - component: {fileID: 656673144}
   m_Layer: 0
   m_Name: CloudsBG
   m_TagString: Untagged
@@ -3181,6 +3007,24 @@ MonoBehaviour:
   _camera: {fileID: 330585543}
   _parallaxEffect: 0.95
   _scrollSpeed: 0.15
+--- !u!114 &656673144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656673140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f5865c5c382f4d4fa08e68139f70b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.SurfaceBackgroundTint
+  _dayTint: {r: 1, g: 1, b: 1, a: 1}
+  _nightTint: {r: 0.11, g: 0.15, b: 0.26, a: 1}
+  _renderers:
+  - {fileID: 656673142}
+  - {fileID: 1694196015}
+  - {fileID: 943121411}
 --- !u!1 &675801627
 GameObject:
   m_ObjectHideFlags: 0
@@ -4270,7 +4114,7 @@ SpriteRenderer:
   m_SortingOrder: -140
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 0d16a0e3a4e6640e8ba020bd5398c506, type: 3}
-  m_Color: {r: 0.7, g: 0.88, b: 1, a: 1}
+  m_Color: {r: 0.495283, g: 0.7968022, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -4562,6 +4406,7 @@ GameObject:
   - component: {fileID: 922802890}
   - component: {fileID: 922802891}
   - component: {fileID: 922802892}
+  - component: {fileID: 922802893}
   m_Layer: 0
   m_Name: FarMountainsBG
   m_TagString: Untagged
@@ -4660,6 +4505,24 @@ MonoBehaviour:
   _camera: {fileID: 330585543}
   _parallaxEffect: 0.85
   _scrollSpeed: 0
+--- !u!114 &922802893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922802889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f5865c5c382f4d4fa08e68139f70b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.SurfaceBackgroundTint
+  _dayTint: {r: 1, g: 1, b: 1, a: 1}
+  _nightTint: {r: 0.11227306, g: 0.16321367, b: 0.2735849, a: 1}
+  _renderers:
+  - {fileID: 922802891}
+  - {fileID: 147665142}
+  - {fileID: 131390181}
 --- !u!1001 &930281235
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6967,7 +6830,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 821c99b550b52445f81e6a460db57464, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7976,7 +7839,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 821c99b550b52445f81e6a460db57464, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9251,6 +9114,7 @@ GameObject:
   - component: {fileID: 1885410710}
   - component: {fileID: 1885410711}
   - component: {fileID: 1885410712}
+  - component: {fileID: 1885410713}
   m_Layer: 0
   m_Name: CloseMountainsBG
   m_TagString: Untagged
@@ -9349,6 +9213,24 @@ MonoBehaviour:
   _camera: {fileID: 330585543}
   _parallaxEffect: 0.65
   _scrollSpeed: 0
+--- !u!114 &1885410713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885410709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f5865c5c382f4d4fa08e68139f70b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.SurfaceBackgroundTint
+  _dayTint: {r: 1, g: 1, b: 1, a: 1}
+  _nightTint: {r: 0.1, g: 0.15, b: 0.25, a: 1}
+  _renderers:
+  - {fileID: 1885410711}
+  - {fileID: 298503626}
+  - {fileID: 820513526}
 --- !u!1001 &1901744119
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9970,7 +9852,7 @@ SpriteRenderer:
   m_SortingOrder: -140
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 0d16a0e3a4e6640e8ba020bd5398c506, type: 3}
-  m_Color: {r: 0.7, g: 0.88, b: 1, a: 1}
+  m_Color: {r: 0.495283, g: 0.7968022, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -9990,6 +9872,7 @@ GameObject:
   - component: {fileID: 2037069671}
   - component: {fileID: 2037069670}
   - component: {fileID: 2037069669}
+  - component: {fileID: 2037069672}
   m_Layer: 0
   m_Name: SkyBG
   m_TagString: Untagged
@@ -10088,6 +9971,24 @@ Transform:
   - {fileID: 835277501}
   m_Father: {fileID: 1090932675}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2037069672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2037069668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f5865c5c382f4d4fa08e68139f70b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.SurfaceBackgroundTint
+  _dayTint: {r: 0.495283, g: 0.7968022, b: 1, a: 1}
+  _nightTint: {r: 0.035, g: 0.07, b: 0.18, a: 1}
+  _renderers:
+  - {fileID: 2037069670}
+  - {fileID: 1982496194}
+  - {fileID: 835277502}
 --- !u!1 &2043979312
 GameObject:
   m_ObjectHideFlags: 0
@@ -10177,24 +10078,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.LightManager
   _showLight: 1
-  _multiplyMaterial: {fileID: 2100000, guid: c9c44d8d34d4a42d59d850f4cc9d34f9, type: 2}
   _fullBrightness: 10
   _extraLightmapPadding: 8
   _lightCellsPerTile: 1
   _lightContrast: 2
   _dayBrightness: 1
-  _nightBrightness: 0.15
+  _nightBrightness: 0.125
   _tileAmountBeforeAttenuationBegins: 0
   _solidForegroundAttenuation: 1.5
   _backgroundOnlyAttenuation: 0.75
   _enableForegroundBlur: 1
   _foregroundBlurRadius: 1
   _foregroundBlurPasses: 1
-  _backgroundOverlay: {fileID: 2097336594}
-  _backgroundLightOverlay: {fileID: 2097336592}
   _backgroundLightmapFilterMode: 1
-  _foregroundOverlay: {fileID: 328273112}
-  _foregroundLightOverlay: {fileID: 328273110}
   _foregroundLightmapFilterMode: 1
 --- !u!114 &2043979321
 MonoBehaviour:
@@ -10269,78 +10165,6 @@ RectTransform:
   m_AnchoredPosition: {x: 10, y: -238}
   m_SizeDelta: {x: 515, y: 160}
   m_Pivot: {x: 0, y: 1}
---- !u!1 &2097336592
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2097336593}
-  - component: {fileID: 2097336595}
-  - component: {fileID: 2097336594}
-  m_Layer: 5
-  m_Name: BgLightOverlay
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &2097336593
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2097336592}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 285757409}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2097336594
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2097336592}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RawImage
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Texture: {fileID: 0}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
---- !u!222 &2097336595
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2097336592}
-  m_CullTransparentMesh: 1
 --- !u!1 &2142474278
 GameObject:
   m_ObjectHideFlags: 0
@@ -12035,7 +11859,6 @@ SceneRoots:
   - {fileID: 279898998}
   - {fileID: 832575519}
   - {fileID: 330585546}
-  - {fileID: 285757409}
   - {fileID: 759830593}
   - {fileID: 4297005443430499605}
   - {fileID: 1924350004}

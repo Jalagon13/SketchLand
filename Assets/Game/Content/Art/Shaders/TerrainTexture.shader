@@ -26,6 +26,7 @@ Shader "SketchLand/TerrainTexture"
             #pragma fragment Frag
 
             #include "UnityCG.cginc"
+            #include "WorldLighting.cginc"
 
             sampler2D _MainTex;
             float4 _LayerTint;
@@ -40,6 +41,7 @@ Shader "SketchLand/TerrainTexture"
             struct Varyings
             {
                 float4 position : SV_POSITION;
+                float2 worldPosition : TEXCOORD2;
                 float2 uv : TEXCOORD0;
                 float4 color : COLOR;
             };
@@ -48,6 +50,7 @@ Shader "SketchLand/TerrainTexture"
             {
                 Varyings output;
                 output.position = UnityObjectToClipPos(input.position);
+                output.worldPosition = mul(unity_ObjectToWorld, input.position).xy;
                 output.uv = input.uv;
                 output.color = input.color;
                 return output;
@@ -55,9 +58,9 @@ Shader "SketchLand/TerrainTexture"
 
             fixed4 Frag(Varyings input) : SV_Target
             {
-                return tex2D(_MainTex, input.uv)
-                    * input.color
-                    * _LayerTint;
+                fixed4 color = tex2D(_MainTex, input.uv) * input.color * _LayerTint;
+                color.rgb *= SampleWorldLight(input.worldPosition);
+                return color;
             }
 
             ENDCG

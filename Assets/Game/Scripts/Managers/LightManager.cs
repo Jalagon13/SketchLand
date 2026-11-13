@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 namespace SketchLand
 {
@@ -12,7 +11,6 @@ namespace SketchLand
 
         [Header("Light Settings")]
         [SerializeField] private bool _showLight = true;
-        [SerializeField] private Material _multiplyMaterial;
         [SerializeField, Min(1f)] private float _fullBrightness;
         [SerializeField] private int _extraLightmapPadding;
         [SerializeField, Min(1)] private int _lightCellsPerTile = 1;
@@ -38,19 +36,16 @@ namespace SketchLand
         [SerializeField, Range(0.25f, 2f)] private float _foregroundBlurRadius = 0.5f;
         [SerializeField, Range(1, 4)] private int _foregroundBlurPasses = 1;
 
-        [Header("Background Settings")]
-        [SerializeField] private RawImage _backgroundOverlay;
-        [SerializeField] private GameObject _backgroundLightOverlay;
-        [SerializeField] private FilterMode _backgroundLightmapFilterMode;
+        [Header("Lightmap Filtering")]
+        [SerializeField] private FilterMode _backgroundLightmapFilterMode = FilterMode.Bilinear;
+        [SerializeField] private FilterMode _foregroundLightmapFilterMode = FilterMode.Bilinear;
 
-        [Header("Foreground Settings")]
-        [SerializeField] private RawImage _foregroundOverlay;
-        [SerializeField] private GameObject _foregroundLightOverlay;
-        [SerializeField] private FilterMode _foregroundLightmapFilterMode;
-        
         private RectInt _lmBounds;
-        private Material _lightmapMaterial;
-        private static readonly int LightmapTexelSizeId = Shader.PropertyToID("_LightmapTexelSize");
+        private static readonly int LightmapBoundsId = Shader.PropertyToID("_WorldLightmapBounds");
+        private static readonly int LightmapTexelSizeId = Shader.PropertyToID("_WorldLightmapTexelSize");
+        private static readonly int ForegroundLightmapId = Shader.PropertyToID("_WorldForegroundLightmap");
+        private static readonly int BackgroundLightmapId = Shader.PropertyToID("_WorldBackgroundLightmap");
+        private static readonly int LightingEnabledId = Shader.PropertyToID("_WorldLightingEnabled");
         private Texture2D _foregroundLightmapTexture;
         private Texture2D _backgroundLightmapTexture;
         private Color32[] _foregroundColorBuffer;
@@ -69,11 +64,7 @@ namespace SketchLand
         private void Awake()
         {
             Instance = this;
-            // Keep per-lightmap uniforms off the shared material asset.
-            _lightmapMaterial = new Material(_multiplyMaterial);
-
-            _foregroundLightOverlay.SetActive(_showLight);
-            _backgroundLightOverlay.SetActive(_showLight);
+            Shader.SetGlobalFloat(LightingEnabledId, 0f);
 
             _lightQueue = new Queue<Vector2Int>(100 * 100 * _lightCellsPerTile * _lightCellsPerTile);
         }
@@ -90,23 +81,22 @@ namespace SketchLand
             // Prevent memory leaks when changing scenes
             if (_foregroundLightmapTexture != null) Destroy(_foregroundLightmapTexture);
             if (_backgroundLightmapTexture != null) Destroy(_backgroundLightmapTexture);
-            if (_lightmapMaterial != null) Destroy(_lightmapMaterial);
+            Shader.SetGlobalFloat(LightingEnabledId, 0f);
+            if (Instance == this) Instance = null;
         }
 
         private int GetDaylightLevel(WorldClock clock)
         {
-            float daylight = clock.CurrentPhase switch
-            {
-                DayPhase.Sunrise => clock.PhaseProgress01,
-                DayPhase.Day => 1f,
-                DayPhase.Sunset => 1f - clock.PhaseProgress01,
-                _ => 0f
-            };
-            return Mathf.RoundToInt(255f * Mathf.SmoothStep(_nightBrightness, _dayBrightness, daylight));
+            return Mathf.RoundToInt(255f * Mathf.Lerp(_nightBrightness, _dayBrightness, clock.Daylight01));
         }
+
+        private void OnDisable() => Shader.SetGlobalFloat(LightingEnabledId, 0f);
+
+        private void OnValidate() => _lastDaylightLevel = -1;
 
         private void LateUpdate()
         {
+            Shader.SetGlobalFloat(LightingEnabledId, _showLight && _backgroundLightmapTexture != null ? 1f : 0f);
             var world = WorldManager.Instance;
             if (world == null || !world.IsWorldReady || GetDaylightLevel(world.Clock) == _lastDaylightLevel) return;
 
@@ -133,9 +123,7 @@ namespace SketchLand
             int lightmapWidth = tileWidth * _lightCellsPerTile;
             int lightmapHeight = tileHeight * _lightCellsPerTile;
 
-            // CanvasRenderer can retain stale automatic _MainTex_TexelSize values after
-            // Texture2D.Reinitialize. Keep the mask's sampling grid explicitly in sync.
-            _lightmapMaterial.SetVector(LightmapTexelSizeId,
+            Shader.SetGlobalVector(LightmapTexelSizeId,
                 new Vector4(1f / lightmapWidth, 1f / lightmapHeight, lightmapWidth, lightmapHeight));
 
             if (_foregroundLightmapTexture == null) // Initialize if new
@@ -224,8 +212,10 @@ namespace SketchLand
 
             float fullBrightnessInv = 1f / _fullBrightness; // Multiplies are faster than division loops
 
-            // Foreground alpha is a binary tile mask. RGB is premultiplied by that mask
-            // so the shader can interpolate light without blending in empty cells.
+            // Keep the established terrain falloff by combining the propagated and
+            // smoothed responses here. Apply the result once in the material, rather
+            // than multiplying two overlays over everything behind the terrain.
+            // Alpha is coverage so filtering cannot blend dark empty cells into edges.
             for (int localY = 0; localY < lightmapHeight; localY++)
             {
                 for (int localX = 0; localX < lightmapWidth; localX++)
@@ -233,37 +223,28 @@ namespace SketchLand
                     byte backgroundGrey = ToGrayscale(_lightGrid[localX, localY] * fullBrightnessInv);
                     int bufferIndex = localY * lightmapWidth + localX;
                     byte foregroundGrey = ToGrayscale(_foregroundLightGrid[localX, localY] * fullBrightnessInv);
+                    byte terrainGrey = (byte)(foregroundGrey * backgroundGrey / 255);
                     _foregroundColorBuffer[bufferIndex] = _foregroundMask[localX, localY]
-                        ? new Color32(foregroundGrey, foregroundGrey, foregroundGrey, 255)
+                        ? new Color32(terrainGrey, terrainGrey, terrainGrey, 255)
                         : new Color32(0, 0, 0, 0);
                     _backgroundColorBuffer[bufferIndex] = new Color32(backgroundGrey, backgroundGrey, backgroundGrey, 255);
                 }
             }
 
-            // Apply foreground lighting with a sharp occupancy mask, independent of filtering.
             _foregroundLightmapTexture.filterMode = _foregroundLightmapFilterMode;
             _foregroundLightmapTexture.SetPixels32(_foregroundColorBuffer);
-            _foregroundLightmapTexture.Apply();
-            _foregroundOverlay.texture = _foregroundLightmapTexture;
-            _foregroundOverlay.material = _lightmapMaterial;
-
-            // Apply bilinear background lighting only where foreground tiles do not cover it.
+            _foregroundLightmapTexture.Apply(false);
+            _backgroundLightmapTexture.filterMode = _backgroundLightmapFilterMode;
             _backgroundLightmapTexture.SetPixels32(_backgroundColorBuffer);
-            _backgroundLightmapTexture.Apply();
-            _backgroundOverlay.texture = _backgroundLightmapTexture;
-            _backgroundOverlay.material = _lightmapMaterial;
+            _backgroundLightmapTexture.Apply(false);
 
-            // Update Overlay positioning
-            Vector2 center = new Vector2(_lmBounds.xMin + _lmBounds.xMax, _lmBounds.yMin + _lmBounds.yMax) * 0.5f;
-            Vector2 size = new(tileWidth, tileHeight);
-
-            _foregroundOverlay.rectTransform.position = center;
-            _foregroundOverlay.rectTransform.sizeDelta = size;
-            _foregroundOverlay.rectTransform.localScale = Vector3.one;
-
-            _backgroundOverlay.rectTransform.position = center;
-            _backgroundOverlay.rectTransform.sizeDelta = size;
-            _backgroundOverlay.rectTransform.localScale = Vector3.one;
+            // Materials sample in world space before alpha blending. Scenery and UI
+            // never receive the local light field, including through transparent sprites.
+            Shader.SetGlobalTexture(ForegroundLightmapId, _foregroundLightmapTexture);
+            Shader.SetGlobalTexture(BackgroundLightmapId, _backgroundLightmapTexture);
+            Shader.SetGlobalVector(LightmapBoundsId,
+                new Vector4(_lmBounds.xMin, _lmBounds.yMin, _lmBounds.width, _lmBounds.height));
+            Shader.SetGlobalFloat(LightingEnabledId, _showLight && isActiveAndEnabled ? 1f : 0f);
         }
 
         private byte ToGrayscale(float fraction)

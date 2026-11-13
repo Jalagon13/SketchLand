@@ -20,6 +20,7 @@ Shader "SketchLand/MaskedDamage"
             #pragma vertex Vert
             #pragma fragment Frag
             #include "UnityCG.cginc"
+            #include "WorldLighting.cginc"
             sampler2D _MainTex;
             sampler2D _CrackTex;
             float4 _CrackTex_TexelSize;
@@ -35,6 +36,7 @@ Shader "SketchLand/MaskedDamage"
             struct Varyings
             {
                 float4 position : SV_POSITION;
+                float2 worldPosition : TEXCOORD2;
                 float2 maskUV : TEXCOORD0;
                 float2 cellUV : TEXCOORD1;
             };
@@ -42,6 +44,7 @@ Shader "SketchLand/MaskedDamage"
             {
                 Varyings output;
                 output.position = UnityObjectToClipPos(input.position);
+                output.worldPosition = mul(unity_ObjectToWorld, input.position).xy;
                 output.maskUV = input.maskUV;
                 output.cellUV = input.cellUV;
                 return output;
@@ -59,6 +62,7 @@ Shader "SketchLand/MaskedDamage"
                     _CrackRect.xy + inset, _CrackRect.xy + _CrackRect.zw - inset);
                 fixed4 crack = tex2D(_CrackTex, crackUV) * _Color;
                 crack.a *= inside * tex2D(_MainTex, input.maskUV).a;
+                crack.rgb *= SampleWorldLight(input.worldPosition);
                 return crack;
             }
             ENDCG

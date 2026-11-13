@@ -39,6 +39,15 @@ namespace SketchLand
             _ => (float)((CyclePosition - NightStart) / _nightMinutes)
         };
 
+        // Shared by world illumination and scenery so dawn and dusk stay in sync.
+        public float Daylight01 => Mathf.SmoothStep(0f, 1f, CurrentPhase switch
+        {
+            DayPhase.Sunrise => PhaseProgress01,
+            DayPhase.Day => 1f,
+            DayPhase.Sunset => 1f - PhaseProgress01,
+            _ => 0f
+        });
+
         public float SunProgress01 => Mathf.Clamp01((float)(CyclePosition / NightStart));
 
         internal void StartNewWorld() => ElapsedMinutes = _sunriseMinutes;
