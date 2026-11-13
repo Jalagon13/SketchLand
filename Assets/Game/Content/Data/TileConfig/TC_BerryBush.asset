@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3e6628b84a1d44278cce9fcc7e7ef62, type: 3}
+  m_Name: TC_BerryBush
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.SpriteTileConfigSO
+  <RequiredHarvestType>k__BackingField: 2
+  <MaxHP>k__BackingField: 15
+  <LightLevel>k__BackingField: 0
+  <Indestructible>k__BackingField: 0
+  <IsSolid>k__BackingField: 0
+  <Size>k__BackingField: {x: 1, y: 1}
+  <TileHitSFX>k__BackingField:
+    Guid:
+      Data1: 1763498630
+      Data2: 1324331639
+      Data3: 1787901594
+      Data4: 1854606365
+    Path: event:/World/KelpHitSFX
+  <TileDestroyedSFX>k__BackingField:
+    Guid:
+      Data1: -2114601077
+      Data2: 1192694919
+      Data3: -1420537167
+      Data4: -1139276887
+    Path: event:/World/KelpDestroyedSFX
+  <InteractBehavior>k__BackingField:
+    rid: -2
+  LootDrops:
+  - _item: {fileID: 11400000, guid: a76ba1086b24840afb1ba423bb9128b3, type: 2}
+    _minAmount: 1
+    _maxAmount: 2
+    _dropChance: 1
+  <DrawTile>k__BackingField: {fileID: 11400000, guid: 782e00bcfd8ad40a68a908cd0902311b, type: 2}
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }

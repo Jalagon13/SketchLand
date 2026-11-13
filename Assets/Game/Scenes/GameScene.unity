@@ -4274,6 +4274,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: de53f42a1a9254889bd3b400b4b4244a, type: 2}
   - {fileID: 11400000, guid: 4f515916d235640d480d2b10b7f502af, type: 2}
   - {fileID: 11400000, guid: b7ea4b09cf0b943a9aca358bb8348256, type: 2}
+  - {fileID: 11400000, guid: 09ffb8f718e624a1f9bf447ddc3404a3, type: 2}
   _itemDatabase:
   - {fileID: 11400000, guid: a8ba4590c8abf433dbe1aa7470e8b094, type: 2}
   - {fileID: 11400000, guid: b424afe4dee6641ca97d9b23d029ab30, type: 2}
@@ -5547,7 +5548,7 @@ MonoBehaviour:
   <Stamina>k__BackingField:
     _max: 50
     _baseRegenPerSecond: 10
-    _maxRegenPerSecond: 25
+    _maxRegenPerSecond: 30
     _regenRampSeconds: 3
     _regenDelaySeconds: 0.5
     _sprintCostPerSecond: 4

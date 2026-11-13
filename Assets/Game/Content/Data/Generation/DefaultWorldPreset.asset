@@ -33,9 +33,16 @@ MonoBehaviour:
   - rid: 2783294373672517732
   - rid: 2783294373672517734
   - rid: 2783294373672517733
+  - rid: 2417915422396383457
   references:
     version: 2
     RefIds:
+    - rid: 2417915422396383457
+      type: {class: BerryBushGenStep, ns: SketchLand, asm: Assembly-CSharp}
+      data:
+        RunStep: 1
+        _berryBush: {fileID: 11400000, guid: 09ffb8f718e624a1f9bf447ddc3404a3, type: 2}
+        _placementChance: 0.08
     - rid: 2783294373672517730
       type: {class: SurfaceHeightMapStep, ns: SketchLand, asm: Assembly-CSharp}
       data:
