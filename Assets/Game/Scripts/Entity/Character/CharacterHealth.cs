@@ -110,8 +110,6 @@ namespace SketchLand
             int maxHp = Maximum;
             if (CurrentHealth.Value >= maxHp) return;
             
-            WorldTextPopupManager.Instance.SpawnHealingTextPopup(transform.position, Mathf.Min(amount, maxHp - CurrentHealth.Value));
-
             if (IsServer)
             {
                 CurrentHealth.Value = Mathf.Min(maxHp, CurrentHealth.Value + amount);

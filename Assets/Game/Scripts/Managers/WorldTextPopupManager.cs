@@ -10,10 +10,6 @@ namespace SketchLand
 
         [SerializeField] private PlainTextPopup _plainTextPopupPrefab;
 
-        [Header("Healing Number")]
-        [SerializeField] private Color _healingNumberColor = Color.green;
-        [SerializeField, Min(1f)] private float _healingNumberFontSize = 24f;
-
         [Header("Character Damage Number")]
         [SerializeField] private Color _damageNumberColor = Color.red;
         [SerializeField, Min(1f)] private float _damageNumberFontSize = 24f;
@@ -53,12 +49,6 @@ namespace SketchLand
             SpawnTextPopup(worldPosition, text, _plainTextColor, _plainTextFontSize);
         }
         
-        public void SpawnHealingTextPopup(Vector3 worldPosition, int healingAmount)
-        {
-            string text = $"+{healingAmount} Healed";
-            SpawnTextPopup(worldPosition, text, _healingNumberColor, _healingNumberFontSize);
-        }
-
         private void SpawnTextPopup(Vector3 worldPosition, string text, Color color, float fontSize)
         {
             if (string.IsNullOrWhiteSpace(text))

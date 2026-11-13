@@ -6,23 +6,27 @@ namespace SketchLand
     public class TooltipsPositionHandler : MonoBehaviour
     {
         public RectTransform Canvas;
-        
-        [Tooltip("should be the same one as in the TooltipReferenceHolder")] 
         public RectTransform Layout;
-        
-        private void Update()
+
+        private const float CursorGap = 6f;
+
+        private void LateUpdate()
         {
-            // moves to clamped position of mouse  
-            Vector2 anchorPoint = Mouse.current.position.ReadValue() / Canvas.localScale.x;
+            if (Mouse.current == null) return;
+            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(Canvas,
+                Mouse.current.position.ReadValue(), null, out var cursor)) return;
 
-            if (anchorPoint.x + Layout.rect.width > Canvas.rect.width)
-                anchorPoint.x = Canvas.rect.width - Layout.rect.width;
+            Rect bounds = Canvas.rect;
+            Vector2 size = Layout.rect.size;
+            float left = cursor.x + CursorGap;
+            float top = cursor.y - CursorGap;
+            if (left + size.x > bounds.xMax) left = cursor.x - CursorGap - size.x;
+            if (top - size.y < bounds.yMin) top = cursor.y + CursorGap + size.y;
 
-            if (anchorPoint.y + Layout.rect.height > Canvas.rect.height)
-                anchorPoint.y = Canvas.rect.height - Layout.rect.height;
-
-
-            Layout.anchoredPosition = anchorPoint;
+            left = Mathf.Clamp(left, bounds.xMin, Mathf.Max(bounds.xMin, bounds.xMax - size.x));
+            top = Mathf.Clamp(top, Mathf.Min(bounds.yMin + size.y, bounds.yMax), bounds.yMax);
+            Vector2 pivot = new Vector2(left + size.x * Layout.pivot.x, top - size.y * (1f - Layout.pivot.y));
+            Layout.position = Canvas.TransformPoint(pivot);
         }
     }
 }

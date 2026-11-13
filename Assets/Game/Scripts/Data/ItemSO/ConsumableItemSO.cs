@@ -23,7 +23,8 @@ namespace SketchLand
             if (HealthRegen > 0) lines.Add($"+{HealthRegen:0.##} HP/sec");
             if (Stamina > 0) lines.Add($"+{Stamina:0.##} max stamina");
             if (StaminaRegen > 0) lines.Add($"+{StaminaRegen:0.##} stamina/sec");
-            lines.Add($"Hold right click to eat · {Duration:0.##} seconds");
+            lines.Add($"Duration: {Duration:0.##} seconds");
+            lines.Add("Hold right click to eat");
             return string.Join("<br>", lines);
         }
     }
