@@ -21,13 +21,13 @@ namespace SketchLand
         private ConsumableItemSO _heldFood;
         private Image _progress;
         private float _elapsed;
-        private bool _suppressRightClick;
+        private bool _suppressLeftClick;
 
         public void OnPointerDown(PointerEventData e)
         {
-            if (e.button != PointerEventData.InputButton.Right) return;
+            if (e.button != PointerEventData.InputButton.Left) return;
             CancelHold();
-            _suppressRightClick = false;
+            _suppressLeftClick = false;
             bool foodPress = CanEatFromSlot &&
                 !_slot.IsEmpty && _slot.GetItemSO() is ConsumableItemSO && InventoryCursorManager.Instance.CursorSlot.IsEmpty;
             if (!foodPress) return;
@@ -36,7 +36,7 @@ namespace SketchLand
 
         public void OnPointerUp(PointerEventData e)
         {
-            if (e.button == PointerEventData.InputButton.Right) CancelHold();
+            if (e.button == PointerEventData.InputButton.Left) CancelHold();
         }
 
         public void OnPointerExit(PointerEventData e) => CancelHold();
@@ -56,7 +56,7 @@ namespace SketchLand
             if (!CanEatFromSlot || _slot.IsEmpty || _slot.GetItemSO() != _heldFood ||
                 !InventoryCursorManager.Instance.CursorSlot.IsEmpty)
             {
-                _suppressRightClick = true;
+                _suppressLeftClick = true;
                 CancelHold();
                 return;
             }
@@ -65,7 +65,7 @@ namespace SketchLand
             float fillTime = _elapsed - settings.ConsumeDelay;
             if (fillTime < 0f) return;
             // Unity sends a click after pointer-up, even when the press was a hold.
-            _suppressRightClick = true;
+            _suppressLeftClick = true;
             var food = Player.Instance.Food;
             if (food == null || !food.CanEat(_heldFood))
             {
@@ -164,11 +164,11 @@ namespace SketchLand
 
             if (eventData.button == PointerEventData.InputButton.Left)
             {
+                if (_suppressLeftClick) return;
                 InventoryCursorManager.Instance.HandleSlotLeftClick(_slot, _onSlotModified);
             }
             else if (eventData.button == PointerEventData.InputButton.Right)
             {
-                if (_suppressRightClick) return;
                 InventoryCursorManager.Instance.HandleSlotRightClick(_slot, _onSlotModified);
             }
         }

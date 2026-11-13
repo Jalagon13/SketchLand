@@ -12,20 +12,8 @@ namespace SketchLand
         
         [field: Header("Player Settings")]
         [field: SerializeField] public float InteractRange { get; private set; } = 4.5f;
-        [field: SerializeField] public Vector2 WalkingBoxColliderSize { get; private set; }
         [field: SerializeField] public float SprintSpeed { get; private set; } = 6;
         [field: SerializeField, Min(0f)] public float SprintTransitionSharpness { get; private set; } = 5f;
-
-        [field: Header("Default Swing Settings")]
-        [field: SerializeField] public int MiningDamage { get; private set; } = 1;
-        [field: SerializeField] public int MeleeDamage { get; private set; } = 1;
-        [field: SerializeField, Range(0, ServerCharacter.MaxKnockbackForce)] public int KnockbackForce { get; private set; } = 1;
-        [field: SerializeField] public float HitboxOffset { get; private set; } = 1.0f; // Distance from pivot to blade center
-        [field: SerializeField] public Vector2 HitboxSize { get; private set; } = new Vector2(1.2f, 1.2f);
-
-        [field: SerializeField] public int SwingArcAngle { get; private set; } = 120;
-        [field: SerializeField] public float SwingDuration { get; private set; } = 0.5f;
-        [field: SerializeField, Min(0f)] public float SwingCooldown { get; private set; } = 0.25f;
 
         [field: Header("Jump Settings")]
         [field: SerializeField] public float MinJumpSpeed { get; private set; }
@@ -95,7 +83,7 @@ namespace SketchLand
             if (_hasInitialSpawn || Character == null || !WorldManager.Instance.IsWorldReady)
                 return;
 
-            if (!WorldManager.Instance.TryGetPlayerSpawnPosition(WalkingBoxColliderSize, out Vector2 spawnPosition))
+            if (!WorldManager.Instance.TryGetPlayerSpawnPosition(Character.Data.BodyColliderSize, out Vector2 spawnPosition))
             {
                 Debug.LogWarning($"Could not find a spawn position for player, defaulting to prefab position");
                 Character.transform.position = Character.transform.position;
@@ -125,7 +113,7 @@ namespace SketchLand
 
             Character = character;
             Food = character.GetComponent<PlayerFood>();
-            Stamina.SetFoodBonuses(0, 0);
+            Stamina.SetFoodMaxBonus(0);
             Stamina.Refill();
             Character.Health.CurrentLifeState.OnValueChanged += OnLifeStateChanged;
 

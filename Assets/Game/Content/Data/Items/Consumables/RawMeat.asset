@@ -23,7 +23,6 @@ MonoBehaviour:
   <Health>k__BackingField: 20
   <HealthRegen>k__BackingField: 0.75
   <Stamina>k__BackingField: 0
-  <StaminaRegen>k__BackingField: 0
   <ConsumeSFX>k__BackingField:
     Guid:
       Data1: -602489371

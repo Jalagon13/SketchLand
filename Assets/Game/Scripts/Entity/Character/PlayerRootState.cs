@@ -147,7 +147,7 @@ namespace SketchLand
         {
             // On Grounded Animation set here
             _player = Player.Instance;
-            _ctx.ColliderSize = Player.Instance.WalkingBoxColliderSize;
+            _ctx.ColliderSize = Player.Instance.Character.Data.BodyColliderSize;
             ((PlayerRootState)Parent).UpdateLocomotionAnimation(true);
         }
 
@@ -206,7 +206,7 @@ namespace SketchLand
         protected override void OnEnter()
         {
             _player = Player.Instance;
-            _ctx.ColliderSize = _player.WalkingBoxColliderSize;
+            _ctx.ColliderSize = _player.Character.Data.BodyColliderSize;
             _jumpBufferTimer = 0;
             _coyoteTimer = _ctx.Velocity.y <= 0f ? _player.CoyoteTimeBufferDuration : 0f;
             _coyoteJumpRequested = false;

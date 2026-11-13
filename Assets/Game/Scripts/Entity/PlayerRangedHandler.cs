@@ -38,7 +38,7 @@ namespace SketchLand
             _bowPose.SetCharge(Charge);
         }
 
-        public void StartSecondaryAction(BowItemSO weapon)
+        public void StartCharge(BowItemSO weapon)
         {
             if (weapon == null || IsCharging || _bowPose == null) return;
             if (_character.Health.CurrentLifeState.Value == LifeState.Dead) return;
@@ -56,12 +56,12 @@ namespace SketchLand
             _bowPose.BeginDraw(weapon, arrow);
         }
 
-        public void HoldSecondaryAction(BowItemSO weapon)
+        public void HoldCharge(BowItemSO weapon)
         {
             // Update owns the charge clock. Holding never repeats a shot.
         }
 
-        public void ReleaseSecondaryAction(BowItemSO weapon)
+        public void ReleaseCharge(BowItemSO weapon)
         {
             if (!IsCharging || weapon != _weapon) return;
             if (!CanContinueCharge() || WorldManager.Instance.MouseOverUI || Charge < weapon.MinimumCharge)

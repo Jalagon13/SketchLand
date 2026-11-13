@@ -114,15 +114,14 @@ namespace SketchLand
         {
             if (IsOwner)
             {
-                float max = 0, regen = 0;
+                float max = 0;
                 for (int i = 0; i < _meals.Count; i++)
                 {
                     var food = At(i);
                     if (food == null) continue;
                     max += food.Stamina;
-                    regen += food.StaminaRegen;
                 }
-                Player.Instance.Stamina.SetFoodBonuses(max, regen);
+                Player.Instance.Stamina.SetFoodMaxBonus(max);
             }
             if (IsServer && _character.Health.CurrentHealth.Value > _character.Health.Maximum)
                 _character.Health.CurrentHealth.Value = _character.Health.Maximum;

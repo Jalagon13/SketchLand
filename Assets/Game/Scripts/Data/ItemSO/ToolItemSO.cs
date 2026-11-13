@@ -5,6 +5,9 @@ namespace SketchLand
     [CreateAssetMenu(fileName = "New ToolItemSO", menuName = "OceanGame/Item/ToolItemSO")]
     public class ToolItemSO : ItemSO
     {
+        public override void OnPrimaryActionStarted(Player player) => player.ArmHandler.Swing(this);
+        public override void OnPrimaryActionHeld(Player player) => player.ArmHandler.Swing(this);
+
         [field: Header("Tool Settings")]
         [field: SerializeField] public HarvestType HarvestType { get; private set; } = HarvestType.None;
         [field: SerializeField] public int MiningDamage { get; private set; } = 15; 

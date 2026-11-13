@@ -23,9 +23,9 @@ namespace SketchLand
             return Mathf.Lerp(MinimumSpeed, MaximumSpeed, strength);
         }
 
-        public override void OnSecondaryActionStarted(Player player) => player.RangedHandler.StartSecondaryAction(this);
-        public override void OnSecondaryActionHeld(Player player) => player.RangedHandler.HoldSecondaryAction(this);
-        public override void OnSecondaryActionRelease(Player player) => player.RangedHandler.ReleaseSecondaryAction(this);
-        public override void OnSecondaryActionCancelled(Player player) => player.RangedHandler.CancelCharge();
+        public override void OnPrimaryActionStarted(Player player) => player.RangedHandler.StartCharge(this);
+        public override void OnPrimaryActionHeld(Player player) => player.RangedHandler.HoldCharge(this);
+        public override void OnPrimaryActionRelease(Player player) => player.RangedHandler.ReleaseCharge(this);
+        public override void OnPrimaryActionCancelled(Player player) => player.RangedHandler.CancelCharge();
     }
 }
