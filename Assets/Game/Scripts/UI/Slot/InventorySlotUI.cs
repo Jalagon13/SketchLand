@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace SketchLand
 {
-    public class InventorySlotUI : MonoBehaviour, IPointerClickHandler
+    public class InventorySlotUI : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
     {
         [SerializeField] private Image _itemIcon;
         [SerializeField] private TextMeshProUGUI _stackText;
@@ -15,6 +15,81 @@ namespace SketchLand
         private Action _onSlotModified;
         private bool _isPlayerSlot;
         private TooltipHover _hover;
+
+        private ConsumableItemSO _heldFood;
+        private Image _progress;
+        private float _elapsed;
+        private bool _suppressRightClick;
+
+        public void OnPointerDown(PointerEventData e)
+        {
+            if (e.button != PointerEventData.InputButton.Right) return;
+            CancelHold();
+            _suppressRightClick = false;
+            bool foodPress = _isPlayerSlot && InventoryInputManager.Instance.IsInventoryOpen &&
+                !_slot.IsEmpty && _slot.GetItemSO() is ConsumableItemSO && InventoryCursorManager.Instance.CursorSlot.IsEmpty;
+            if (!foodPress) return;
+            _heldFood = (ConsumableItemSO)_slot.GetItemSO();
+        }
+
+        public void OnPointerUp(PointerEventData e)
+        {
+            if (e.button == PointerEventData.InputButton.Right) CancelHold();
+        }
+
+        public void OnPointerExit(PointerEventData e) => CancelHold();
+        private void OnDisable() => CancelHold();
+        private void OnApplicationFocus(bool focused) { if (!focused) CancelHold(); }
+
+        private void CancelHold()
+        {
+            _heldFood = null;
+            _elapsed = 0;
+            if (_progress != null) _progress.enabled = false;
+        }
+
+        private void Update()
+        {
+            if (_heldFood == null) return;
+            if (!InventoryInputManager.Instance.IsInventoryOpen || _slot.IsEmpty || _slot.GetItemSO() != _heldFood ||
+                !InventoryCursorManager.Instance.CursorSlot.IsEmpty)
+            {
+                _suppressRightClick = true;
+                CancelHold();
+                return;
+            }
+            _elapsed += Time.deltaTime;
+            var settings = InventoryInputManager.Instance;
+            float fillTime = _elapsed - settings.ConsumeDelay;
+            if (fillTime < 0f) return;
+            // Unity sends a click after pointer-up, even when the press was a hold.
+            _suppressRightClick = true;
+            var food = Player.Instance.Food;
+            if (food == null || !food.CanEat(_heldFood))
+            {
+                CancelHold();
+                return;
+            }
+            if (_progress == null)
+            {
+                _progress = new GameObject("Eating progress", typeof(Image)).GetComponent<Image>();
+                var rect = _progress.rectTransform;
+                rect.SetParent(transform, false);
+                rect.SetSiblingIndex(_itemIcon.transform.GetSiblingIndex());
+                rect.anchorMin = Vector2.zero;
+                rect.offsetMin = new Vector2(3, 3);
+                rect.offsetMax = new Vector2(-3, 3);
+                _progress.color = new Color(1, 0.78f, 0.08f, 0.85f);
+                _progress.raycastTarget = false;
+            }
+            float amount = settings.ConsumeDuration > 0f ? Mathf.Clamp01(fillTime / settings.ConsumeDuration) : 1f;
+            _progress.enabled = true;
+            _progress.rectTransform.anchorMax = new Vector2(1, amount);
+            _progress.rectTransform.offsetMax = new Vector2(-3, 3 - 6 * amount);
+            if (amount < 1) return;
+            food.Eat(_slot, _heldFood);
+            CancelHold();
+        }
 
         private void OnDestroy()
         {
@@ -89,6 +164,7 @@ namespace SketchLand
             }
             else if (eventData.button == PointerEventData.InputButton.Right)
             {
+                if (_suppressRightClick) return;
                 InventoryCursorManager.Instance.HandleSlotRightClick(_slot, _onSlotModified);
             }
         }

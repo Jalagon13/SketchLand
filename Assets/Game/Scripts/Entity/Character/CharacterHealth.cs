@@ -31,10 +31,13 @@ namespace SketchLand
         }
         
         private ServerCharacter _character;
+        private PlayerFood _food;
+        public int Maximum => _character.Stats.MaxHealth.GetValue() + (_food != null ? _food.HealthBonus : 0);
         private WaitForSeconds _iFrameDuration;
 
         private void Awake()
         {
+            _food = GetComponent<PlayerFood>();
             _character = GetComponent<ServerCharacter>();
             _iFrameDuration = new(_character.Data.BaseIFrameDuration);
         }
@@ -51,7 +54,7 @@ namespace SketchLand
             if (!IsServer) return;
 
             CurrentHealth.OnValueChanged += OnCurrentHealthChanged;
-            CurrentHealth.Value = _character.Stats.MaxHealth.GetValue();
+            CurrentHealth.Value = Maximum;
             CurrentLifeState.Value = LifeState.Alive;
 
             OnCurrentHealthChanged(0, CurrentHealth.Value);
@@ -59,7 +62,7 @@ namespace SketchLand
 
         private void OnCurrentHealthChanged(int previousValue, int newValue)
         {
-            OnHealthChanged?.Invoke(this, new(_character.Stats.MaxHealth.GetValue(), CurrentHealth.Value, previousValue));
+            OnHealthChanged?.Invoke(this, new(Maximum, CurrentHealth.Value, previousValue));
             
             if (_character.Data.CanDie && CurrentHealth.Value <= 0 && CurrentLifeState.Value != LifeState.Dead)
             {
@@ -104,10 +107,10 @@ namespace SketchLand
         {
             if (amount <= 0 || CurrentLifeState.Value == LifeState.Dead) return;
 
-            int maxHp = _character.Stats.MaxHealth.GetValue();
+            int maxHp = Maximum;
             if (CurrentHealth.Value >= maxHp) return;
             
-            WorldTextPopupManager.Instance.SpawnHealingTextPopup(Player.Instance.Character.transform.position, amount);
+            WorldTextPopupManager.Instance.SpawnHealingTextPopup(transform.position, Mathf.Min(amount, maxHp - CurrentHealth.Value));
 
             if (IsServer)
             {
@@ -125,7 +128,7 @@ namespace SketchLand
         {
             if (amount <= 0 || CurrentLifeState.Value == LifeState.Dead) return;
 
-            int maxHp = _character.Stats.MaxHealth.GetValue();
+            int maxHp = Maximum;
             CurrentHealth.Value = Mathf.Min(maxHp, CurrentHealth.Value + amount);
             // Debug.Log($"{name} Restored {amount} HP on Server. {CurrentHealth.Value}/{maxHp}");
         }

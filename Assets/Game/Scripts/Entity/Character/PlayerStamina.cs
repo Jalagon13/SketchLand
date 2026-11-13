@@ -14,9 +14,20 @@ namespace SketchLand
         [SerializeField, Min(0f)] private float _sprintCostPerSecond = 12f;
         [SerializeField, Min(0f)] private float _swingCost = 15f;
 
+        public float BaseMax => _max;
+        private float _foodMax;
+        private float _foodRegen;
+
+        public void SetFoodBonuses(float max, float regen)
+        {
+            _foodMax = max;
+            _foodRegen = regen;
+            SetCurrent(Current);
+        }
+
         public float Max
         {
-            get => _max;
+            get => _max + _foodMax;
             set
             {
                 _max = Mathf.Max(0f, value);
@@ -24,7 +35,7 @@ namespace SketchLand
             }
         }
 
-        public float RegenPerSecond { get => _regenPerSecond; set => _regenPerSecond = Mathf.Max(0f, value); }
+        public float RegenPerSecond { get => _regenPerSecond + _foodRegen; set => _regenPerSecond = Mathf.Max(0f, value); }
         public float RegenDelaySeconds { get => _regenDelaySeconds; set => _regenDelaySeconds = Mathf.Max(0f, value); }
         public float SprintCostPerSecond { get => _sprintCostPerSecond; set => _sprintCostPerSecond = Mathf.Max(0f, value); }
         public float SwingCost { get => _swingCost; set => _swingCost = Mathf.Max(0f, value); }

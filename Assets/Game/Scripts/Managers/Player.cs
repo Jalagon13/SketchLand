@@ -38,9 +38,7 @@ namespace SketchLand
         [field: SerializeField] public float GravityForce { get; private set; }
         [field: SerializeField] public float TerminalVelocity { get; private set; }
 
-        [field: Header("Health Regen")]
-        [field: SerializeField, Min(0)] public float HealthRegenTickDuration { get; private set; } = 1;
-        [field: SerializeField, Min(0)] public int HealthRegenPerTick { get; private set; } = 1;
+        public PlayerFood Food { get; private set; }
 
         [field: SerializeField] public PlayerStamina Stamina { get; private set; } = new();
 
@@ -52,7 +50,6 @@ namespace SketchLand
         public PlayerEquipment Equipment { get; private set; }
 
         private bool _hasInitialSpawn;
-        private Coroutine _healthRegenerationRoutine;
 
         private void Awake() 
         {
@@ -125,9 +122,10 @@ namespace SketchLand
             if (Character == character) return;
 
             if (Character != null) Character.Health.CurrentLifeState.OnValueChanged -= OnLifeStateChanged;
-            if (_healthRegenerationRoutine != null) StopCoroutine(_healthRegenerationRoutine);
 
             Character = character;
+            Food = character.GetComponent<PlayerFood>();
+            Stamina.SetFoodBonuses(0, 0);
             Stamina.Refill();
             Character.Health.CurrentLifeState.OnValueChanged += OnLifeStateChanged;
 
@@ -137,18 +135,7 @@ namespace SketchLand
 
             InitializeSpawn();
 
-            _healthRegenerationRoutine = StartCoroutine(HealthRegenerationRoutine());
-
             PlayerReady?.Invoke(Character);
-        }
-
-        private IEnumerator HealthRegenerationRoutine()
-        {
-            while (true)
-            {
-                yield return new WaitForSeconds(HealthRegenTickDuration);
-                Character.Health.RestoreHealth(HealthRegenPerTick);
-            }
         }
 
         private void OnLifeStateChanged(LifeState previousValue, LifeState newValue)
@@ -165,7 +152,7 @@ namespace SketchLand
                 Stamina.Refill();
                 // respawn
                 Character.transform.position = RespawnPoint;
-                Character.Health.CurrentHealth.Value = Character.Stats.MaxHealth.GetValue();
+                Character.Health.CurrentHealth.Value = Character.Health.Maximum;
             }
         }
 

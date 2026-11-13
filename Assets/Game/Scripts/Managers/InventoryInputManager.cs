@@ -17,6 +17,13 @@ namespace SketchLand
         public int ActiveHotbarIndex { get; private set; }
         public bool IsInventoryOpen { get; private set; }
         
+        [field: Header("Food consumption")]
+        [field: SerializeField, Tooltip("Seconds to hold before the yellow progress fill appears.")]
+        public float ConsumeDelay { get; private set; } = 0.25f;
+
+        [field: SerializeField, Tooltip("Seconds to fill the slot after the delay. Zero consumes immediately after the delay.")]
+        public float ConsumeDuration { get; private set; } = 1f;
+
         public InventorySlot ActiveSlot { get; private set; }
 
         private bool _swingHeld;

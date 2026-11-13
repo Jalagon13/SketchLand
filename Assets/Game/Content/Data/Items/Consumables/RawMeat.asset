@@ -19,9 +19,11 @@ MonoBehaviour:
   <HeldPosition>k__BackingField: {x: 0, y: 0, z: 0}
   <HeldRotation>k__BackingField: 0
   <HeldScale>k__BackingField: {x: 1, y: 1, z: 1}
-  <RestoreHpAmount>k__BackingField: 15
-  <PotionSicknessDuration>k__BackingField: 60
-  <PotionSicknessIcon>k__BackingField: {fileID: 3121390128114958339, guid: 2f87ce7e588154a76acbf2c4eda5fff0, type: 3}
+  <Duration>k__BackingField: 200
+  <Health>k__BackingField: 20
+  <HealthRegen>k__BackingField: 0.75
+  <Stamina>k__BackingField: 0
+  <StaminaRegen>k__BackingField: 0
   <ConsumeSFX>k__BackingField:
     Guid:
       Data1: -602489371

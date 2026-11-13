@@ -39,7 +39,8 @@ namespace SketchLand
 
         private void Awake()
         {
-            Stats = new(_data);
+            var food = GetComponent<PlayerFood>();
+            Stats = new(_data, food != null ? food.BaseHealth : _data.BaseMaxHealth);
             Health = GetComponent<CharacterHealth>();
             DamageReceiver = GetComponent<DamageReceiver>();
 
@@ -93,7 +94,6 @@ namespace SketchLand
             if (Machine == null) return;
 
             Machine.UpdateTick(Time.deltaTime);
-            Stats.TickBuffs(Time.deltaTime);
         }
 
         public override void FixedTick(float fixedDeltaTime)
