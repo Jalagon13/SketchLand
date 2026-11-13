@@ -16,7 +16,7 @@ namespace SketchLand
 
         [Header("World References")]
         [field: SerializeField] public WorldGenerator WorldGen { get; private set; }
-        [SerializeField] private ParallaxBackground _surfaceBg;
+        [SerializeField] private ParallaxBackground[] _surfaceBackgrounds;
 
         [field: SerializeField] public WorldClock Clock { get; private set; } = new();
 
@@ -124,7 +124,8 @@ namespace SketchLand
 
             _tileSupport = new TileSupportTracker(FgGrid, BgGrid);
 
-            _surfaceBg.Initialize();
+            foreach (var background in _surfaceBackgrounds)
+                background.Initialize();
 
             Clock.StartNewWorld();
             IsWorldReady = true;

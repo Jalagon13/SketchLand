@@ -7,9 +7,13 @@ namespace SketchLand
     public class ParallaxBackground : MonoBehaviour
     {
         [SerializeField] private GameObject _camera;
-        [SerializeField] private float _parallaxEffect;
+        [Tooltip("Camera follow amount: 0 scrolls with the world, 1 stays fixed in the distance.")]
+        [SerializeField, Range(0f, 1f)] private float _parallaxEffect;
+        [Tooltip("Horizontal drift in world units per second. Positive moves right; zero keeps the layer still.")]
+        [SerializeField] private float _scrollSpeed;
 
         private float _length, _startPos, _startPosY;
+        private float _scrollOffset;
         private float _heightAboveOrigin;
         private Camera _viewCamera;
         private bool _initialized;
@@ -18,7 +22,9 @@ namespace SketchLand
         {
             if (!_initialized || _length <= 0f) return;
 
-            float distance = _camera.transform.position.x * _parallaxEffect;
+            // Keep drift bounded and include it in wrapping so all repeating copies stay seamless.
+            _scrollOffset = Mathf.Repeat(_scrollOffset + _scrollSpeed * Time.deltaTime, _length);
+            float distance = _camera.transform.position.x * _parallaxEffect + _scrollOffset;
             float distanceY = _camera.transform.position.y * _parallaxEffect;
             float positionY = _startPosY + distanceY;
 
@@ -37,6 +43,10 @@ namespace SketchLand
 
         public void Initialize()
         {
+            _initialized = false;
+            _scrollOffset = 0f;
+            StopAllCoroutines();
+            if (_camera == null) _camera = GetComponentInParent<Camera>().gameObject;
             StartCoroutine(DelayInitialization());
         }
 
