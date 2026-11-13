@@ -18,8 +18,10 @@ namespace SketchLand
         [field: SerializeField] public WorldGenerator WorldGen { get; private set; }
         [SerializeField] private ParallaxBackground _surfaceBg;
 
+        [field: SerializeField] public WorldClock Clock { get; private set; } = new();
+
         [Header("Tile Repair")]
-        [SerializeField, Min(0f)] private float _tileRepairDelay = 5f;
+        [SerializeField] private float _tileRepairDelay = 5f;
 
         [Header("Debug Testing")]
         [SerializeField] private TreeTileConfigSO _debugTreeConfig;
@@ -69,6 +71,7 @@ namespace SketchLand
         {
             if(!IsWorldReady) return;
         
+            Clock.Advance(Time.deltaTime);
             FgGrid.RestoreExpiredDamage(Time.time, _tileRepairDelay);
             BgGrid.RestoreExpiredDamage(Time.time, _tileRepairDelay);
 
@@ -123,6 +126,7 @@ namespace SketchLand
 
             _surfaceBg.Initialize();
 
+            Clock.StartNewWorld();
             IsWorldReady = true;
             OnWorldReady?.Invoke();
 

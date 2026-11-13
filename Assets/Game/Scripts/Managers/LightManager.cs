@@ -19,6 +19,11 @@ namespace SketchLand
         [Tooltip("Pushes light values away from the midpoint toward dark or full brightness. Set to 1 for no adjustment.")]
         [SerializeField, Range(1f, 3f)] private float _lightContrast = 1.2f;
 
+        [Header("Surface Daylight")]
+        [SerializeField, Range(0f, 1f)] private float _dayBrightness = 1f;
+        [SerializeField, Range(0f, 1f)] private float _nightBrightness = 0.15f;
+        private int _lastDaylightLevel = -1;
+
         [Header("Light Attenuation")]
         [Tooltip("Distance in game tiles that light travels before it starts dimming.")]
         [SerializeField, Min(0)] private int _tileAmountBeforeAttenuationBegins = 2;
@@ -86,6 +91,27 @@ namespace SketchLand
             if (_foregroundLightmapTexture != null) Destroy(_foregroundLightmapTexture);
             if (_backgroundLightmapTexture != null) Destroy(_backgroundLightmapTexture);
             if (_lightmapMaterial != null) Destroy(_lightmapMaterial);
+        }
+
+        private int GetDaylightLevel(WorldClock clock)
+        {
+            float daylight = clock.CurrentPhase switch
+            {
+                DayPhase.Sunrise => clock.PhaseProgress01,
+                DayPhase.Day => 1f,
+                DayPhase.Sunset => 1f - clock.PhaseProgress01,
+                _ => 0f
+            };
+            return Mathf.RoundToInt(255f * Mathf.SmoothStep(_nightBrightness, _dayBrightness, daylight));
+        }
+
+        private void LateUpdate()
+        {
+            var world = WorldManager.Instance;
+            if (world == null || !world.IsWorldReady || GetDaylightLevel(world.Clock) == _lastDaylightLevel) return;
+
+            RectInt bounds = PlayerCamera.Instance.CurrentVisibleTileBounds;
+            if (bounds.width > 0 && bounds.height > 0) OnBoundsChanged(bounds, bounds);
         }
 
         private void OnBoundsChanged(RectInt oldBounds, RectInt newBounds)
@@ -167,6 +193,9 @@ namespace SketchLand
                 }
             }
 
+            _lastDaylightLevel = GetDaylightLevel(world.Clock);
+            float daylight = _lastDaylightLevel / 255f;
+
             // Seed light sources
             for (int localX = 0; localX < tileWidth; localX++)
             {
@@ -180,16 +209,13 @@ namespace SketchLand
                     var fgTd = world.FgGrid.GetTileData(worldPosX, worldPosY);
                     var bgTd = world.BgGrid.GetTileData(worldPosX, worldPosY);
 
+                    float sourceStrength = Mathf.Max(fgTd.LightLevel, bgTd.LightLevel) / 100f;
                     if (world.GetZoneAtY(worldPosY).AllowsNaturalDaylight &&
                         (!fgTd.HasTile || !fgTd.IsSolid) && !bgTd.HasTile)
-                    {
-                        SeedTile(localX, localY, _fullBrightness);
-                    }
-                    else if (fgTd.LightLevel > 0 || bgTd.LightLevel > 0)
-                    {
-                        float sourceStrength = Mathf.Max(fgTd.LightLevel, bgTd.LightLevel) / 100f;
+                        sourceStrength = Mathf.Max(sourceStrength, daylight);
+
+                    if (sourceStrength > 0f)
                         SeedTile(localX, localY, _fullBrightness * Mathf.Clamp01(sourceStrength));
-                    }
                 }
             }
 

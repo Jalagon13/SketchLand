@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.TorchTileConfigSO
   <RequiredHarvestType>k__BackingField: 0
   <MaxHP>k__BackingField: 1
-  <LightLevel>k__BackingField: 1
+  <LightLevel>k__BackingField: 0.85
   <Indestructible>k__BackingField: 0
   <IsSolid>k__BackingField: 0
   <Size>k__BackingField: {x: 1, y: 1}
