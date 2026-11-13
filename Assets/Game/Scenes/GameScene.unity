@@ -2759,7 +2759,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d58df6de50ce94e08a6db50f9a63e04c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.CharacterManager
-  _enableSpawning: 0
+  _enableSpawning: 1
   _globalMaxCharacterCap: 200
   _durationTillCharacterDespawns: 15
 --- !u!114 &653184666
@@ -2774,11 +2774,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f8f52762262d413e849637a1b15c3fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.CharacterSpawnRules
-  _maxCharacterCount: 12
-  _perSecondSpawnChance: 0.25
+  _maxCharacterCount: 6
+  _perSecondSpawnChance: 0.125
   _spawnEntries:
   - _character: {fileID: 11400000, guid: 2a9db1f511b6a4888a49dd1d2f56bd26, type: 2}
-    _weight: 0.25
+    _weight: 1
     _surfacePhases: 2
     _undergroundPhases: 0
     _requireOpenBackground: 1
@@ -5535,7 +5535,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.Player
   <InteractRange>k__BackingField: 3.5
-  <WalkingBoxColliderSize>k__BackingField: {x: 0.75, y: 1.75}
   <SprintSpeed>k__BackingField: 6.25
   <SprintTransitionSharpness>k__BackingField: 8
   <MinJumpSpeed>k__BackingField: 5.5
@@ -5547,7 +5546,9 @@ MonoBehaviour:
   <TerminalVelocity>k__BackingField: -40
   <Stamina>k__BackingField:
     _max: 50
-    _regenPerSecond: 10
+    _baseRegenPerSecond: 10
+    _maxRegenPerSecond: 25
+    _regenRampSeconds: 3
     _regenDelaySeconds: 0.5
     _sprintCostPerSecond: 4
     _swingCost: 5
@@ -9228,11 +9229,11 @@ MonoBehaviour:
   <WorldGen>k__BackingField: {fileID: 2043979316}
   _surfaceBg: {fileID: 856868902}
   <Clock>k__BackingField:
-    _runTimeOfDay: 0
-    _sunriseMinutes: 0.125
-    _dayMinutes: 0.25
-    _sunsetMinutes: 0.125
-    _nightMinutes: 0.25
+    _runTimeOfDay: 1
+    _sunriseMinutes: 2
+    _dayMinutes: 10
+    _sunsetMinutes: 2
+    _nightMinutes: 8
   _tileRepairDelay: 5
   _debugTreeConfig: {fileID: 11400000, guid: 4f515916d235640d480d2b10b7f502af, type: 2}
   _testProjectile: {fileID: 11400000, guid: b5e08a065994447879f5911de6519ca2, type: 2}

@@ -139,6 +139,8 @@ namespace SketchLand
                 {
                     Tooltip.ItemDescriptionDisplay(_slot.GetItemSO(), _slot.Amount);
                 }
+                else
+                    Tooltip.HideUI();
             };
         }
 
@@ -155,6 +157,7 @@ namespace SketchLand
                 _itemIcon.sprite = GameDataRegistry.Instance.GetItemSOFromItemId(_slot.ItemId).DisplayIcon;
                 _stackText.text = _slot.Amount > 1 ? _slot.Amount.ToString() : string.Empty;
             }
+            _hover?.RefreshTooltip();
         }
 
         public void OnPointerClick(PointerEventData eventData)

@@ -26,6 +26,7 @@ namespace SketchLand
 
         public InventorySlot ActiveSlot { get; private set; }
 
+        private bool _cursorPlacementHeld;
         private ItemSO _activeItem;
         private InventorySlot _activeSlot;
 
@@ -69,7 +70,7 @@ namespace SketchLand
 
             if (WorldManager.Instance.MouseOverUI) return;
             if (!GameInput.Instance.PrimaryActionHeld) return;
-            if (!ActiveSlot.IsEmpty && ActiveSlot.GetItemSO() is ToolItemSO tool)
+            if (!_cursorPlacementHeld && !ActiveSlot.IsEmpty && ActiveSlot.GetItemSO() is ToolItemSO tool)
                 tool.OnPrimaryActionHeld(player);
             else
                 _activeItem?.OnPrimaryActionHeld(player);
@@ -131,6 +132,7 @@ namespace SketchLand
         {
             if (context.canceled)
             {
+                _cursorPlacementHeld = false;
                 if (_activeItem != null && CanAct() && !WorldManager.Instance.MouseOverUI && HasActiveItem())
                     ReleaseItemUse();
                 else
@@ -144,6 +146,8 @@ namespace SketchLand
             if (slot.IsEmpty) return;
             _activeSlot = slot;
             _activeItem = slot.GetItemSO();
+            // Placement can empty the cursor immediately. Keep this press with the cursor item.
+            _cursorPlacementHeld = slot == InventoryCursorManager.Instance.CursorSlot && _activeItem is TileItemSO;
             _activeItem.OnPrimaryActionStarted(Player.Instance);
         }
 

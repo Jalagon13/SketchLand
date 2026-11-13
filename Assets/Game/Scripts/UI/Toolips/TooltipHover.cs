@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 namespace SketchLand
 {
@@ -9,6 +11,7 @@ namespace SketchLand
         public Action OnHoverEnter;  // caller populates this
 
         private bool _isPointerOver;
+        private readonly List<RaycastResult> _hits = new();
 
         private void Start()
         {
@@ -34,13 +37,37 @@ namespace SketchLand
 
         public void OnPointerExit(PointerEventData _)
         {
+            ClearHover();
+        }
+
+        private void OnDisable() => ClearHover();
+
+        private void ClearHover()
+        {
+            if (!_isPointerOver) return;
             _isPointerOver = false;
-            Tooltip.HideUI();
+            if (Tooltip.ReferenceHolder != null) Tooltip.HideUI();
         }
 
         public void RefreshTooltip()
         {
-            if (!_isPointerOver) return;
+            if (!_isPointerOver || !isActiveAndEnabled) return;
+
+            var events = EventSystem.current;
+            var pointer = Pointer.current;
+            if (events == null || pointer == null)
+            {
+                ClearHover();
+                return;
+            }
+
+            var data = new PointerEventData(events) { position = pointer.position.ReadValue() };
+            events.RaycastAll(data, _hits);
+            if (_hits.Count == 0 || !_hits[0].gameObject.transform.IsChildOf(transform))
+            {
+                ClearHover();
+                return;
+            }
 
             if (InventoryCursorManager.Instance != null && !InventoryCursorManager.Instance.CursorSlot.IsEmpty)
             {
