@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b08ceb78e3b2495b8d808a5860e66794, type: 3}
   m_Name: BerryBushTile
   m_EditorClassIdentifier: Unity.2D.Tilemap.Extras::UnityEngine.Tilemaps.AutoTile
-  m_DefaultSprite: {fileID: 21300000, guid: 922ce8c36553b4e10b29846052344b5f, type: 3}
+  m_DefaultSprite: {fileID: 581356180, guid: b52b00e8505b74bb0868ed95cd3a0f2a, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_MaskType: 0
