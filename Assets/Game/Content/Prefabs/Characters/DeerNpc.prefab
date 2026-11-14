@@ -236,6 +236,7 @@ GameObject:
   - component: {fileID: 5292572679300587105}
   - component: {fileID: 7179942279974174629}
   - component: {fileID: 3454599396775519568}
+  - component: {fileID: 7527529202064474147}
   m_Layer: 0
   m_Name: DeerNpc
   m_TagString: Untagged
@@ -343,6 +344,69 @@ MonoBehaviour:
   _visuals: {fileID: 5907841507912977926}
   _animator: {fileID: 7391017610496724148}
   DesiredDirection: {x: 0, y: 0}
+--- !u!114 &7527529202064474147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1935912492634409185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13c3238b0624e4a229601b98e9adc20e, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.CharacterDeathEffect
+  _visuals: {fileID: 5907841507912977926}
+  _settings:
+    Lifetime: 5
+    FadeDuration: 0.8
+    Gravity: 22
+    HorizontalKick: 2.5
+    UpwardKick: 3.5
+    Tumble: 4
+    GroundFriction: 0.65
+    AirDrag: 1.5
+    BoneRadius: 0.055
+  _boneOverrides:
+  - Bone: {fileID: 6002165030092979960}
+    Radius: 0.085
+    BendLimit: 20
+  - Bone: {fileID: 1378088942052481394}
+    Radius: 0.085
+    BendLimit: 20
+  - Bone: {fileID: 5741041210766549790}
+    Radius: 0.05
+    BendLimit: 45
+  - Bone: {fileID: 4908468095090392247}
+    Radius: 0.05
+    BendLimit: 45
+  - Bone: {fileID: 4939611361457933502}
+    Radius: 0.15
+    BendLimit: 65
+  - Bone: {fileID: 4295082327726404412}
+    Radius: 0.05
+    BendLimit: 115
+  - Bone: {fileID: 8716387270723318139}
+    Radius: 0.05
+    BendLimit: 115
+  - Bone: {fileID: 2672933899045010953}
+    Radius: 0.05
+    BendLimit: 115
+  - Bone: {fileID: 4750287278145935902}
+    Radius: 0.05
+    BendLimit: 115
+  - Bone: {fileID: 4815971682006563490}
+    Radius: 0.05
+    BendLimit: 115
+  - Bone: {fileID: 7640168057099563478}
+    Radius: 0.05
+    BendLimit: 115
+  - Bone: {fileID: 364150975374131735}
+    Radius: 0.05
+    BendLimit: 115
+  - Bone: {fileID: 4713690729183223742}
+    Radius: 0.05
+    BendLimit: 115
 --- !u!1 &2044227844382353809
 GameObject:
   m_ObjectHideFlags: 0

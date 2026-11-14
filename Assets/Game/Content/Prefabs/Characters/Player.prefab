@@ -278,6 +278,7 @@ GameObject:
   - component: {fileID: 4744876413007893738}
   - component: {fileID: 6954809910114446498}
   - component: {fileID: 5782318190208514922}
+  - component: {fileID: 4154864731561693400}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -589,6 +590,75 @@ MonoBehaviour:
   _solver: {fileID: 2162368031410451247}
   _gripPoint: {fileID: 3477039710397101722}
   _blendDuration: 0.15
+--- !u!114 &4154864731561693400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2708704097900981217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13c3238b0624e4a229601b98e9adc20e, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.CharacterDeathEffect
+  _visuals: {fileID: 1976869152849430371}
+  _settings:
+    Lifetime: 5
+    FadeDuration: 0.8
+    Gravity: 22
+    HorizontalKick: 2.5
+    UpwardKick: 3.5
+    Tumble: 4
+    GroundFriction: 0.65
+    AirDrag: 1.5
+    BoneRadius: 0.055
+  _boneOverrides:
+  - Bone: {fileID: 1118014484816933984}
+    Radius: 0.085
+    BendLimit: 20
+  - Bone: {fileID: 2667306089735974453}
+    Radius: 0.085
+    BendLimit: 20
+  - Bone: {fileID: 8048837871493644259}
+    Radius: 0.05
+    BendLimit: 115
+  - Bone: {fileID: 4354132191752222113}
+    Radius: 0.05
+    BendLimit: 115
+  - Bone: {fileID: 5274584702680315053}
+    Radius: 0.05
+    BendLimit: 45
+  - Bone: {fileID: 2837138274975715104}
+    Radius: 0.05
+    BendLimit: 115
+  - Bone: {fileID: 7094441436066937092}
+    Radius: 0.05
+    BendLimit: 115
+  - Bone: {fileID: 7189935862343291191}
+    Radius: 0.05
+    BendLimit: 45
+  - Bone: {fileID: 6823253917261494076}
+    Radius: 0.05
+    BendLimit: 115
+  - Bone: {fileID: 8253724012573235000}
+    Radius: 0.05
+    BendLimit: 115
+  - Bone: {fileID: 7545675042113676929}
+    Radius: 0.05
+    BendLimit: 45
+  - Bone: {fileID: 2424349258313821461}
+    Radius: 0.05
+    BendLimit: 115
+  - Bone: {fileID: 4292934130654244090}
+    Radius: 0.05
+    BendLimit: 115
+  - Bone: {fileID: 2522117413227382986}
+    Radius: 0.05
+    BendLimit: 45
+  - Bone: {fileID: 1749056987539592646}
+    Radius: 0.15
+    BendLimit: 65
 --- !u!1 &2765888082222474991
 GameObject:
   m_ObjectHideFlags: 0
@@ -1443,6 +1513,11 @@ PrefabInstance:
       addedObject: {fileID: 8749926837981907169}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+--- !u!4 &1118014484816933984 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2953259974978901564, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 2846250830082744924}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1132554295202898327 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2938684713161147339, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
@@ -1465,6 +1540,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e43125a9e9e64b60ba0618a518a58e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.StickFigureWardrobe
+--- !u!4 &1749056987539592646 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4555967291573434266, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 2846250830082744924}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2162368031410451247 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4142656658920657267, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
@@ -1476,9 +1556,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30ae93fb156fc6d4c828c64571fc3edd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.2D.IK.Runtime::UnityEngine.U2D.IK.LimbSolver2D
+--- !u!4 &2424349258313821461 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 493969628389232457, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 2846250830082744924}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2522117413227382986 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 324178223598463638, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 2846250830082744924}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2667306089735974453 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 178955195949829225, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 2846250830082744924}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2837138274975715104 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9112986281684348, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 2846250830082744924}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3334872227861809961 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 664336554490784117, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 2846250830082744924}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4292934130654244090 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2084175778676068006, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 2846250830082744924}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4354132191752222113 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1950927407569819645, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 2846250830082744924}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5274584702680315053 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7948005462350632689, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
   m_PrefabInstance: {fileID: 2846250830082744924}
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &6169355257030218549 stripped
@@ -1486,13 +1601,33 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 8278207547820192105, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
   m_PrefabInstance: {fileID: 2846250830082744924}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &6823253917261494076 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8777229000148243808, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 2846250830082744924}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7094441436066937092 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4975192161041177432, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 2846250830082744924}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7189935862343291191 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4951745854113215339, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
   m_PrefabInstance: {fileID: 2846250830082744924}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &7545675042113676929 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5748974065935795421, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 2846250830082744924}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8048837871493644259 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5245811115692711359, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 2846250830082744924}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8253724012573235000 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6193844006191117668, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
   m_PrefabInstance: {fileID: 2846250830082744924}
   m_PrefabAsset: {fileID: 0}

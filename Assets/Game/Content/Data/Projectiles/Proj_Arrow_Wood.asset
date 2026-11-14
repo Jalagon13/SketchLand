@@ -16,9 +16,9 @@ MonoBehaviour:
   <BaseLifetime>k__BackingField: 4
   <IgnoreTileCollision>k__BackingField: 0
   <DefaultFaction>k__BackingField: 0
-  <BaseDamage>k__BackingField: 8
+  <BaseDamage>k__BackingField: 80
   <BasePenetration>k__BackingField: 1
-  <BaseKnockbackForce>k__BackingField: 7
+  <BaseKnockbackForce>k__BackingField: 100
   <HitImpactPrefab>k__BackingField: {fileID: 0}
   <ImpactSFX>k__BackingField:
     Guid:

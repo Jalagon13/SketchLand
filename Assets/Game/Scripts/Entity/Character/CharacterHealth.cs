@@ -16,6 +16,8 @@ namespace SketchLand
         
         public event EventHandler<HealthChangedArgs> OnHealthChanged;
         public event Action OnDamaged;
+        // Presentation only. Sent before the normal NPC despawn, never on range despawns.
+        public event Action<Vector2> OnDied;
         public class HealthChangedArgs : EventArgs
         {
             public int MaxHP { get; }
@@ -34,6 +36,7 @@ namespace SketchLand
         private PlayerFood _food;
         public int Maximum => _character.Stats.MaxHealth.GetValue() + (_food != null ? _food.HealthBonus : 0);
         private WaitForSeconds _iFrameDuration;
+        private Vector2? _pendingDeathVelocity;
 
         private void Awake()
         {
@@ -66,7 +69,9 @@ namespace SketchLand
             
             if (_character.Data.CanDie && CurrentHealth.Value <= 0 && CurrentLifeState.Value != LifeState.Dead)
             {
+                Vector2 deathVelocity = _pendingDeathVelocity ?? _character.Velocity;
                 CurrentLifeState.Value = LifeState.Dead;
+                NotifyDeathRpc(deathVelocity);
                 AudioManager.Instance.PlayOneShot(_character.Data.CharacterDeathSFX, transform.position);
 
                 // Server-authoritative loot drop on death
@@ -77,13 +82,18 @@ namespace SketchLand
             }
         }
 
-        public void TakeDamage(int netDamage, bool triggerIFrame = true)
+        public void TakeDamage(int netDamage, bool triggerIFrame = true, Vector2? deathVelocity = null)
         {
             if (!IsServer || netDamage <= 0) return;
             if (triggerIFrame && CurrentLifeState.Value == LifeState.IFrame) return;
 
             int minimumHealth = _character.Data.CanDie ? 0 : 1;
-            CurrentHealth.Value = Mathf.Max(minimumHealth, CurrentHealth.Value - netDamage);
+            try
+            {
+                _pendingDeathVelocity = deathVelocity;
+                CurrentHealth.Value = Mathf.Max(minimumHealth, CurrentHealth.Value - netDamage);
+            }
+            finally { _pendingDeathVelocity = null; }
             
             if(CurrentHealth.Value > 0)
             {
@@ -95,6 +105,12 @@ namespace SketchLand
             {
                 StartCoroutine(IFrameRoutine());
             }
+        }
+
+        [Rpc(SendTo.ClientsAndHost)]
+        private void NotifyDeathRpc(Vector2 velocity)
+        {
+            OnDied?.Invoke(velocity);
         }
 
         [Rpc(SendTo.ClientsAndHost)]

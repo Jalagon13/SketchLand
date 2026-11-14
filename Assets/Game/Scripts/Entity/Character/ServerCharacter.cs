@@ -187,8 +187,18 @@ namespace SketchLand
                 ? (Random.value < 0.5f ? -1f : 1f)
                 : Mathf.Sign(horizontalDistance);
 
-            Velocity = new Vector2(strength * HorizontalKnockbackRatio * direction, strength * UpwardKnockbackRatio);
+            Velocity = CalculateKnockbackVelocity(force, sourcePosition, direction);
             _knockbackTimer = Mathf.Lerp(MinKnockbackDuration, MaxKnockbackDuration, strength / MaxKnockbackForce);
+        }
+
+        // Also used to give a visual corpse the killing hit's impulse without moving a dead Entity.
+        public Vector2 CalculateKnockbackVelocity(int force, Vector2 sourcePosition, float fallbackDirection)
+        {
+            if (!Data.CanBeKnockedBacked) return Vector2.zero;
+            float strength = Mathf.Clamp(force, 0, MaxKnockbackForce) * (1f - Mathf.Clamp01(Data.BaseKbResist));
+            float distance = transform.position.x - sourcePosition.x;
+            float direction = Mathf.Abs(distance) <= KnockbackDirectionEpsilon ? fallbackDirection : Mathf.Sign(distance);
+            return new Vector2(strength * HorizontalKnockbackRatio * direction, strength * UpwardKnockbackRatio);
         }
 
         public void ClearKnockback()

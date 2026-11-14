@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5292572679300587105}
   - component: {fileID: 7179942279974174629}
   - component: {fileID: 3454599396775519568}
+  - component: {fileID: 8585951149107295518}
   m_Layer: 0
   m_Name: ZombieNpc
   m_TagString: Untagged
@@ -120,6 +121,75 @@ MonoBehaviour:
   _visuals: {fileID: 5907841507912977926}
   _animator: {fileID: 6945325739209296434}
   DesiredDirection: {x: 0, y: 0}
+--- !u!114 &8585951149107295518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1935912492634409185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13c3238b0624e4a229601b98e9adc20e, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.CharacterDeathEffect
+  _visuals: {fileID: 5907841507912977926}
+  _settings:
+    Lifetime: 5
+    FadeDuration: 0.8
+    Gravity: 22
+    HorizontalKick: 2.5
+    UpwardKick: 3.5
+    Tumble: 4
+    GroundFriction: 0.65
+    AirDrag: 1.5
+    BoneRadius: 0.055
+  _boneOverrides:
+  - Bone: {fileID: 4214471350989499751}
+    Radius: 0.085
+    BendLimit: 20
+  - Bone: {fileID: 1223606757330908978}
+    Radius: 0.085
+    BendLimit: 20
+  - Bone: {fileID: 6506580488434345700}
+    Radius: 0.05
+    BendLimit: 115
+  - Bone: {fileID: 690122996889742502}
+    Radius: 0.05
+    BendLimit: 115
+  - Bone: {fileID: 8992604105573871018}
+    Radius: 0.05
+    BendLimit: 45
+  - Bone: {fileID: 1342276269871240743}
+    Radius: 0.05
+    BendLimit: 115
+  - Bone: {fileID: 6308337982032044035}
+    Radius: 0.05
+    BendLimit: 115
+  - Bone: {fileID: 6212992281756780592}
+    Radius: 0.05
+    BendLimit: 45
+  - Bone: {fileID: 7732155354617933371}
+    Radius: 0.05
+    BendLimit: 115
+  - Bone: {fileID: 5148790160858615359}
+    Radius: 0.05
+    BendLimit: 115
+  - Bone: {fileID: 6721811995944583046}
+    Radius: 0.05
+    BendLimit: 45
+  - Bone: {fileID: 1466546008372409362}
+    Radius: 0.05
+    BendLimit: 115
+  - Bone: {fileID: 1039385683191461373}
+    Radius: 0.05
+    BendLimit: 115
+  - Bone: {fileID: 1657165722837963213}
+    Radius: 0.05
+    BendLimit: 45
+  - Bone: {fileID: 3295180330809248961}
+    Radius: 0.15
+    BendLimit: 65
 --- !u!1 &6902626330650952792
 GameObject:
   m_ObjectHideFlags: 0
@@ -585,6 +655,36 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+--- !u!4 &690122996889742502 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1950927407569819645, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 1333304159259409243}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1039385683191461373 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2084175778676068006, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 1333304159259409243}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1223606757330908978 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 178955195949829225, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 1333304159259409243}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1342276269871240743 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9112986281684348, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 1333304159259409243}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1466546008372409362 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 493969628389232457, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 1333304159259409243}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1657165722837963213 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 324178223598463638, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 1333304159259409243}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1993976964137147870 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 661147793968195205, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
@@ -601,8 +701,53 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 664336554490784117, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
   m_PrefabInstance: {fileID: 1333304159259409243}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &3295180330809248961 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4555967291573434266, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 1333304159259409243}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4214471350989499751 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2953259974978901564, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 1333304159259409243}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5148790160858615359 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6193844006191117668, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 1333304159259409243}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6212992281756780592 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4951745854113215339, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 1333304159259409243}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6308337982032044035 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4975192161041177432, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 1333304159259409243}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6506580488434345700 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5245811115692711359, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 1333304159259409243}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &6721811995944583046 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5748974065935795421, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 1333304159259409243}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &6945325739209296434 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 8278207547820192105, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 1333304159259409243}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7732155354617933371 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8777229000148243808, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 1333304159259409243}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8992604105573871018 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7948005462350632689, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
   m_PrefabInstance: {fileID: 1333304159259409243}
   m_PrefabAsset: {fileID: 0}

@@ -31,7 +31,13 @@ namespace SketchLand
             int defense = Mathf.RoundToInt(_character.Stats.Defense.GetValue() * difficultyMult);
             int netDamage = Mathf.Max(1, hit.Damage - defense); // Clamp it to 1
 
-            _character.Health.TakeDamage(netDamage);
+            Vector2? deathVelocity = null;
+            if (_character.Data.CanDie && netDamage >= _character.Health.CurrentHealth.Value)
+            {
+                Vector2 knockback = _character.CalculateKnockbackVelocity(hit.KnockbackForce, hit.SourcePosition, _character.FacingDirection);
+                deathVelocity = knockback.sqrMagnitude > 0f ? knockback : _character.Velocity;
+            }
+            _character.Health.TakeDamage(netDamage, deathVelocity: deathVelocity);
             
             // TEMP: Spawn damage number popup. I will put this code in a client side game feel system later. Same with the SFX
             if(_character == Player.Instance.Character)
