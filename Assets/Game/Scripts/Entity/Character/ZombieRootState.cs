@@ -10,6 +10,7 @@ namespace SketchLand
     {
         private static readonly int DamagedAnimation = Animator.StringToHash("Base Layer.Zombie_Damaged");
         private static readonly int IsAirborne = Animator.StringToHash("IsAirborne");
+        private static readonly int IsMoving = Animator.StringToHash("IsMoving");
 
         [field: Header("Gravity Settings")]
         [field: SerializeField] public float GravityForce { get; private set; }
@@ -18,6 +19,28 @@ namespace SketchLand
         [field: Header("Jump Settings")]
         [field: SerializeField] public float MinJumpSpeed { get; private set; }
         [field: SerializeField] public float AirborneMoveSpeedMultiplier { get; private set; }
+
+        [Header("AI Settings")]
+        [SerializeField, Min(0.1f), Tooltip("Seconds without forward progress before idling and wandering.")]
+        private float _stuckTime = 2f;
+        [SerializeField, Min(0.1f)] private float _minRetryTime = 5f;
+        [SerializeField, Min(0.1f)] private float _maxRetryTime = 10f;
+        [SerializeField, Min(0.1f)] private float _minIdleTime = 1f;
+        [SerializeField, Min(0.1f)] private float _maxIdleTime = 2.5f;
+        [SerializeField, Min(0.1f)] private float _minWanderTime = 1.5f;
+        [SerializeField, Min(0.1f)] private float _maxWanderTime = 3f;
+        [SerializeField, Min(0f), Tooltip("Seeing the player again within this range can restart pursuit early.")]
+        private float _sightRange = 16f;
+
+        public bool IsPursuing { get; private set; }
+
+        private float _stuckTimer;
+        private float _progressX;
+        private float _pursuitDirection;
+        private float _retryTimer;
+        private float _wanderTimer;
+        private float _wanderDirection;
+        private bool _playerWasVisible;
 
         public ZombieGroundedState Grounded { get; private set; }
         public ZombieAirborneState Airborne { get; private set; }
@@ -31,7 +54,15 @@ namespace SketchLand
                 GravityForce = GravityForce,
                 TerminalVelocity = TerminalVelocity,
                 MinJumpSpeed = MinJumpSpeed,
-                AirborneMoveSpeedMultiplier = AirborneMoveSpeedMultiplier
+                AirborneMoveSpeedMultiplier = AirborneMoveSpeedMultiplier,
+                _stuckTime = _stuckTime,
+                _minRetryTime = _minRetryTime,
+                _maxRetryTime = _maxRetryTime,
+                _minIdleTime = _minIdleTime,
+                _maxIdleTime = _maxIdleTime,
+                _minWanderTime = _minWanderTime,
+                _maxWanderTime = _maxWanderTime,
+                _sightRange = _sightRange
             };
         }
 
@@ -54,7 +85,8 @@ namespace SketchLand
         protected override void OnEnter()
         {
             SetAirborneAnimation(false);
-            UpdatePursuitDirection();
+            BeginPursuit();
+            UpdateAI(0f);
         }
 
         public void SetAirborneAnimation(bool airborne)
@@ -70,14 +102,15 @@ namespace SketchLand
 
         protected override void OnUpdate(float deltaTime)
         {
-            UpdatePursuitDirection();
+            UpdateAI(deltaTime);
+            if (_ctx.Animator != null)
+                _ctx.Animator.SetBool(IsMoving, Mathf.Abs(_ctx.Velocity.x) > 0.1f);
         }
 
         public void UpdateHorizontalMovement(float fixedDeltaTime, float speedMultiplier = 1f)
         {
             if (_ctx.IsKnockedBack) return;
 
-            UpdatePursuitDirection();
             var currentSpeed = _ctx.Data.BaseSpeed * speedMultiplier;
             _ctx.UpdateHorizontalMovement(_ctx.DesiredDirection.x * currentSpeed, fixedDeltaTime);
 
@@ -87,18 +120,99 @@ namespace SketchLand
             }
         }
 
-        private void UpdatePursuitDirection()
+        private void BeginPursuit()
         {
-            var player = Player.Instance;
+            IsPursuing = true;
+            _stuckTimer = 0f;
+            _progressX = _ctx.transform.position.x;
+            _pursuitDirection = 0f;
+        }
 
-            if (player == null || player.Character == null)
+        private void UpdateAI(float deltaTime)
+        {
+            var player = Player.Instance != null ? Player.Instance.Character : null;
+            if (player == null)
             {
                 _ctx.DesiredDirection = Vector2.zero;
                 return;
             }
 
-            float distance = player.Character.transform.position.x - _ctx.transform.position.x;
+            if (_ctx.IsKnockedBack)
+            {
+                _stuckTimer = 0f;
+                _progressX = _ctx.transform.position.x;
+                return;
+            }
+
+            if (!IsPursuing)
+            {
+                _retryTimer -= deltaTime;
+                bool visible = CanSeePlayer(player.transform.position);
+                // A player who stayed visible behind an obstacle must not cancel the break immediately.
+                bool spottedPlayer = visible && !_playerWasVisible;
+                _playerWasVisible = visible;
+                if (_retryTimer <= 0f || spottedPlayer)
+                    BeginPursuit();
+                else
+                {
+                    _wanderTimer -= deltaTime;
+                    bool blocked = (_wanderDirection < 0f && _ctx.CollisionResult.TouchingLeft)
+                        || (_wanderDirection > 0f && _ctx.CollisionResult.TouchingRight);
+                    if (_wanderTimer <= 0f || blocked)
+                    {
+                        _wanderDirection = _wanderDirection == 0f ? (UnityEngine.Random.value < 0.5f ? -1f : 1f) : 0f;
+                        _wanderTimer = _wanderDirection == 0f
+                            ? UnityEngine.Random.Range(_minIdleTime, Mathf.Max(_minIdleTime, _maxIdleTime))
+                            : UnityEngine.Random.Range(_minWanderTime, Mathf.Max(_minWanderTime, _maxWanderTime));
+                    }
+                    _ctx.DesiredDirection = Vector2.right * _wanderDirection;
+                    return;
+                }
+            }
+
+            float distance = player.transform.position.x - _ctx.transform.position.x;
             _ctx.DesiredDirection = Mathf.Abs(distance) > 0.1f ? Vector2.right * Mathf.Sign(distance) : Vector2.zero;
+            float direction = _ctx.DesiredDirection.x;
+            // Measure horizontal travel, so jumping in place cannot reset the stuck timer.
+            if (direction == 0f || direction != _pursuitDirection
+                || (_ctx.transform.position.x - _progressX) * direction >= 0.1f)
+            {
+                _stuckTimer = 0f;
+                _progressX = _ctx.transform.position.x;
+                _pursuitDirection = direction;
+            }
+            else _stuckTimer += deltaTime;
+
+            if (_stuckTimer < _stuckTime) return;
+
+            IsPursuing = false;
+            _retryTimer = UnityEngine.Random.Range(_minRetryTime, Mathf.Max(_minRetryTime, _maxRetryTime));
+            _wanderDirection = 0f;
+            _wanderTimer = UnityEngine.Random.Range(_minIdleTime, Mathf.Max(_minIdleTime, _maxIdleTime));
+            _playerWasVisible = CanSeePlayer(player.transform.position);
+            _ctx.DesiredDirection = Vector2.zero;
+        }
+
+        private bool CanSeePlayer(Vector2 playerPosition)
+        {
+            Vector2 position = _ctx.transform.position;
+            if ((playerPosition - position).sqrMagnitude > _sightRange * _sightRange) return false;
+
+            // Check the foreground tiles along the line between the zombie and player.
+            Vector2Int tile = Vector2Int.FloorToInt(position);
+            Vector2Int end = Vector2Int.FloorToInt(playerPosition);
+            int dx = Mathf.Abs(end.x - tile.x), dy = Mathf.Abs(end.y - tile.y);
+            int stepX = tile.x < end.x ? 1 : -1, stepY = tile.y < end.y ? 1 : -1;
+            int error = dx - dy;
+            while (true)
+            {
+                var data = WorldManager.Instance.FgGrid.GetTileData(tile.x, tile.y);
+                if (data.IsOutOfBounds || (data.HasTile && data.IsSolid)) return false;
+                if (tile == end) return true;
+                int twiceError = error * 2;
+                if (twiceError > -dy) { error -= dy; tile.x += stepX; }
+                if (twiceError < dx) { error += dx; tile.y += stepY; }
+            }
         }
     }
 
@@ -132,7 +246,7 @@ namespace SketchLand
                 return root.Airborne;
             }
 
-            if (!_ctx.IsKnockedBack && ((_ctx.DesiredDirection.x < 0f && _ctx.CollisionResult.TouchingLeft) || (_ctx.DesiredDirection.x > 0f && _ctx.CollisionResult.TouchingRight)))
+            if (!_ctx.IsKnockedBack && root.IsPursuing && ((_ctx.DesiredDirection.x < 0f && _ctx.CollisionResult.TouchingLeft) || (_ctx.DesiredDirection.x > 0f && _ctx.CollisionResult.TouchingRight)))
             {
                 _ctx.Velocity.y = root.MinJumpSpeed;
                 return root.Airborne;
