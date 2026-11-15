@@ -37,7 +37,7 @@ MonoBehaviour:
   LootDrops:
   - _item: {fileID: 11400000, guid: 81a74ab6b5b314aa5a95260481a734d8, type: 2}
     _minAmount: 1
-    _maxAmount: 2
+    _maxAmount: 3
     _dropChance: 1
   <DrawTile>k__BackingField: {fileID: 11400000, guid: db9af0ae5bd824755a35ec9dcf9b0fa5, type: 2}
   references:

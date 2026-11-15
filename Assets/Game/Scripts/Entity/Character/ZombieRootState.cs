@@ -21,7 +21,7 @@ namespace SketchLand
         [field: SerializeField] public float AirborneMoveSpeedMultiplier { get; private set; }
 
         [Header("AI Settings")]
-        [SerializeField, Min(0.1f), Tooltip("Seconds without forward progress before idling and wandering.")]
+        [SerializeField, Tooltip("Seconds without forward progress before idling and wandering.")]
         private float _stuckTime = 2f;
         [SerializeField, Min(0.1f)] private float _minRetryTime = 5f;
         [SerializeField, Min(0.1f)] private float _maxRetryTime = 10f;

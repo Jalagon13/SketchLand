@@ -16,10 +16,10 @@ MonoBehaviour:
     rid: 2417915168950845608
   <BodyColliderSize>k__BackingField: {x: 1.25, y: 1.25}
   <BaseMaxHealth>k__BackingField: 25
-  <BaseDefense>k__BackingField: 4
+  <BaseDefense>k__BackingField: 2
   <BaseDamage>k__BackingField: 0
-  <KnockbackForce>k__BackingField: 10
-  <BaseKbResist>k__BackingField: 0.2
+  <KnockbackForce>k__BackingField: 0
+  <BaseKbResist>k__BackingField: 0.1
   <BaseSpeed>k__BackingField: 1
   <BaseIFrameDuration>k__BackingField: 0.17
   <BaseTurnSharpness>k__BackingField: 5

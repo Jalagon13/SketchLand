@@ -73,8 +73,12 @@ namespace SketchLand
             // Resolve aim now, rather than using the preceding frame's pose.
             _bowPose.UpdateAim();
             Vector2 velocity = _bowPose.AimDirection * weapon.GetLaunchSpeed(Charge);
+            int damage = Mathf.RoundToInt(Mathf.Lerp(_arrow.Projectile.MinBaseDamage,
+                _arrow.Projectile.MaxBaseDamage, Charge));
+            int knockback = Mathf.RoundToInt(Mathf.Lerp(_arrow.Projectile.MinBaseKnockbackForce,
+                _arrow.Projectile.MaxBaseKnockbackForce, Charge));
             Projectile projectile = ProjectileManager.SpawnProjectile(_arrow.Projectile,
-                _bowPose.LaunchPosition, velocity, _character);
+                _bowPose.LaunchPosition, velocity, _character, damageOverride: damage, knockbackOverride: knockback);
             if (projectile == null)
             {
                 CancelCharge();

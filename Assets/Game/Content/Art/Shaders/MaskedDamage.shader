@@ -7,6 +7,7 @@ Shader "SketchLand/MaskedDamage"
         _CrackRect ("Crack Atlas UV Rect", Vector) = (0,0,1,1)
         _CrackFrame ("Crack Crop Within Original Canvas", Vector) = (0,0,1,1)
         _Color ("Tint", Color) = (1,1,1,1)
+        [HideInInspector] _TerrainSurface ("Terrain Surface", Float) = 0
     }
     SubShader
     {
@@ -27,6 +28,7 @@ Shader "SketchLand/MaskedDamage"
             float4 _CrackRect;
             float4 _CrackFrame;
             fixed4 _Color;
+            float _TerrainSurface;
             struct Attributes
             {
                 float4 position : POSITION;
@@ -62,7 +64,9 @@ Shader "SketchLand/MaskedDamage"
                     _CrackRect.xy + inset, _CrackRect.xy + _CrackRect.zw - inset);
                 fixed4 crack = tex2D(_CrackTex, crackUV) * _Color;
                 crack.a *= inside * tex2D(_MainTex, input.maskUV).a;
-                crack.rgb *= SampleWorldLight(input.worldPosition);
+                crack.rgb *= _TerrainSurface > 0.5
+                    ? SampleTerrainLight(input.worldPosition)
+                    : SampleWorldLight(input.worldPosition);
                 return crack;
             }
             ENDCG

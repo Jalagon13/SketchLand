@@ -59,7 +59,7 @@ Shader "SketchLand/TerrainTexture"
             fixed4 Frag(Varyings input) : SV_Target
             {
                 fixed4 color = tex2D(_MainTex, input.uv) * input.color * _LayerTint;
-                color.rgb *= SampleWorldLight(input.worldPosition);
+                color.rgb *= SampleTerrainLight(input.worldPosition);
                 return color;
             }
 

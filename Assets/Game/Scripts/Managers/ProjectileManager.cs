@@ -35,8 +35,8 @@ namespace SketchLand
                 so: projectileSO,
                 initialVelocity: initialVelocity,
                 source: sourceEntity,
-                damage: damageOverride ?? projectileSO.BaseDamage,
-                knockback: knockbackOverride ?? projectileSO.BaseKnockbackForce,
+                damage: damageOverride ?? projectileSO.MaxBaseDamage,
+                knockback: knockbackOverride ?? projectileSO.MaxBaseKnockbackForce,
                 faction: faction
             );
 

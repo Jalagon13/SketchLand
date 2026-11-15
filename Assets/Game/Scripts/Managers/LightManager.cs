@@ -32,7 +32,7 @@ namespace SketchLand
 
         [Header("Foreground Smoothing")]
         [SerializeField] private bool _enableForegroundBlur = true;
-        [Tooltip("Blur radius in world tiles. Only solid foreground samples are blended.")]
+        [Tooltip("Blur radius in world tiles. Only solid foreground terrain samples are blended.")]
         [SerializeField, Range(0.25f, 2f)] private float _foregroundBlurRadius = 0.5f;
         [SerializeField, Range(1, 4)] private int _foregroundBlurPasses = 1;
 
@@ -267,9 +267,11 @@ namespace SketchLand
                 {
                     var tile = world.FgGrid.GetTileData(_lmBounds.xMin + x / _lightCellsPerTile,
                         _lmBounds.yMin + y / _lightCellsPerTile);
-                    bool solid = tile.HasTile && tile.IsSolid;
-                    _foregroundMask[x, y] = solid;
-                    _foregroundLightGrid[x, y] = solid ? _lightGrid[x, y] : 0f;
+                    // Collision solidity controls light transport, not rendering style.
+                    // Closed doors still obstruct light but are lit as sprite objects.
+                    bool terrainSurface = tile.HasTile && tile.IsSolid && tile.TileConfig is TerrainTileConfigSO;
+                    _foregroundMask[x, y] = terrainSurface;
+                    _foregroundLightGrid[x, y] = terrainSurface ? _lightGrid[x, y] : 0f;
                 }
             }
 

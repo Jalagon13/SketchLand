@@ -11,6 +11,15 @@ fixed3 SampleWorldLight(float2 worldPosition)
 {
     if (_WorldLightingEnabled < 0.5) return fixed3(1, 1, 1);
     float2 uv = (worldPosition - _WorldLightmapBounds.xy) / _WorldLightmapBounds.zw;
+    return tex2D(_WorldBackgroundLightmap, uv).rgb;
+}
+
+// Terrain has an additional surface response. Sprite objects and characters
+// receive the propagated light field without inheriting a terrain cell's mask.
+fixed3 SampleTerrainLight(float2 worldPosition)
+{
+    if (_WorldLightingEnabled < 0.5) return fixed3(1, 1, 1);
+    float2 uv = (worldPosition - _WorldLightmapBounds.xy) / _WorldLightmapBounds.zw;
     float2 maskUV = (floor(uv * _WorldLightmapTexelSize.zw) + 0.5) * _WorldLightmapTexelSize.xy;
     if (tex2D(_WorldForegroundLightmap, maskUV).a > 0.5)
     {

@@ -100,6 +100,7 @@ namespace SketchLand
                 Vector4 padding = UnityEngine.Sprites.DataUtility.GetPadding(crack);
                 Rect frame = crack.rect;
                 _properties.Clear();
+                _properties.SetFloat("_TerrainSurface", config is TerrainTileConfigSO ? 1f : 0f);
                 _properties.SetTexture("_MainTex", mask);
                 _properties.SetTexture("_CrackTex", crack.texture);
                 _properties.SetVector("_CrackRect", new Vector4(uv.x, uv.y, uv.z - uv.x, uv.w - uv.y));

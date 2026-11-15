@@ -9,6 +9,8 @@ namespace SketchLand
         public override void OnPrimaryActionHeld(Player player) => player.ArmHandler.Swing(this);
 
         [field: Header("Tool Settings")]
+        [field: Tooltip("Allows this tool to damage and break tiles and placed objects.")]
+        [field: SerializeField] public bool CanBreakTilesAndObjects { get; private set; } = true;
         [field: SerializeField] public HarvestType HarvestType { get; private set; } = HarvestType.None;
         [field: SerializeField] public int MiningDamage { get; private set; } = 15; 
 

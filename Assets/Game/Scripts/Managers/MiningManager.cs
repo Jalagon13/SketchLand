@@ -15,7 +15,7 @@ namespace SketchLand
         // so moving the mouse during windup changes which tile receives the hit.
         public bool TryPerformMine(ToolItemSO tool)
         {
-            if (tool == null || !isActiveAndEnabled) return false;
+            if (tool == null || !tool.CanBreakTilesAndObjects || !isActiveAndEnabled) return false;
             if (WorldManager.Instance == null || !WorldManager.Instance.IsWorldReady || WorldManager.Instance.MouseOverUI) return false;
             if (Player.Instance == null || Player.Instance.Character == null) return false;
             if (Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead) return false;

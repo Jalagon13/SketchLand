@@ -3020,7 +3020,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.SurfaceBackgroundTint
   _dayTint: {r: 1, g: 1, b: 1, a: 1}
-  _nightTint: {r: 0.11, g: 0.15, b: 0.26, a: 1}
+  _nightTint: {r: 0.056870773, g: 0.08659196, b: 0.16981131, a: 1}
   _renderers:
   - {fileID: 656673142}
   - {fileID: 1694196015}
@@ -4518,7 +4518,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.SurfaceBackgroundTint
   _dayTint: {r: 1, g: 1, b: 1, a: 1}
-  _nightTint: {r: 0.11227306, g: 0.16321367, b: 0.2735849, a: 1}
+  _nightTint: {r: 0.056870773, g: 0.09268118, b: 0.16981131, a: 1}
   _renderers:
   - {fileID: 922802891}
   - {fileID: 147665142}
@@ -6010,12 +6010,12 @@ MonoBehaviour:
   <TerminalVelocity>k__BackingField: -40
   <Stamina>k__BackingField:
     _max: 50
-    _baseRegenPerSecond: 10
+    _baseRegenPerSecond: 5
     _maxRegenPerSecond: 30
     _regenRampSeconds: 3
     _regenDelaySeconds: 0.5
-    _sprintCostPerSecond: 4
-    _swingCost: 5
+    _sprintCostPerSecond: 3
+    _swingCost: 6
 --- !u!1 &1247736531
 GameObject:
   m_ObjectHideFlags: 0
@@ -9226,7 +9226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.SurfaceBackgroundTint
   _dayTint: {r: 1, g: 1, b: 1, a: 1}
-  _nightTint: {r: 0.1, g: 0.15, b: 0.25, a: 1}
+  _nightTint: {r: 0.050062295, g: 0.078940354, b: 0.14150941, a: 1}
   _renderers:
   - {fileID: 1885410711}
   - {fileID: 298503626}
@@ -9984,7 +9984,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.SurfaceBackgroundTint
   _dayTint: {r: 0.495283, g: 0.7968022, b: 1, a: 1}
-  _nightTint: {r: 0.035, g: 0.07, b: 0.18, a: 1}
+  _nightTint: {r: 0.016776435, g: 0.042527396, b: 0.122641504, a: 1}
   _renderers:
   - {fileID: 2037069670}
   - {fileID: 1982496194}
@@ -10050,8 +10050,6 @@ MonoBehaviour:
     _sunsetMinutes: 2
     _nightMinutes: 6
   _tileRepairDelay: 5
-  _debugTreeConfig: {fileID: 11400000, guid: 4f515916d235640d480d2b10b7f502af, type: 2}
-  _testProjectile: {fileID: 11400000, guid: b5e08a065994447879f5911de6519ca2, type: 2}
 --- !u!114 &2043979316
 MonoBehaviour:
   m_ObjectHideFlags: 0
