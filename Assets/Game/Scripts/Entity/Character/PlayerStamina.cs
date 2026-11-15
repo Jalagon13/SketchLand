@@ -12,7 +12,7 @@ namespace SketchLand
         [SerializeField, Min(0f)] private float _max = 100f;
         [FormerlySerializedAs("_regenPerSecond")]
         [SerializeField, Min(0f)] private float _baseRegenPerSecond = 10f;
-        [SerializeField, Min(0f)] private float _maxRegenPerSecond = 25f;
+        [SerializeField, Min(0f)] private float _maxRegenPerSecond = 35f;
         [SerializeField, Min(0f)] private float _regenRampSeconds = 3f;
         [SerializeField, Min(0f)] private float _regenDelaySeconds = 1f;
         [SerializeField, Min(0f)] private float _sprintCostPerSecond = 12f;

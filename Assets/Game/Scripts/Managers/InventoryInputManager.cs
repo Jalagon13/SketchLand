@@ -171,6 +171,10 @@ namespace SketchLand
             {
                 OnToggleInventory();
             }
+            else
+            {
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.InventoryOpenSFX, default);
+            }
         
             OnCraftTableInteract?.Invoke(recipes, x, y);
         }

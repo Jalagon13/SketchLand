@@ -6011,7 +6011,7 @@ MonoBehaviour:
   <Stamina>k__BackingField:
     _max: 50
     _baseRegenPerSecond: 5
-    _maxRegenPerSecond: 30
+    _maxRegenPerSecond: 40
     _regenRampSeconds: 3
     _regenDelaySeconds: 0.5
     _sprintCostPerSecond: 3

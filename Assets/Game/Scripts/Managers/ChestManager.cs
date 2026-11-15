@@ -48,6 +48,10 @@ namespace SketchLand
             {
                 InventoryInputManager.Instance.OnToggleInventory();
             }
+            else
+            {
+                AudioManager.Instance.PlayOneShot(FMODEvents.Instance.InventoryOpenSFX, default);
+            }
             
             OnChestOpened?.Invoke(CurrentOpenChest);
         }

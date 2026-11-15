@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Rec_Torch
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.RecipeSO
   <OutputItem>k__BackingField: {fileID: 11400000, guid: 1c2c9103005254e2096a71428bc94070, type: 2}
-  <OutputAmonut>k__BackingField: 5
+  <OutputAmonut>k__BackingField: 3
   <Recipe>k__BackingField:
   - _ingredient: {fileID: 11400000, guid: 81a74ab6b5b314aa5a95260481a734d8, type: 2}
     _amount: 1
