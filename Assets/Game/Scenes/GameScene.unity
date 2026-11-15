@@ -2882,7 +2882,7 @@ MonoBehaviour:
     _requireOpenBackground: 1
   - _character: {fileID: 11400000, guid: e8ced5de931fd400da6f4da2853b1d16, type: 2}
     _weight: 1
-    _surfacePhases: 10
+    _surfacePhases: 8
     _undergroundPhases: 15
     _requireOpenBackground: 0
 --- !u!114 &653184667
@@ -5688,16 +5688,6 @@ MonoBehaviour:
     _amount: 1
   - _ingredient: {fileID: 11400000, guid: 2e6df84076b2b454a9e50fd441cb468c, type: 2}
     _amount: 1
-  - _ingredient: {fileID: 11400000, guid: 56e413806c6d64ffa868bcf95d2c3967, type: 2}
-    _amount: 1
-  - _ingredient: {fileID: 11400000, guid: e7abd829c61264bd08d0508539b98356, type: 2}
-    _amount: 1
-  - _ingredient: {fileID: 11400000, guid: 81a74ab6b5b314aa5a95260481a734d8, type: 2}
-    _amount: 333
-  - _ingredient: {fileID: 11400000, guid: a8ba4590c8abf433dbe1aa7470e8b094, type: 2}
-    _amount: 333
-  - _ingredient: {fileID: 11400000, guid: dbcbcd20bffa749e2920a1db8a6a1792, type: 2}
-    _amount: 333
 --- !u!114 &1178486984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10054,11 +10044,11 @@ MonoBehaviour:
   - {fileID: 656673143}
   - {fileID: 2037069669}
   <Clock>k__BackingField:
-    _runTimeOfDay: 0
-    _sunriseMinutes: 0.1
-    _dayMinutes: 0.2
-    _sunsetMinutes: 0.1
-    _nightMinutes: 0.2
+    _runTimeOfDay: 1
+    _sunriseMinutes: 2
+    _dayMinutes: 8
+    _sunsetMinutes: 2
+    _nightMinutes: 6
   _tileRepairDelay: 5
   _debugTreeConfig: {fileID: 11400000, guid: 4f515916d235640d480d2b10b7f502af, type: 2}
   _testProjectile: {fileID: 11400000, guid: b5e08a065994447879f5911de6519ca2, type: 2}

@@ -23,10 +23,6 @@ namespace SketchLand
         [Header("Tile Repair")]
         [SerializeField] private float _tileRepairDelay = 5f;
 
-        [Header("Debug Testing")]
-        [SerializeField] private TreeTileConfigSO _debugTreeConfig;
-        [SerializeField] private ProjectileSO _testProjectile;
-
         public enum LayerType { Foreground, Background }
         public TileGrid FgGrid { get; private set; }
         public TileGrid BgGrid { get; private set; }
@@ -78,11 +74,6 @@ namespace SketchLand
             MouseOverUI = EventSystem.current.IsPointerOverGameObject();
             MouseWorldPosition = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
             MouseWorldTilePosition = new(Mathf.FloorToInt(MouseWorldPosition.x), Mathf.FloorToInt(MouseWorldPosition.y));
-
-            if (Keyboard.current != null && Keyboard.current.tKey.wasPressedThisFrame)
-            {
-                ProjectileManager.SpawnProjectile(_testProjectile, Player.Instance.Character.transform.position, Vector2.right, sourceEntity: Player.Instance.Character);
-            }
         }
 
         private void ToggleBuildLayer()
