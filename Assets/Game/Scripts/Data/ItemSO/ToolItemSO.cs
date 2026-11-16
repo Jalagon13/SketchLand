@@ -25,7 +25,7 @@ namespace SketchLand
         [field: SerializeField, Min(0.01f)] public float StrikeReach { get; private set; } = 1.425f;
 
         [field: Header("Swing Settings")]
-        [field: Tooltip("Complete swings per second while attack is held and stamina is available. 2 = half a second per swing.")]
+        [field: Tooltip("Complete swings per second while attack is held. 2 = half a second per swing.")]
         [field: SerializeField, Min(0.01f)] public float SwingsPerSecond { get; private set; } = 1f;
         [field: SerializeField, Range(1, 360), InspectorName("Strike Zone Angle")] public int SwingArcAngle { get; private set; } = 120;
     }

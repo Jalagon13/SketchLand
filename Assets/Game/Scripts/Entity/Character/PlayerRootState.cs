@@ -15,7 +15,6 @@ namespace SketchLand
         public float MovementSpeed { get; private set; }
 
         private bool _isSprinting;
-        private bool _sprintExhausted;
 
         // Parameterless constructor for Unity serialization
         public PlayerRootState() : base() { }
@@ -57,25 +56,9 @@ namespace SketchLand
             var player = Player.Instance;
             
             bool sprintHeld = _ctx.IsOwner && GameInput.Instance.SprintHeld;
-            if (!sprintHeld)
-                _sprintExhausted = false;
-
-            var stamina = player.Stamina;
-            if (sprintHeld && stamina.Current <= 0f)
-                _sprintExhausted = true;
-
             bool moving = Mathf.Abs(_ctx.DesiredDirection.x) > 0.01f
                 && !(_ctx.DesiredDirection.x > 0f ? _ctx.CollisionResult.TouchingRight : _ctx.CollisionResult.TouchingLeft);
-            _isSprinting = sprintHeld && !_sprintExhausted && moving && !_ctx.IsKnockedBack;
-            if (_ctx.IsOwner)
-            {
-                stamina.Tick(fixedDeltaTime, _isSprinting);
-                if (_isSprinting && stamina.Current <= 0f)
-                {
-                    _sprintExhausted = true;
-                    _isSprinting = false;
-                }
-            }
+            _isSprinting = sprintHeld && moving && !_ctx.IsKnockedBack;
 
             float targetSpeed = _isSprinting ? player.SprintSpeed : _ctx.Data.BaseSpeed;
             float blend = 1f - Mathf.Exp(-player.SprintTransitionSharpness * fixedDeltaTime);

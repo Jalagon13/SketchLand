@@ -22,7 +22,6 @@ MonoBehaviour:
   <Duration>k__BackingField: 300
   <Health>k__BackingField: 30
   <HealthRegen>k__BackingField: 1
-  <Stamina>k__BackingField: 0
   <ConsumeSFX>k__BackingField:
     Guid:
       Data1: -602489371
