@@ -2882,7 +2882,7 @@ MonoBehaviour:
     _requireOpenBackground: 1
   - _character: {fileID: 11400000, guid: e8ced5de931fd400da6f4da2853b1d16, type: 2}
     _weight: 1
-    _surfacePhases: 8
+    _surfacePhases: 10
     _undergroundPhases: 15
     _requireOpenBackground: 0
 --- !u!114 &653184667

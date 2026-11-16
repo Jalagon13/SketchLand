@@ -103,6 +103,8 @@ namespace SketchLand
             }
 
             if (bones.Count == 0) { Destroy(root); return false; }
+            foreach (var curves in source.GetComponentsInChildren<StickFigureCurveRenderer>(true))
+                curves.CopyTo(transforms);
             // Sort parents before children so writing world poses never drags an already posed child.
             foreach (Transform original in source.GetComponentsInChildren<Transform>(true))
                 if (bones.TryGetValue(original, out Bone bone))
@@ -153,6 +155,8 @@ namespace SketchLand
             target.gameObject.layer = source.gameObject.layer;
             foreach (Transform child in source)
             {
+                // Runtime render caches rebuild from the copied skin; do not clone their temporary objects.
+                if ((child.gameObject.hideFlags & HideFlags.DontSave) != 0) continue;
                 var copy = new GameObject(child.name).transform;
                 copy.SetParent(target, false);
                 copy.localPosition = child.localPosition;

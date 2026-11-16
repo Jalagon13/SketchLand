@@ -573,7 +573,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13c3238b0624e4a229601b98e9adc20e, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.CharacterDeathEffect
   _visuals: {fileID: 1976869152849430371}
   _settings:
@@ -1326,6 +1326,10 @@ PrefabInstance:
       propertyPath: '_initialItems.Array.data[0]'
       value: 
       objectReference: {fileID: 11400000, guid: d86b50bd74a1a43efbc5d95c02f509e0, type: 2}
+    - target: {fileID: 4906442455541354046, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+      propertyPath: _useCurvedLimbs
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4951745854113215339, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.9999707

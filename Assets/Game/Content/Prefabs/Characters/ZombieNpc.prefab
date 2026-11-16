@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13c3238b0624e4a229601b98e9adc20e, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.CharacterDeathEffect
   _visuals: {fileID: 5907841507912977926}
   _settings:
@@ -440,11 +440,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5748974065935795421, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.983685
+      value: 0.9808414
       objectReference: {fileID: 0}
     - target: {fileID: 5748974065935795421, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.17989953
+      value: 0.19480784
       objectReference: {fileID: 0}
     - target: {fileID: 6119604608456192249, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_Size.x
@@ -468,11 +468,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6193844006191117668, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99436957
+      value: 0.9908733
       objectReference: {fileID: 0}
     - target: {fileID: 6193844006191117668, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.105967864
+      value: -0.13479687
       objectReference: {fileID: 0}
     - target: {fileID: 6204369393428125544, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_Size.x
@@ -640,11 +640,11 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 188394df048594ecda65b06b1114b781, type: 2}
     - target: {fileID: 8777229000148243808, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.20334779
+      value: 0.21690218
       objectReference: {fileID: 0}
     - target: {fileID: 8777229000148243808, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.9791066
+      value: -0.97619337
       objectReference: {fileID: 0}
     - target: {fileID: 8849329897733449738, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_Name

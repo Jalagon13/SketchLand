@@ -354,7 +354,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13c3238b0624e4a229601b98e9adc20e, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.CharacterDeathEffect
   _visuals: {fileID: 5907841507912977926}
   _settings:
@@ -867,6 +867,7 @@ GameObject:
   - component: {fileID: 726360460165447934}
   - component: {fileID: 2393103015988533686}
   - component: {fileID: 7391017610496724148}
+  - component: {fileID: 1282029237953301751}
   m_Layer: 0
   m_Name: DeerRig
   m_TagString: Untagged
@@ -1035,6 +1036,25 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1282029237953301751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4896151375245867449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f49dfec7b1054dd4a396d81d74d233e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.StickFigureCurveRenderer
+  _useCurvedLimbs: 1
+  _softness: 0.9
+  _widthScale: 0.85
+  _samplesPerSegment: 12
+  _rigRoot: {fileID: 0}
+  _widthOverrides: []
+  _textureSubdivisions: 2
 --- !u!1 &5297126807668639590
 GameObject:
   m_ObjectHideFlags: 0

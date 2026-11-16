@@ -1762,6 +1762,7 @@ GameObject:
   - component: {fileID: 6959830517768074124}
   - component: {fileID: 7512142265841465953}
   - component: {fileID: 3541712937304042727}
+  - component: {fileID: 4906442455541354046}
   m_Layer: 0
   m_Name: StickFigureRig
   m_TagString: Untagged
@@ -1983,6 +1984,35 @@ MonoBehaviour:
   - {fileID: 661147793968195205}
   - {fileID: 941201395237375448}
   _initialItems: []
+--- !u!114 &4906442455541354046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8849329897733449738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f49dfec7b1054dd4a396d81d74d233e, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.StickFigureCurveRenderer
+  _useCurvedLimbs: 1
+  _softness: 0.9
+  _widthScale: 0.85
+  _samplesPerSegment: 12
+  _rigRoot: {fileID: 0}
+  _widthOverrides:
+  - Start: {fileID: 5245811115692711359}
+    Width: 0.09
+  - Start: {fileID: 9112986281684348}
+    Width: 0.09
+  - Start: {fileID: 8777229000148243808}
+    Width: 0.095
+  - Start: {fileID: 493969628389232457}
+    Width: 0.095
+  - Start: {fileID: 2953259974978901564}
+    Width: 0.1
+  _textureSubdivisions: 2
 --- !u!1 &8933972922888300943
 GameObject:
   m_ObjectHideFlags: 0
