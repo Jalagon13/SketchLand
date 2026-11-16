@@ -502,6 +502,10 @@ MonoBehaviour:
   _string: {fileID: 2995802435420690368}
   _arrowSprite: {fileID: 3639087330726850927}
   _arrowRoot: {fileID: 1044706037830619179}
+  _hip: {fileID: 1118014484816933984}
+  _spine: {fileID: 2667306089735974453}
+  _head: {fileID: 1749056987539592646}
+  _bodyExaggeration: 1
   _bowPosition: {x: 0.55, y: 0.03}
   _readyHandPosition: {x: 0.39, y: 0.03}
   _drawHandControlPosition: {x: 0.14, y: 0.16}
