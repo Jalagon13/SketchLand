@@ -11,41 +11,59 @@ namespace SketchLand
             Instance = this;
         }
         
-        // Called once by the swing animation at impact. Resolve the current hover,
-        // so moving the mouse during windup changes which tile receives the hit.
-        public bool TryPerformMine(ToolItemSO tool)
+        public readonly struct SwingTarget
         {
-            if (tool == null || !tool.CanBreakTilesAndObjects || !isActiveAndEnabled) return false;
-            if (WorldManager.Instance == null || !WorldManager.Instance.IsWorldReady || WorldManager.Instance.MouseOverUI) return false;
-            if (Player.Instance == null || Player.Instance.Character == null) return false;
-            if (Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead) return false;
+            public readonly Vector2Int Cell;
+            public readonly WorldManager.LayerType Layer;
+            public readonly Vector2 AimPoint;
+            public readonly ushort TileId;
 
-            Vector2 mouseWorldPos = WorldManager.MouseWorldPosition;
-
-            float distanceToPlayer = Vector2.Distance(Player.Instance.Character.transform.position, mouseWorldPos);
-            if (distanceToPlayer > Player.Instance.InteractRange) return false;
-
-            var targetLayer = WorldManager.Instance.ActiveLayer;
-            var grid = targetLayer == WorldManager.LayerType.Foreground ? WorldManager.Instance.FgGrid : WorldManager.Instance.BgGrid;
-            
-            if (!MiningTargetResolver.TryResolve(grid, mouseWorldPos, targetLayer == WorldManager.LayerType.Background, out Vector2Int targetPosition))
-                return false;
-
-            var tileData = grid.GetTileData(targetPosition.x, targetPosition.y);
-            
-            if (tileData.HasTile)
+            public SwingTarget(Vector2Int cell, WorldManager.LayerType layer, Vector2 aimPoint, ushort tileId)
             {
-                TileConfigSO tileConfig = tileData.TileConfig;
-                if (tileConfig == null) return false;
-
-                bool preferredTool = tool.HarvestType != HarvestType.None && tool.HarvestType == tileConfig.RequiredHarvestType;
-                int damage = preferredTool ? tool.MiningDamage : Mathf.CeilToInt(tool.MiningDamage * 0.5f);
-                WorldManager.Instance.DamageTile(targetPosition, damage, targetLayer, refreshCurrentBounds: true);
-                
-                return true;
+                Cell = cell;
+                Layer = layer;
+                AimPoint = aimPoint;
+                TileId = tileId;
             }
+        }
 
-            return false;
+        public SwingTarget? CaptureTarget(Player player, ToolItemSO tool, Vector2 aimPoint)
+        {
+            var world = WorldManager.Instance;
+            if (!CanMine(player, tool, aimPoint) || world.MouseOverUI) return null;
+
+            var layer = world.ActiveLayer;
+            var grid = world.ActiveGrid;
+            if (!MiningTargetResolver.TryResolve(grid, aimPoint, layer == WorldManager.LayerType.Background, out var cell))
+                return null;
+
+            var tile = grid.GetTileData(cell.x, cell.y);
+            return tile.HasTile ? new SwingTarget(cell, layer, aimPoint, tile.TileId) : null;
+        }
+
+        public bool TryPerformMine(Player player, ToolItemSO tool, SwingTarget target)
+        {
+            if (!CanMine(player, tool, target.AimPoint)) return false;
+
+            var world = WorldManager.Instance;
+            var grid = target.Layer == WorldManager.LayerType.Foreground ? world.FgGrid : world.BgGrid;
+            var tile = grid.GetTileData(target.Cell.x, target.Cell.y);
+            if (!tile.HasTile || tile.TileId != target.TileId) return false;
+
+            var config = tile.TileConfig;
+            if (config == null) return false;
+            bool preferredTool = tool.HarvestType != HarvestType.None && tool.HarvestType == config.RequiredHarvestType;
+            int damage = preferredTool ? tool.MiningDamage : Mathf.CeilToInt(tool.MiningDamage * 0.5f);
+            world.DamageTile(target.Cell, damage, target.Layer, refreshCurrentBounds: true);
+            return true;
+        }
+
+        private bool CanMine(Player player, ToolItemSO tool, Vector2 point)
+        {
+            return isActiveAndEnabled && tool != null && tool.CanBreakTilesAndObjects
+                && WorldManager.Instance != null && WorldManager.Instance.IsWorldReady
+                && player != null && player.Character != null && player.Character.Health.CurrentLifeState.Value != LifeState.Dead
+                && Vector2.Distance(player.Character.transform.position, point) <= player.InteractRange;
         }
     }
 }

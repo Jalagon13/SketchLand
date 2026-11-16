@@ -19,6 +19,7 @@ namespace SketchLand
         private Transform _blendTarget;
         private Transform _activeGrip;
         private float _gripWeight;
+        private float _blendSpeed;
         private bool _wantsGrip;
         private bool _isDriving;
         private bool _originalFlip;
@@ -28,10 +29,11 @@ namespace SketchLand
             _animatedTarget = _solver.GetChain(0).target;
         }
 
-        public void BeginGrip() => BeginGrip(_gripPoint);
+        public void BeginGrip(float speed = 1f) => BeginGrip(_gripPoint, speed: speed);
 
-        public void BeginGrip(Transform gripPoint, bool? elbowFlip = null)
+        public void BeginGrip(Transform gripPoint, bool? elbowFlip = null, float speed = 1f)
         {
+            _blendSpeed = speed;
             _activeGrip = gripPoint;
             _wantsGrip = true;
 
@@ -80,7 +82,7 @@ namespace SketchLand
 
             float destination = _wantsGrip ? 1f : 0f;
 
-            _gripWeight = _blendDuration <= 0f ? destination : Mathf.MoveTowards(_gripWeight, destination, Time.deltaTime / _blendDuration);
+            _gripWeight = _blendDuration <= 0f ? destination : Mathf.MoveTowards(_gripWeight, destination, Time.deltaTime * _blendSpeed / _blendDuration);
 
             // Ease the transition without changing its duration.
             float blend = Mathf.SmoothStep(0f, 1f, _gripWeight);

@@ -27,6 +27,7 @@ namespace SketchLand
         public InventorySlot ActiveSlot { get; private set; }
 
         private bool _cursorPlacementHeld;
+        private bool _startAfterSwing;
         private ItemSO _activeItem;
         private InventorySlot _activeSlot;
 
@@ -70,6 +71,13 @@ namespace SketchLand
 
             if (WorldManager.Instance.MouseOverUI) return;
             if (!GameInput.Instance.PrimaryActionHeld) return;
+            if (player.ArmHandler.IsSwinging) return;
+            if (_startAfterSwing)
+            {
+                _startAfterSwing = false;
+                StartSelectedItem(ActiveSlot);
+                return;
+            }
             if (!_cursorPlacementHeld && !ActiveSlot.IsEmpty && ActiveSlot.GetItemSO() is ToolItemSO tool)
                 tool.OnPrimaryActionHeld(player);
             else
@@ -108,6 +116,7 @@ namespace SketchLand
 
         private void CancelItemUse()
         {
+            _startAfterSwing = false;
             var item = _activeItem;
             _activeItem = null;
             _activeSlot = null;
@@ -122,6 +131,7 @@ namespace SketchLand
 
         private void ReleaseItemUse()
         {
+            _startAfterSwing = false;
             var item = _activeItem;
             _activeItem = null;
             _activeSlot = null;
@@ -142,7 +152,16 @@ namespace SketchLand
 
             if (!context.started || !CanAct() || WorldManager.Instance.MouseOverUI) return;
 
-            var slot = GetActiveInvSlot();
+            if (Player.Instance.ArmHandler.IsSwinging)
+            {
+                _startAfterSwing = true;
+                return;
+            }
+            StartSelectedItem(GetActiveInvSlot());
+        }
+
+        private void StartSelectedItem(InventorySlot slot)
+        {
             if (slot.IsEmpty) return;
             _activeSlot = slot;
             _activeItem = slot.GetItemSO();
@@ -259,6 +278,8 @@ namespace SketchLand
             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.HotbarSlotChangedSFX, default);
 
             CancelItemUse();
+            // Keep only the held press. Resolve the latest slot when recovery ends.
+            _startAfterSwing = Player.Instance.ArmHandler.IsSwinging && GameInput.Instance.PrimaryActionHeld;
             ActiveHotbarIndex = newIndex;
             OnActiveHotbarIndexChanged?.Invoke(ActiveHotbarIndex);
             // Debug.Log($"Active Hotbar Index is: {newIndex}");

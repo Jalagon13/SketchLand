@@ -36,37 +36,6 @@ Transform:
   - {fileID: 1044706037830619179}
   m_Father: {fileID: 1976869152849430371}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &230597821952154472
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2786607778504804567}
-  m_Layer: 0
-  m_Name: HitboxPoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2786607778504804567
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 230597821952154472}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6889074860058788524}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &645452061511635519
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,7 +222,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 664098095062183281}
-  - {fileID: 2786607778504804567}
   m_Father: {fileID: 1976869152849430371}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2708704097900981217
@@ -473,9 +441,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.PlayerActionHandler
   _armPivot: {fileID: 6889074860058788524}
-  _hitboxPoint: {fileID: 2786607778504804567}
   _arm: {fileID: 664098095062183281}
   _handGripIK: {fileID: 6954809910114446498}
+  _pose:
+    _hip: {fileID: 1118014484816933984}
+    _spine: {fileID: 2667306089735974453}
+    _head: {fileID: 1749056987539592646}
+    _freeHand: {fileID: 2088371580811486304}
+    _swingShoulder: {fileID: 2837138274975715104}
 --- !u!114 &8607429953159819184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1543,6 +1516,11 @@ MonoBehaviour:
 --- !u!4 &1749056987539592646 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4555967291573434266, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+  m_PrefabInstance: {fileID: 2846250830082744924}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2088371580811486304 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4288703307892131388, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
   m_PrefabInstance: {fileID: 2846250830082744924}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &2162368031410451247 stripped

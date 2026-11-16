@@ -24,8 +24,6 @@ MonoBehaviour:
   <MiningDamage>k__BackingField: 25
   <MeleeDamage>k__BackingField: 3
   <KnockbackForce>k__BackingField: 1
-  <HitboxOffset>k__BackingField: 1.125
-  <HitboxSize>k__BackingField: {x: 0.6, y: 0.6}
+  <StrikeReach>k__BackingField: 1.425
+  <SwingsPerSecond>k__BackingField: 1.25
   <SwingArcAngle>k__BackingField: 120
-  <SwingDuration>k__BackingField: 0.25
-  <SwingCooldown>k__BackingField: 0.25

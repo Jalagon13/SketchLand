@@ -40,13 +40,12 @@ namespace SketchLand
 
         public void StartCharge(BowItemSO weapon)
         {
-            if (weapon == null || IsCharging || _bowPose == null) return;
+            if (weapon == null || IsCharging || _armHandler.IsSwinging || _bowPose == null) return;
             if (_character.Health.CurrentLifeState.Value == LifeState.Dead) return;
 
             ArrowItemSO arrow = FindArrow();
             if (arrow == null) return;
 
-            _armHandler.CancelSwing();
             // A fresh press can interrupt release/recovery and begin charging immediately.
             _bowPose.ResetPose();
             _sourceSlot = InventoryInputManager.Instance.GetActiveInvSlot();

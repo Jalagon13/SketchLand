@@ -2,19 +2,20 @@ using UnityEngine;
 
 namespace SketchLand
 {
-    // Position the held item after animation, before PlayerHandGripIK and IKManager2D.
-    [DefaultExecutionOrder(-30)]
+    // Place the visible handle after IKManager2D has solved the arm.
+    [DefaultExecutionOrder(10)]
     public class PlayerHeldItemDisplay : MonoBehaviour
     {
         [SerializeField] private Transform _itemRoot;
         [SerializeField] private SpriteRenderer _heldItemSprite;
         [SerializeField] private Transform _handMount;
 
+        public SpriteRenderer HeldItemSprite => _heldItemSprite;
+
         private enum ItemPose { Held, Raising, Swinging, Returning }
 
-        private PlayerArmHandler _armHandler;
         [SerializeField] private PlayerHandGripIK _handGripIK;
-        private PlayerRangedHandler _rangedHandler;
+        private ItemSO _swingItem;
         private ServerCharacter _character;
         private ItemSO _selectedItem;
         private bool _bowPoseActive;
@@ -33,8 +34,6 @@ namespace SketchLand
 
         private void Awake()
         {
-            _armHandler = GetComponent<PlayerArmHandler>();
-            _rangedHandler = GetComponent<PlayerRangedHandler>();
             _character = GetComponent<ServerCharacter>();
 
             // Item adjustments affect only the sprite, leaving the grip, hand IK,
@@ -71,19 +70,7 @@ namespace SketchLand
                     selected = slot.GetItemSO();
             }
 
-            SetSelectedItem(selected);
-        }
-
-        private void SetSelectedItem(ItemSO item)
-        {
-            if (_selectedItem != item)
-            {
-                _selectedItem = item;
-                _rangedHandler.CancelCharge();
-                if (_armHandler.IsSwinging)
-                    _armHandler.CancelSwing();
-            }
-
+            _selectedItem = selected;
             if (_pose == ItemPose.Held)
                 ShowItem(_selectedItem);
         }
@@ -118,7 +105,7 @@ namespace SketchLand
             _itemRoot.localScale = _startScale;
             _transitionProgress = 0f;
             _pose = ItemPose.Raising;
-            _selectedItem = item;
+            _swingItem = item;
             ShowItem(item);
         }
 
@@ -145,6 +132,7 @@ namespace SketchLand
 
         public void EndSwing()
         {
+            _swingItem = null;
             _pose = ItemPose.Held;
             _itemRoot.SetParent(_handMount, false);
             _itemRoot.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
@@ -153,6 +141,15 @@ namespace SketchLand
         }
 
         private void LateUpdate()
+        {
+            if (_swingItem == null) return;
+
+            // Keep the authored swing rotation and anchor the artwork to the solved palm.
+            _heldItemSprite.transform.position = _handMount.position
+                + _itemRoot.TransformVector(_swingItem.HeldPosition);
+        }
+
+        public void UpdateSwingTarget()
         {
             if (_pose != ItemPose.Raising && _pose != ItemPose.Returning)
                 return;
