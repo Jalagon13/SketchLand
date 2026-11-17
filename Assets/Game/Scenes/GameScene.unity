@@ -5694,12 +5694,8 @@ MonoBehaviour:
     _amount: 1
   - _ingredient: {fileID: 11400000, guid: dbcbcd20bffa749e2920a1db8a6a1792, type: 2}
     _amount: 444
-  - _ingredient: {fileID: 11400000, guid: d86b50bd74a1a43efbc5d95c02f509e0, type: 2}
-    _amount: 1
-  - _ingredient: {fileID: 11400000, guid: 02132e62956c84c0bb16dd58284ffc00, type: 2}
-    _amount: 1
-  - _ingredient: {fileID: 11400000, guid: 4fcd6e93ddb604f51af1026081d52a6b, type: 2}
-    _amount: 1
+  - _ingredient: {fileID: 11400000, guid: fe977c3c6a1ac40199d63b4806e13e06, type: 2}
+    _amount: 333
 --- !u!114 &1178486984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6023,8 +6019,8 @@ MonoBehaviour:
   <Stamina>k__BackingField:
     _max: 20
     _baseRegenPerSecond: 1
-    _maxRegenPerSecond: 20
-    _regenRampSeconds: 4
+    _maxRegenPerSecond: 25
+    _regenRampSeconds: 5
     _swingCost: 4
     _standingRegenPercent: 100
     _walkingRegenPercent: 60

@@ -13,6 +13,9 @@ namespace SketchLand
             player.ArmHandler.TrySwing(player, this, WorldManager.MouseWorldPosition);
         }
 
+        public bool CanHarvest(TileConfigSO tile) => CanBreakTilesAndObjects && tile != null
+            && (tile.RequiredHarvestType == HarvestType.None || HarvestType == tile.RequiredHarvestType);
+
         [field: Header("Tool Settings")]
         [field: Tooltip("Allows this tool to damage and break tiles and placed objects.")]
         [field: SerializeField] public bool CanBreakTilesAndObjects { get; private set; } = true;

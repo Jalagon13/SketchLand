@@ -88,6 +88,18 @@ namespace SketchLand
             }
         }
 
+        public float BonusDamagePercentage
+        {
+            get
+            {
+                float total = 0f;
+                for (int i = 0; i < _meals.Count; i++) total += At(i)?.BonusDamagePercentage ?? 0f;
+                return total;
+            }
+        }
+
+        public int ApplyDamageBonus(int damage) => Mathf.RoundToInt(damage * (1f + BonusDamagePercentage * 0.01f));
+
         private void Update()
         {
             if (!IsSpawned || (!IsServer && !IsOwner)) return;

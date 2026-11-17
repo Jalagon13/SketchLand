@@ -38,7 +38,8 @@ namespace SketchLand
                 return null;
 
             var tile = grid.GetTileData(cell.x, cell.y);
-            return tile.HasTile ? new SwingTarget(cell, layer, aimPoint, tile.TileId) : null;
+            return tile.HasTile && tool.CanHarvest(tile.TileConfig)
+                ? new SwingTarget(cell, layer, aimPoint, tile.TileId) : null;
         }
 
         public bool TryPerformMine(Player player, ToolItemSO tool, SwingTarget target)
@@ -51,10 +52,8 @@ namespace SketchLand
             if (!tile.HasTile || tile.TileId != target.TileId) return false;
 
             var config = tile.TileConfig;
-            if (config == null) return false;
-            bool preferredTool = tool.HarvestType != HarvestType.None && tool.HarvestType == config.RequiredHarvestType;
-            int damage = preferredTool ? tool.MiningDamage : Mathf.CeilToInt(tool.MiningDamage * 0.5f);
-            world.DamageTile(target.Cell, damage, target.Layer, refreshCurrentBounds: true);
+            if (!tool.CanHarvest(config)) return false;
+            world.DamageTile(target.Cell, tool.MiningDamage, target.Layer, refreshCurrentBounds: true);
             return true;
         }
 

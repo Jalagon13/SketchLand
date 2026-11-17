@@ -30,12 +30,16 @@ namespace SketchLand
             // Resolve faction (infer from source entity if not explicitly provided)
             ProjectileFaction faction = factionOverride ?? InferFaction(sourceEntity, projectileSO.DefaultFaction);
 
+            int damage = damageOverride ?? projectileSO.MaxBaseDamage;
+            if (sourceEntity != null && sourceEntity.TryGetComponent<PlayerFood>(out var food))
+                damage = food.ApplyDamageBonus(damage);
+
             // Initialize stats (SO defaults + optional weapon overrides)
             projectile.Initialize(
                 so: projectileSO,
                 initialVelocity: initialVelocity,
                 source: sourceEntity,
-                damage: damageOverride ?? projectileSO.MaxBaseDamage,
+                damage: damage,
                 knockback: knockbackOverride ?? projectileSO.MaxBaseKnockbackForce,
                 faction: faction
             );

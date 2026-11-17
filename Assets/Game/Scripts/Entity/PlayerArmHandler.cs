@@ -156,7 +156,7 @@ namespace SketchLand
             _hideStrikeTime = Time.time + 0.18f;
 #endif
             var entities = EntityManager.Instance.Entities;
-            var hit = new SyncHitData(tool.MeleeDamage, tool.KnockbackForce, _character.transform.position);
+            var hit = new SyncHitData(player.Food.ApplyDamageBonus(tool.MeleeDamage), tool.KnockbackForce, _character.transform.position);
             for (int i = entities.Count - 1; i >= 0; i--)
             {
                 if (entities[i] is ServerCharacter enemy && enemy != _character && enemy.DamageReceiver != null
