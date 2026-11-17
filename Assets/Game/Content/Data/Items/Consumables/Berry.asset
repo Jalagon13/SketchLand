@@ -19,9 +19,10 @@ MonoBehaviour:
   <HeldPosition>k__BackingField: {x: 0, y: 0, z: 0}
   <HeldRotation>k__BackingField: 0
   <HeldScale>k__BackingField: {x: 1, y: 1, z: 1}
-  <Duration>k__BackingField: 60
+  <Duration>k__BackingField: 150
   <Health>k__BackingField: 0
   <HealthRegen>k__BackingField: 0
+  <Stamina>k__BackingField: 10
   <ConsumeSFX>k__BackingField:
     Guid:
       Data1: -602489371
