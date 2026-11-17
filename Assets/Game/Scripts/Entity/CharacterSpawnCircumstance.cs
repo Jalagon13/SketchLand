@@ -75,26 +75,4 @@ namespace SketchLand
         Night = 1 << (int)DayPhase.Night,
         All = Sunrise | Day | Sunset | Night
     }
-
-    [Serializable]
-    public sealed class CharacterSpawnEntry
-    {
-        [SerializeField] private CharacterSO _character;
-        [SerializeField, Range(0f, 1f)] private float _weight = 1f;
-
-        [SerializeField] private SpawnPhases _surfacePhases = SpawnPhases.All;
-        [SerializeField] private SpawnPhases _undergroundPhases = SpawnPhases.All;
-        [Tooltip("Require an empty background tile at the spawn location just above the ground.")]
-        [SerializeField] private bool _requireOpenBackground;
-
-        public bool CanSpawn(WorldZone zone, DayPhase phase, bool openBackground)
-        {
-            SpawnPhases allowed = zone.AllowsNaturalDaylight ? _surfacePhases : _undergroundPhases;
-            return _character != null && _weight > 0f && (!_requireOpenBackground || openBackground)
-                && (allowed & (SpawnPhases)(1 << (int)phase)) != 0;
-        }
-
-        public CharacterSO Character => _character;
-        public float Weight => _weight;
-    }
 }

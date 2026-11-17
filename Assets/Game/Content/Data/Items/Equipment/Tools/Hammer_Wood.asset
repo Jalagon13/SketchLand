@@ -16,9 +16,9 @@ MonoBehaviour:
   <Description>k__BackingField: 
   <DisplayIcon>k__BackingField: {fileID: 387179986, guid: 95b48bea6960f4495a1bed98908a2b81, type: 3}
   <IsStackable>k__BackingField: 0
-  <HeldPosition>k__BackingField: {x: 0.226, y: -0.328, z: 0}
-  <HeldRotation>k__BackingField: 167.9009
-  <HeldScale>k__BackingField: {x: 0.9, y: 0.9, z: 0.9}
+  <HeldPosition>k__BackingField: {x: 0.264, y: -0.246, z: 0}
+  <HeldRotation>k__BackingField: 178.89743
+  <HeldScale>k__BackingField: {x: 0.8, y: 0.8, z: 0.8}
   <CanBreakTilesAndObjects>k__BackingField: 1
   <HarvestType>k__BackingField: 0
   <MiningDamage>k__BackingField: 25

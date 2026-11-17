@@ -15,6 +15,13 @@ namespace SketchLand
         [field: SerializeField, Range(0, 100)] public float BonusDamagePercentage { get; private set; }
         [field: SerializeField] public EventReference ConsumeSFX { get; private set; }
 
+        public override void OnPrimaryActionStarted(Player player)
+        {
+            if (player == null || player.Food == null) return;
+            var slot = InventoryInputManager.Instance.GetActiveInvSlot();
+            player.Food.Eat(slot, this);
+        }
+
         public override string GetDescription()
         {
             var lines = new List<string>();
@@ -24,7 +31,7 @@ namespace SketchLand
             if (Stamina > 0) lines.Add($"+{Stamina:0.##} max stamina");
             if (BonusDamagePercentage > 0) lines.Add($"+{BonusDamagePercentage:0.##}% damage");
             lines.Add($"Duration: {Duration:0.##} seconds");
-            lines.Add("Hold left click to eat");
+            lines.Add("Use primary action to eat");
             return string.Join("<br>", lines);
         }
     }
