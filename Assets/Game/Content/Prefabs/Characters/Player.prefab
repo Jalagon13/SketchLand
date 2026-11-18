@@ -236,9 +236,9 @@ GameObject:
   - component: {fileID: 7356393502635589802}
   - component: {fileID: 7404199140877888337}
   - component: {fileID: 441940328834578257}
+  - component: {fileID: 1260414927922091770}
   - component: {fileID: 3163120524498341536}
   - component: {fileID: 8320316462856433193}
-  - component: {fileID: 1260414927922091770}
   - component: {fileID: 8488650257111462904}
   - component: {fileID: 4397858196725711225}
   - component: {fileID: 8607429953159819184}
@@ -356,6 +356,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 018c09c7f1757408ab23f46a62174694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.NetworkPlayerBinding
+--- !u!114 &1260414927922091770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2708704097900981217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b497c61b08fb40989d30081c8a7b051, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OceanGame.PlayerEquipment
+  _wardrobe: {fileID: 1610418577990979259}
 --- !u!114 &3163120524498341536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -392,19 +405,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.DamageReceiver
   ShowTopMostFoldoutHeaderGroup: 1
---- !u!114 &1260414927922091770
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2708704097900981217}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b497c61b08fb40989d30081c8a7b051, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OceanGame.PlayerEquipment
-  _wardrobe: {fileID: 1610418577990979259}
 --- !u!114 &8488650257111462904
 MonoBehaviour:
   m_ObjectHideFlags: 0

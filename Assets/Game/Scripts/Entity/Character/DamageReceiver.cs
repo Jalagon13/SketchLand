@@ -51,6 +51,7 @@ namespace SketchLand
             
             _character.ApplyKnockback(hit.KnockbackForce, hit.SourcePosition);
         }
+
     }
     
     public struct SyncHitData : IEquatable<SyncHitData>, INetworkSerializable

@@ -12,16 +12,18 @@ namespace SketchLand
         {
             var doorTd = WorldManager.Instance.FgGrid.GetTileData(posX, posY);
 
-            if (doorTd.State == 0)
+            if (doorTd.State == DoorTileConfigSO.Closed)
             {
-                doorTd.State = 1;
+                float doorCenterX = posX - doorTd.OffsetX + doorTd.TileConfig.Size.x * 0.5f;
+                doorTd.State = Player.Instance.Character.transform.position.x <= doorCenterX
+                    ? DoorTileConfigSO.OpenRight : DoorTileConfigSO.OpenLeft;
                 doorTd.IsSolid = false;
                 
                 AudioManager.Instance.PlayOneShot(FMODEvents.Instance.DoorOpen, default);
             }
-            else if (doorTd.State == 1)
+            else
             {
-                doorTd.State = 0;
+                doorTd.State = DoorTileConfigSO.Closed;
                 doorTd.IsSolid = true;
 
                 AudioManager.Instance.PlayOneShot(FMODEvents.Instance.DoorClosed, default);

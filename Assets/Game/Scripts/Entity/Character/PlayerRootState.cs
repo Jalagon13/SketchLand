@@ -10,18 +10,28 @@ namespace SketchLand
     {
         private static readonly int DamagedAnimation = Animator.StringToHash("Base Layer.StickFigure_Damaged");
 
+        [field: Header("Fall Damage")]
+        [field: SerializeField, Min(0f)] public float FallDamageThreshold { get; private set; } = 10f;
+        [field: SerializeField, Min(0f)] public float DamagePerExtraTile { get; private set; } = 5f;
+
         public PlayerGroundedState Grounded { get; private set; }
         public PlayerAirborneState Airborne { get; private set; }
         public float MovementSpeed { get; private set; }
 
         private bool _isSprinting;
+        private bool _trackingFall;
+        private float _fallPeakY;
 
         // Parameterless constructor for Unity serialization
         public PlayerRootState() : base() { }
 
         public override CharacterRootState CreateInstance()
         {
-            return new PlayerRootState();
+            return new PlayerRootState
+            {
+                FallDamageThreshold = FallDamageThreshold,
+                DamagePerExtraTile = DamagePerExtraTile
+            };
         }
 
         public override void Initialize(ServerCharacter ctx)
@@ -42,6 +52,7 @@ namespace SketchLand
 
         protected override void OnEnter()
         {
+            ResetFallTracking();
             MovementSpeed = _ctx.Data.BaseSpeed;
             _ctx.Animator.SetBool("IsSprinting", false);
         }
@@ -53,6 +64,7 @@ namespace SketchLand
 
         protected override void OnFixedUpdate(float fixedDeltaTime)
         {
+            TrackFall();
             var player = Player.Instance;
             
             bool sprintHeld = _ctx.IsOwner && GameInput.Instance.SprintHeld;
@@ -73,6 +85,38 @@ namespace SketchLand
                 MovementSpeed = Mathf.Min(MovementSpeed, _ctx.Data.BaseSpeed);
             
             UpdateLocomotionAnimation(ActiveChild == Grounded);
+        }
+
+        public void ResetFallTracking()
+        {
+            _trackingFall = false;
+            _fallPeakY = _ctx.transform.position.y;
+        }
+
+        private void TrackFall()
+        {
+            if (_ctx.Health.CurrentLifeState.Value == LifeState.Dead)
+            {
+                ResetFallTracking();
+                return;
+            }
+
+            // Measure the vertical drop from the highest point, including a jump's apex.
+            _fallPeakY = Mathf.Max(_fallPeakY, _ctx.transform.position.y);
+            if (!_ctx.CollisionResult.TouchingBottom || _ctx.Velocity.y > 0f)
+            {
+                _trackingFall = true;
+                return;
+            }
+
+            float distance = _fallPeakY - _ctx.transform.position.y;
+            bool landed = _trackingFall;
+            ResetFallTracking();
+            if (!landed || !_ctx.IsServer) return;
+
+            int damage = Mathf.RoundToInt(Mathf.Max(0f, distance - FallDamageThreshold) * DamagePerExtraTile);
+            if (damage > 0)
+                _ctx.DamageReceiver.ReceiveHit(new SyncHitData(damage, 0, _ctx.transform.position));
         }
 
         public void UpdateLocomotionAnimation(bool isGrounded)

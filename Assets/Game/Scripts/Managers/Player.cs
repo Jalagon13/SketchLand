@@ -27,7 +27,7 @@ namespace SketchLand
         [field: SerializeField] public float TerminalVelocity { get; private set; }
 
         [field: Header("Health Settings")]
-        [field: SerializeField, Min(0f)] public float BaseHealthRegen { get; private set; } = 1f;
+        [field: SerializeField] public float BaseHealthRegen { get; private set; } = 1f;
 
         public PlayerFood Food { get; private set; }
 
@@ -93,6 +93,7 @@ namespace SketchLand
                 Character.Velocity = Vector2.zero;
                 Character.DesiredDirection = Vector2.zero;
                 Character.ClearKnockback();
+                if (Character.RootState is PlayerRootState fallbackState) fallbackState.ResetFallTracking();
 
                 RespawnPoint = Character.transform.position;
                 _hasInitialSpawn = true;
@@ -103,6 +104,7 @@ namespace SketchLand
             Character.Velocity = Vector2.zero;
             Character.DesiredDirection = Vector2.zero;
             Character.ClearKnockback();
+            if (Character.RootState is PlayerRootState state) state.ResetFallTracking();
 
             RespawnPoint = spawnPosition;
             _hasInitialSpawn = true;
@@ -143,6 +145,7 @@ namespace SketchLand
                 Stamina.Refill();
                 // respawn
                 Character.transform.position = RespawnPoint;
+                if (Character.RootState is PlayerRootState state) state.ResetFallTracking();
                 Character.Health.CurrentHealth.Value = Character.Health.Maximum;
             }
         }
