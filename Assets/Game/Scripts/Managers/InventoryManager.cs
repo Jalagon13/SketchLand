@@ -64,9 +64,24 @@ namespace SketchLand
             InventoryCursorManager.Instance.RefreshCursorSlot();
         }
 
+        // Pickups and crafting share feedback for the amount actually added.
+        public int CollectItem(ushort itemId, int amount)
+        {
+            int remainder = AddItem(itemId, amount);
+            int collectedAmount = amount - remainder;
+            if (collectedAmount > 0)
+            {
+                if (WorldTextPopupManager.Instance == null)
+                    Debug.LogError("WorldTextPopupManager is missing from the scene.", this);
+                else
+                    WorldTextPopupManager.Instance.SpawnItemCollectPopup(GameDataRegistry.Instance.GetItemSOFromItemId(itemId), collectedAmount);
+            }
+            return remainder;
+        }
+
         public int AddItem(ushort itemId, int amount) // Returns remainder 
         {
-            if(Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead) return 0;
+            if(Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead) return amount;
         
             // Search for existing matching stacks
             for (int i = 0; i < PlayerInventory.Length; i++)

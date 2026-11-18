@@ -146,23 +146,8 @@ namespace SketchLand
         
         public void OnItemCollected()
         {
-            ItemSO collectedItem = Ctx.ItemSlot.GetItemSO();
-
             int attemptedAmount = Ctx.ItemSlot.Amount;
-            int remainder = InventoryManager.Instance.AddItem(Ctx.ItemSlot.ItemId, attemptedAmount);
-            int collectedAmount = attemptedAmount - remainder;
-
-            if (collectedAmount > 0)
-            {
-                if (WorldTextPopupManager.Instance == null)
-                {
-                    Debug.LogError("WorldTextPopupManager is missing from the scene.", this);
-                }
-                else
-                {
-                    WorldTextPopupManager.Instance.SpawnItemCollectPopup(collectedItem, collectedAmount);
-                }
-            }
+            int remainder = InventoryManager.Instance.CollectItem(Ctx.ItemSlot.ItemId, attemptedAmount);
 
             if (remainder <= 0)
             {

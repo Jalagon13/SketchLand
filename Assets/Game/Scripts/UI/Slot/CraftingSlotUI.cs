@@ -60,7 +60,7 @@ namespace SketchLand
                         inventory.RemoveItem(ingredient.Item.GetId(), ingredient.Amount);
                     }
 
-                    inventory.AddItem(outputId, _recipe.OutputAmonut);
+                    inventory.CollectItem(outputId, _recipe.OutputAmonut);
                     AudioManager.Instance.PlayOneShot(FMODEvents.Instance.SlotClickedSFX, default);
                 }
             }

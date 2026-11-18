@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Rec_Arrow
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.RecipeSO
   <OutputItem>k__BackingField: {fileID: 11400000, guid: dbcbcd20bffa749e2920a1db8a6a1792, type: 2}
-  <OutputAmonut>k__BackingField: 6
+  <OutputAmonut>k__BackingField: 4
   <Recipe>k__BackingField:
   - _ingredient: {fileID: 11400000, guid: 81a74ab6b5b314aa5a95260481a734d8, type: 2}
     _amount: 1
