@@ -8,10 +8,10 @@ namespace SketchLand
         public Stat MaxHealth { get; }
         public Stat Defense { get; }
 
-        public CharacterStats(CharacterSO data, int baseHealth)
+        public CharacterStats(CharacterSO data)
         {
             MoveSpeed = new(data.BaseSpeed);
-            MaxHealth = new(baseHealth);
+            MaxHealth = new(data.BaseMaxHealth);
             Defense = new(data.BaseDefense);
         }
 

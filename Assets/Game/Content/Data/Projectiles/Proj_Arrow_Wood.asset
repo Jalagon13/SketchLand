@@ -19,8 +19,8 @@ MonoBehaviour:
   <MinBaseDamage>k__BackingField: 3
   <MaxBaseDamage>k__BackingField: 16
   <BasePenetration>k__BackingField: 1
-  <MinBaseKnockbackForce>k__BackingField: 3
-  <MaxBaseKnockbackForce>k__BackingField: 9
+  <MinBaseKnockbackForce>k__BackingField: 1
+  <MaxBaseKnockbackForce>k__BackingField: 5
   <HitImpactPrefab>k__BackingField: {fileID: 0}
   <ImpactSFX>k__BackingField:
     Guid:

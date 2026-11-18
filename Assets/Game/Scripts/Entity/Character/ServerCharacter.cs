@@ -39,8 +39,7 @@ namespace SketchLand
 
         private void Awake()
         {
-            var food = GetComponent<PlayerFood>();
-            Stats = new(_data, food != null ? food.BaseHealth : _data.BaseMaxHealth);
+            Stats = new(_data);
             Health = GetComponent<CharacterHealth>();
             DamageReceiver = GetComponent<DamageReceiver>();
 
@@ -51,6 +50,9 @@ namespace SketchLand
 
         public override void OnNetworkSpawn()
         {
+            if (IsOwner && TryGetComponent<PlayerFood>(out _))
+                Player.Instance.BindCharacter(this);
+
             ClearKnockback();
             RootState?.Dispose();
             RootState = _data.RootState?.CreateInstance();

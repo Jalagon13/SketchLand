@@ -1,55 +1,37 @@
-using System;
-using Unity.Netcode;
 using UnityEngine;
 
 namespace SketchLand
 {
-    // Inventory belongs to the owning client. Replicate its three food choices so
-    // the server can apply the same health cap and regeneration on remote players.
-    public class PlayerFood : NetworkBehaviour
+    // Local food effects for singleplayer (the game runs as a solo host).
+    [RequireComponent(typeof(ServerCharacter))]
+    public class PlayerFood : MonoBehaviour
     {
         public const int Capacity = 3;
-        [field: SerializeField, Min(1)] public int BaseHealth { get; private set; } = 50;
-        [SerializeField, Min(0)] private float _baseHealthRegen = 1;
-        private NetworkList<Meal> _meals;
+        public int BaseHealth => _character.Data.BaseMaxHealth;
+        private readonly Meal[] _meals = new Meal[Capacity];
         private ServerCharacter _character;
         private float _healing;
 
-        public struct Meal : INetworkSerializable, IEquatable<Meal>
+        private struct Meal
         {
-            public ushort Item;
-            public double End;
-            public bool Equals(Meal other) => Item == other.Item && End == other.End;
-            public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
-            {
-                serializer.SerializeValue(ref Item);
-                serializer.SerializeValue(ref End);
-            }
+            public ConsumableItemSO Food;
+            public float End;
         }
 
-        private void Awake()
-        {
-            _character = GetComponent<ServerCharacter>();
-            _meals = new NetworkList<Meal>(writePerm: NetworkVariableWritePermission.Owner);
-        }
+        private bool IsSinglePlayer => _character.IsSpawned && _character.IsServer && _character.IsOwner &&
+            _character.NetworkManager.ConnectedClientsIds.Count == 1;
 
-        public override void OnNetworkSpawn()
-        {
-            if (!IsOwner) return;
-            while (_meals.Count < Capacity) _meals.Add(default);
-            Player.Instance.BindCharacter(_character);
-        }
+        private void Awake() => _character = GetComponent<ServerCharacter>();
 
-        public float Remaining(int index) => index < _meals.Count
-            ? Mathf.Max(0, (float)(_meals[index].End - NetworkManager.ServerTime.Time)) : 0;
+        public float Remaining(int index) => IsSinglePlayer && index >= 0 && index < Capacity
+            ? Mathf.Max(0, _meals[index].End - Time.time) : 0;
 
-        public ConsumableItemSO At(int index) => Remaining(index) > 0
-            ? GameDataRegistry.Instance.GetItemSOFromItemId(_meals[index].Item) as ConsumableItemSO : null;
+        public ConsumableItemSO At(int index) => Remaining(index) > 0 ? _meals[index].Food : null;
 
         private int AvailableSlot(ConsumableItemSO food)
         {
             int empty = -1;
-            for (int i = 0; i < _meals.Count; i++)
+            for (int i = 0; i < Capacity; i++)
             {
                 var active = At(i);
                 if (active == food) return -1;
@@ -58,13 +40,13 @@ namespace SketchLand
             return empty;
         }
 
-        public bool CanEat(ConsumableItemSO food) => IsSpawned && IsOwner && food != null &&
+        public bool CanEat(ConsumableItemSO food) => IsSinglePlayer && food != null &&
             _character.Health.CurrentLifeState.Value != LifeState.Dead && AvailableSlot(food) >= 0;
 
         public void Eat(InventorySlot slot, ConsumableItemSO food)
         {
-            if (slot.IsEmpty || slot.GetItemSO() != food || !CanEat(food)) return;
-            _meals[AvailableSlot(food)] = new Meal { Item = slot.ItemId, End = NetworkManager.ServerTime.Time + food.Duration };
+            if (slot == null || slot.IsEmpty || slot.GetItemSO() != food || !CanEat(food)) return;
+            _meals[AvailableSlot(food)] = new Meal { Food = food, End = Time.time + food.Duration };
             slot.RemoveFromCurrentAmount(1);
             ApplyLimits();
             InventoryManager.Instance.RefreshInventory();
@@ -73,7 +55,7 @@ namespace SketchLand
 
         public void Remove(int index)
         {
-            if (!IsOwner || index < 0 || index >= _meals.Count) return;
+            if (!IsSinglePlayer || index < 0 || index >= Capacity) return;
             _meals[index] = default;
             ApplyLimits();
         }
@@ -83,7 +65,7 @@ namespace SketchLand
             get
             {
                 int total = 0;
-                for (int i = 0; i < _meals.Count; i++) total += At(i)?.Health ?? 0;
+                for (int i = 0; i < Capacity; i++) total += At(i)?.Health ?? 0;
                 return total;
             }
         }
@@ -93,7 +75,7 @@ namespace SketchLand
             get
             {
                 float total = 0f;
-                for (int i = 0; i < _meals.Count; i++) total += At(i)?.BonusDamagePercentage ?? 0f;
+                for (int i = 0; i < Capacity; i++) total += At(i)?.BonusDamagePercentage ?? 0f;
                 return total;
             }
         }
@@ -102,17 +84,16 @@ namespace SketchLand
 
         private void Update()
         {
-            if (!IsSpawned || (!IsServer && !IsOwner)) return;
+            if (!IsSinglePlayer) return;
             ApplyLimits();
-            if (!IsServer) return;
             var health = _character.Health;
             if (health.CurrentLifeState.Value == LifeState.Dead || health.CurrentHealth.Value >= health.Maximum)
             {
                 _healing = 0;
                 return;
             }
-            float rate = _baseHealthRegen;
-            for (int i = 0; i < _meals.Count; i++) rate += At(i)?.HealthRegen ?? 0;
+            float rate = Player.Instance.BaseHealthRegen;
+            for (int i = 0; i < Capacity; i++) rate += At(i)?.HealthRegen ?? 0;
             _healing += rate * Time.deltaTime;
             int whole = Mathf.FloorToInt(_healing);
             if (whole > 0)
@@ -124,18 +105,10 @@ namespace SketchLand
 
         private void ApplyLimits()
         {
-            if (IsOwner)
-            {
-                float max = 0;
-                for (int i = 0; i < _meals.Count; i++)
-                {
-                    var food = At(i);
-                    if (food == null) continue;
-                    max += food.Stamina;
-                }
-                Player.Instance.Stamina.SetFoodMaxBonus(max);
-            }
-            if (IsServer && _character.Health.CurrentHealth.Value > _character.Health.Maximum)
+            float max = 0;
+            for (int i = 0; i < Capacity; i++) max += At(i)?.Stamina ?? 0;
+            Player.Instance.Stamina.SetFoodMaxBonus(max);
+            if (_character.Health.CurrentHealth.Value > _character.Health.Maximum)
                 _character.Health.CurrentHealth.Value = _character.Health.Maximum;
         }
     }

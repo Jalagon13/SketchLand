@@ -25,6 +25,8 @@ namespace SketchLand
         [SerializeField] private List<RecipeSO> _defaultCraftingRecipes;
         
         private Vector2 _interactedCtPos;
+        private Vector2Int _interactedCtCell;
+        private TileGrid _craftingGrid;
     
         private IEnumerator Start()
         {
@@ -44,6 +46,7 @@ namespace SketchLand
 
         private void OnDestroy()
         {
+            if (_craftingGrid != null) _craftingGrid.OnTileDataChanged -= OnCrafterTileChanged;
             InventoryInputManager.Instance.OnInventoryOpenChanged -= ToggleInventoryUI;
             InventoryInputManager.Instance.OnActiveHotbarIndexChanged -= UpdateHotbarUI;
             InventoryInputManager.Instance.OnCraftTableInteract -= ShowCraftingMenu;
@@ -113,10 +116,14 @@ namespace SketchLand
 
         private void ShowCraftingMenu(List<RecipeSO> recipes, int x, int y)
         {
+            CloseExternalCraftingMenuUI();
             ChestManager.Instance.CloseChest();
             CloseDefaultCraftingMenuUI();
         
             _interactedCtPos = new Vector2(x + 0.5f, y + 0.5f);
+            _interactedCtCell = new Vector2Int(x, y);
+            _craftingGrid = WorldManager.Instance.FgGrid;
+            _craftingGrid.OnTileDataChanged += OnCrafterTileChanged;
         
             // Destroy any children left
             for (int i = _externalCraftingSlotsHolder.childCount - 1; i >= 0; i--)
@@ -132,6 +139,15 @@ namespace SketchLand
             }
 
             ShowExternalCraftingMenuUI();
+        }
+
+        private void OnCrafterTileChanged(Vector2Int position)
+        {
+            if (position != _interactedCtCell) return;
+
+            CloseExternalCraftingMenuUI();
+            ShowDefaultCraftingMenuUI();
+            Tooltip.HideUI();
         }
 
         private void UpdateHotbarUI(int activeHotbarIndex)
@@ -176,6 +192,8 @@ namespace SketchLand
         
         private void CloseExternalCraftingMenuUI()
         {
+            if (_craftingGrid != null) _craftingGrid.OnTileDataChanged -= OnCrafterTileChanged;
+            _craftingGrid = null;
             _externalCraftMenuUI.gameObject.SetActive(false);
         }
         

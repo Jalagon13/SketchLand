@@ -2118,7 +2118,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 21.800049, y: 56.299988}
-  m_SizeDelta: {x: 300, y: 65}
+  m_SizeDelta: {x: 300, y: 47.1184}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &428728194
 MonoBehaviour:
@@ -2140,8 +2140,8 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 50, y: 50}
-  m_Spacing: {x: 15, y: 0}
+  m_CellSize: {x: 40, y: 40}
+  m_Spacing: {x: 10, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!1 &429528856
@@ -3704,7 +3704,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: -2.6848, y: 3.0204}
-  m_SizeDelta: {x: 100, y: 30}
+  m_SizeDelta: {x: 75, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &779160488
 MonoBehaviour:
@@ -6005,6 +6005,7 @@ MonoBehaviour:
   <CoyoteTimeBufferDuration>k__BackingField: 0.15
   <GravityForce>k__BackingField: 25
   <TerminalVelocity>k__BackingField: -40
+  <BaseHealthRegen>k__BackingField: 1
   <Stamina>k__BackingField:
     _max: 20
     _baseRegenPerSecond: 1
@@ -6013,7 +6014,7 @@ MonoBehaviour:
     _swingCost: 4
     _standingRegenPercent: 100
     _walkingRegenPercent: 60
-    _sprintingRegenPercent: 40
+    _sprintingRegenPercent: 30
 --- !u!1 &1247736531
 GameObject:
   m_ObjectHideFlags: 0
@@ -6263,7 +6264,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 30}
+  m_SizeDelta: {x: 75, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1294142469
 MonoBehaviour:
@@ -10047,7 +10048,7 @@ MonoBehaviour:
     _dayMinutes: 8
     _sunsetMinutes: 2
     _nightMinutes: 6
-  _tileRepairDelay: 5
+  _tileRepairDelay: 15
 --- !u!114 &2043979316
 MonoBehaviour:
   m_ObjectHideFlags: 0

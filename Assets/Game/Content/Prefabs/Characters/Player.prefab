@@ -283,7 +283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 50644434
+  GlobalObjectIdHash: 2134763030
   InScenePlacedSourceGlobalObjectIdHash: 0
   m_InScenePlacedDisabledByDefault: 0
   DeferredDespawnTick: 0
@@ -356,9 +356,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 018c09c7f1757408ab23f46a62174694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.NetworkPlayerBinding
-  ShowTopMostFoldoutHeaderGroup: 1
-  <BaseHealth>k__BackingField: 50
-  _baseHealthRegen: 1
 --- !u!114 &3163120524498341536
 MonoBehaviour:
   m_ObjectHideFlags: 0

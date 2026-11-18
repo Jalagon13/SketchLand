@@ -26,6 +26,9 @@ namespace SketchLand
         [field: SerializeField] public float GravityForce { get; private set; }
         [field: SerializeField] public float TerminalVelocity { get; private set; }
 
+        [field: Header("Health Settings")]
+        [field: SerializeField, Min(0f)] public float BaseHealthRegen { get; private set; } = 1f;
+
         public PlayerFood Food { get; private set; }
 
         [field: SerializeField] public PlayerStamina Stamina { get; private set; } = new();

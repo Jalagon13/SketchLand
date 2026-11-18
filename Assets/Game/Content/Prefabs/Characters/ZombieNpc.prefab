@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7179942279974174629}
   - component: {fileID: 3454599396775519568}
   - component: {fileID: 8585951149107295518}
+  - component: {fileID: 5419920937670993757}
   m_Layer: 0
   m_Name: ZombieNpc
   m_TagString: Untagged
@@ -190,6 +191,19 @@ MonoBehaviour:
   - Bone: {fileID: 3295180330809248961}
     Radius: 0.15
     BendLimit: 65
+--- !u!210 &5419920937670993757
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1935912492634409185}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 10
+  m_SortAtRoot: 0
+  m_Sort3DAs2D: 0
 --- !u!1 &6902626330650952792
 GameObject:
   m_ObjectHideFlags: 0

@@ -72,12 +72,11 @@ namespace SketchLand
             Vector2 direction = _armPivot.parent.TransformVector(localAim).normalized;
             float halfArc = Mathf.Clamp(tool.SwingArcAngle, 1, 360) * 0.5f;
             float reach = Mathf.Max(0.01f, tool.StrikeReach);
-            var target = MiningManager.Instance.CaptureTarget(player, tool, aimPoint);
             PlaySwing(tool, localAim, halfArc, reach, Mathf.Max(0.01f, tool.SwingsPerSecond), () =>
             {
                 if (player.Character != _character || _character.Health.CurrentLifeState.Value == LifeState.Dead) return;
                 if (!player.Stamina.TrySpendSwing()) return;
-                ResolveImpact(player, tool, new StrikeZone(_armPivot.position, direction, halfArc, reach), target);
+                ResolveImpact(player, tool, new StrikeZone(_armPivot.position, direction, halfArc, reach));
             });
             UpdateLocomotionPlayback();
             return true;
@@ -149,7 +148,7 @@ namespace SketchLand
             _armPivot.gameObject.SetActive(false);
         }
 
-        private void ResolveImpact(Player player, ToolItemSO tool, StrikeZone zone, MiningManager.SwingTarget? target)
+        private void ResolveImpact(Player player, ToolItemSO tool, StrikeZone zone)
         {
 #if UNITY_EDITOR
             _lastStrike = zone;
@@ -163,6 +162,9 @@ namespace SketchLand
                     && zone.Intersects(enemy.transform.position, enemy.ColliderSize))
                     enemy.DamageReceiver.ReceiveHit(hit);
             }
+            // Choose the hovered tile at impact, after the windup, and check its current range.
+            Vector2 miningPoint = Camera.main.ScreenToWorldPoint(UnityEngine.InputSystem.Mouse.current.position.ReadValue());
+            var target = MiningManager.Instance.CaptureTarget(player, tool, miningPoint);
             if (target.HasValue) MiningManager.Instance.TryPerformMine(player, tool, target.Value);
             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PlayerAirThrustSFX, transform.position);
         }

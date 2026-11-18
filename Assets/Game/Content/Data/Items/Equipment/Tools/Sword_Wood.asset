@@ -23,7 +23,7 @@ MonoBehaviour:
   <HarvestType>k__BackingField: 0
   <MiningDamage>k__BackingField: 0
   <MeleeDamage>k__BackingField: 9
-  <KnockbackForce>k__BackingField: 6
-  <StrikeReach>k__BackingField: 1.425
+  <KnockbackForce>k__BackingField: 5
+  <StrikeReach>k__BackingField: 1.6
   <SwingsPerSecond>k__BackingField: 1.5
   <SwingArcAngle>k__BackingField: 160

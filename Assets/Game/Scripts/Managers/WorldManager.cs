@@ -21,7 +21,7 @@ namespace SketchLand
         [field: SerializeField] public WorldClock Clock { get; private set; } = new();
 
         [Header("Tile Repair")]
-        [SerializeField] private float _tileRepairDelay = 5f;
+        [SerializeField] private float _tileRepairDelay = 15f;
 
         public enum LayerType { Foreground, Background }
         public TileGrid FgGrid { get; private set; }
