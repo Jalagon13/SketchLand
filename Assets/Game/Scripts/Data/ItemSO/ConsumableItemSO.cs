@@ -30,7 +30,8 @@ namespace SketchLand
             if (HealthRegen > 0) lines.Add($"+{HealthRegen:0.##} HP/sec");
             if (BonusDamagePercentage > 0) lines.Add($"+{BonusDamagePercentage:0.##}% damage");
             if (BonusSwingSpeedPercentage > 0) lines.Add($"+{BonusSwingSpeedPercentage:0.##}% swing speed");
-            lines.Add($"Duration: {Duration:0.##} seconds");
+            int durationSeconds = Mathf.CeilToInt(Duration);
+            lines.Add($"Duration: {durationSeconds / 60}:{durationSeconds % 60:00}");
             lines.Add("Use primary action to eat");
             return string.Join("<br>", lines);
         }

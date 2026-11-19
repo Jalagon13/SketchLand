@@ -225,9 +225,6 @@ namespace SketchLand
                 {
                     float width = edgeStyle.OutlineWidth;
 
-                    if (!exposed)
-                        width *= 0.65f;
-
                     for (int i = 0; i < _edgePoints.Count - 1; i++)
                     {
                         AddInkStrip( _edgePoints[i], _edgePoints[i + 1], width, edgeStyle.OutlineColor);
