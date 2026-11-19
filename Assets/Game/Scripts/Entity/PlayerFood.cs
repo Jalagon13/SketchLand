@@ -105,9 +105,6 @@ namespace SketchLand
 
         private void ApplyLimits()
         {
-            float max = 0;
-            for (int i = 0; i < Capacity; i++) max += At(i)?.Stamina ?? 0;
-            Player.Instance.Stamina.SetFoodMaxBonus(max);
             if (_character.Health.CurrentHealth.Value > _character.Health.Maximum)
                 _character.Health.CurrentHealth.Value = _character.Health.Maximum;
         }

@@ -57,12 +57,12 @@ namespace SketchLand
         public void CancelSwing() => _swingSequence?.Kill();
 
         // Input supplies the actor and committed world point. Only this local action
-        // pays stamina and schedules gameplay damage; the presentation only needs its impact callback.
+        // schedules gameplay damage; the presentation only needs its impact callback.
         public bool TrySwing(Player player, ToolItemSO tool, Vector2 aimPoint)
         {
             if (!isActiveAndEnabled || IsSwinging || tool == null || player == null || player.Character != _character)
                 return false;
-            if (_character.Health.CurrentLifeState.Value == LifeState.Dead || player.Stamina.Current < player.Stamina.SwingCost)
+            if (_character.Health.CurrentLifeState.Value == LifeState.Dead)
                 return false;
 
             _rangedHandler.CancelCharge();
@@ -75,7 +75,6 @@ namespace SketchLand
             PlaySwing(tool, localAim, halfArc, reach, Mathf.Max(0.01f, tool.SwingsPerSecond), () =>
             {
                 if (player.Character != _character || _character.Health.CurrentLifeState.Value == LifeState.Dead) return;
-                if (!player.Stamina.TrySpendSwing()) return;
                 ResolveImpact(player, tool, new StrikeZone(_armPivot.position, direction, halfArc, reach));
             });
             UpdateLocomotionPlayback();

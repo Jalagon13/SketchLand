@@ -31,7 +31,6 @@ namespace SketchLand
 
         public PlayerFood Food { get; private set; }
 
-        [field: SerializeField] public PlayerStamina Stamina { get; private set; } = new();
 
         public bool JumpPressed { get; set; }
         public Vector2 RespawnPoint { get; private set; }
@@ -118,8 +117,6 @@ namespace SketchLand
 
             Character = character;
             Food = character.GetComponent<PlayerFood>();
-            Stamina.SetFoodMaxBonus(0);
-            Stamina.Refill();
             Character.Health.CurrentLifeState.OnValueChanged += OnLifeStateChanged;
 
             Equipment = Character.GetComponent<PlayerEquipment>();
@@ -142,7 +139,6 @@ namespace SketchLand
             
             if(previousValue == LifeState.Dead && newValue == LifeState.Alive)
             {
-                Stamina.Refill();
                 // respawn
                 Character.transform.position = RespawnPoint;
                 if (Character.RootState is PlayerRootState state) state.ResetFallTracking();
