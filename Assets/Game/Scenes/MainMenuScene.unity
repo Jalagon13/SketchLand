@@ -477,7 +477,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 40, y: 40}
-  m_SizeDelta: {x: 608, y: 429}
+  m_SizeDelta: {x: 608, y: 481}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &2147174930
 MonoBehaviour:
@@ -516,6 +516,8 @@ MonoBehaviour:
 
     Right
     Click - Interact
+
+    Left Click - Hit
 
 '
   m_isRightToLeft: 0

@@ -5,6 +5,12 @@ namespace SketchLand
     [CreateAssetMenu(fileName = "New ToolItemSO", menuName = "OceanGame/Item/ToolItemSO")]
     public class ToolItemSO : ItemSO
     {
+        public override string GetDescription()
+        {
+            string stats = $"Damage: {MeleeDamage}<br>Swing speed: {SwingsPerSecond:0.##} swings/sec<br>Mining damage: {(CanBreakTilesAndObjects ? MiningDamage : 0)}";
+            return string.IsNullOrWhiteSpace(Description) ? stats : $"{Description}<br>{stats}";
+        }
+
         public override void OnPrimaryActionStarted(Player player) => StartSwing(player);
         public override void OnPrimaryActionHeld(Player player) => StartSwing(player);
 

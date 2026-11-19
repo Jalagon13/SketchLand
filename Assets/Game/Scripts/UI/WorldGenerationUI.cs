@@ -10,6 +10,14 @@ namespace SketchLand
         [SerializeField] private TextMeshProUGUI _worldGenText;
         [SerializeField] private Image _loadingBarFg;
         [SerializeField] private RectTransform _worldGenUI;
+
+        private void Awake()
+        {
+            _loadingBarFg.type = Image.Type.Filled;
+            _loadingBarFg.fillMethod = Image.FillMethod.Horizontal;
+            _loadingBarFg.fillOrigin = (int)Image.OriginHorizontal.Left;
+            UpdateWorldGenUI(0f, "Generating world");
+        }
     
         private void Start() 
         {
@@ -27,9 +35,10 @@ namespace SketchLand
 
         private void UpdateWorldGenUI(float progress, string stepName)
         {
+            progress = Mathf.Clamp01(progress);
             _worldGenText.text = $"{stepName}. Progress {progress * 100:F0}%";
 
-            _loadingBarFg.fillAmount = progress / 1;
+            _loadingBarFg.fillAmount = progress;
         }
         
         private void ShowUI()

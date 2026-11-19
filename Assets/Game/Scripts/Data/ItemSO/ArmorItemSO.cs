@@ -8,6 +8,12 @@ namespace SketchLand
     [CreateAssetMenu(fileName = "New ArmorItem", menuName = "OceanGame/Item/ArmorItemSO")]
     public class ArmorItemSO : WearableItemSO
     {
+        public override string GetDescription()
+        {
+            string stats = $"Defense: +{Defense}";
+            return string.IsNullOrWhiteSpace(Description) ? stats : $"{Description}<br>{stats}";
+        }
+
         [field: Header("Armor Configuration")]
         [field: SerializeField] public ArmorType ArmorPieceType { get; private set; }
         [field: SerializeField] public int Defense { get; private set; } = 2;

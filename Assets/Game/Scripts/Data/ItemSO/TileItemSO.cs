@@ -9,6 +9,12 @@ namespace SketchLand
         [field: Header("Tile Item Settings")]
         [field: SerializeField] public TileConfigSO PlaceTileDataSO { get; private set; }
 
+        public override string GetDescription()
+        {
+            if (PlaceTileDataSO == null) return base.GetDescription();
+            return string.IsNullOrWhiteSpace(Description) ? "Placeable" : $"{Description}<br>Placeable";
+        }
+
         public override void OnPrimaryActionStarted(Player player)
         {
             PlacingManager.Instance.StartPlacing(this);

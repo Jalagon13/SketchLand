@@ -19,7 +19,7 @@ namespace SketchLand
         
         public InventorySlot ActiveSlot { get; private set; }
 
-        private bool _cursorPlacementHeld;
+        private bool _cursorItemUseHeld;
         private bool _startAfterSwing;
         private ItemSO _activeItem;
         private InventorySlot _activeSlot;
@@ -71,7 +71,7 @@ namespace SketchLand
                 StartSelectedItem(ActiveSlot);
                 return;
             }
-            if (!_cursorPlacementHeld && !ActiveSlot.IsEmpty && ActiveSlot.GetItemSO() is ToolItemSO tool)
+            if (!_cursorItemUseHeld && !ActiveSlot.IsEmpty && ActiveSlot.GetItemSO() is ToolItemSO tool)
                 tool.OnPrimaryActionHeld(player);
             else
                 _activeItem?.OnPrimaryActionHeld(player);
@@ -135,7 +135,7 @@ namespace SketchLand
         {
             if (context.canceled)
             {
-                _cursorPlacementHeld = false;
+                _cursorItemUseHeld = false;
                 if (_activeItem != null && CanAct() && !WorldManager.Instance.MouseOverUI && HasActiveItem())
                     ReleaseItemUse();
                 else
@@ -158,8 +158,8 @@ namespace SketchLand
             if (slot.IsEmpty) return;
             _activeSlot = slot;
             _activeItem = slot.GetItemSO();
-            // Placement can empty the cursor immediately. Keep this press with the cursor item.
-            _cursorPlacementHeld = slot == InventoryCursorManager.Instance.CursorSlot && _activeItem is TileItemSO;
+            // Consuming or placing the last cursor item must not pass this press to the hotbar.
+            _cursorItemUseHeld = slot == InventoryCursorManager.Instance.CursorSlot;
             _activeItem.OnPrimaryActionStarted(Player.Instance);
         }
 
