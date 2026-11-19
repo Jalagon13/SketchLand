@@ -1,6 +1,7 @@
 using Sirenix.OdinInspector;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
+using Unity.Netcode.Transports.SinglePlayer;
 using Unity.Networking.Transport.Relay;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
@@ -13,13 +14,20 @@ namespace SketchLand
 {
     public class Relay : MonoBehaviour
     {
+        [Header("Playtest Mode")]
+        [Tooltip("Run locally without Unity Services, Relay, or network sockets. Turn off to use the existing multiplayer flow. This setting also applies to builds.")]
+        [SerializeField] private bool _singleplayer = true;
+
         private bool _createdRelay;
         private bool _joinedRelay;
         private bool _isOffline;
 
         private async void Start()
         {
+            if (_singleplayer) return;
+
             var transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+            NetworkManager.Singleton.NetworkConfig.NetworkTransport = transport;
 
             // Detect offline mode
             _isOffline = Application.internetReachability == NetworkReachability.NotReachable;
@@ -28,10 +36,7 @@ namespace SketchLand
             {
                 Debug.LogWarning("No internet connection. Starting in offline mode...");
 
-                transport.SetConnectionData("0.0.0.0", 7777);
-
-                Loader.IsHost = true;
-                Loader.Load(Loader.Scene.GameScene);
+                StartSingleplayer();
                 return;
             }
 
@@ -60,10 +65,9 @@ namespace SketchLand
 
             _createdRelay = true;
 
-            if (_isOffline)
+            if (_singleplayer || _isOffline)
             {
-                Loader.IsHost = true;
-                Loader.Load(Loader.Scene.GameScene);
+                StartSingleplayer();
                 return;
             }
 
@@ -92,7 +96,7 @@ namespace SketchLand
 
         public async void JoinRelay(string joinCode)
         {
-            if (_joinedRelay || _isOffline) return;
+            if (_singleplayer || _joinedRelay || _isOffline) return;
 
             try
             {
@@ -111,6 +115,16 @@ namespace SketchLand
             {
                 Debug.LogError(e);
             }
+        }
+
+        private void StartSingleplayer()
+        {
+            var manager = NetworkManager.Singleton;
+            var transport = manager.GetComponent<SinglePlayerTransport>();
+            if (transport == null) transport = manager.gameObject.AddComponent<SinglePlayerTransport>();
+            manager.NetworkConfig.NetworkTransport = transport;
+            Loader.IsHost = true;
+            Loader.Load(Loader.Scene.GameScene);
         }
     }
 }
