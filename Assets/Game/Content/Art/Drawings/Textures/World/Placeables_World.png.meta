@@ -294,7 +294,7 @@ TextureImporter:
         width: 256
         height: 256
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -303,6 +303,28 @@ TextureImporter:
       bones: []
       spriteID: cfd2fdbd075f14c4e9e1ab0fe706f25a
       internalID: 581356180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Mushroom_Sprite
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 051503e95811c4834a39691dcd9b8e1b
+      internalID: 513539437
       vertices: []
       indices: 
       edges: []
@@ -326,6 +348,7 @@ TextureImporter:
       Door_Closed_World: 2078231749
       Door_Open_World: 1783058623
       Forge_World: 1025090947
+      Mushroom_Sprite: 513539437
       Torch_Bg: -227786942
       Torch_Floor: -144446906
       Torch_Wall: 1975926915

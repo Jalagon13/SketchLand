@@ -19,7 +19,7 @@ MonoBehaviour:
   <HeldPosition>k__BackingField: {x: 0, y: 0, z: 0}
   <HeldRotation>k__BackingField: 0
   <HeldScale>k__BackingField: {x: 1, y: 1, z: 1}
-  <Duration>k__BackingField: 120
+  <Duration>k__BackingField: 600
   <Health>k__BackingField: 0
   <HealthRegen>k__BackingField: 0
   <BonusDamagePercentage>k__BackingField: 0

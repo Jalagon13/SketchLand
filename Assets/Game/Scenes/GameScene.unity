@@ -2463,8 +2463,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 42.420166, y: 200}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 40, y: 40}
+  m_SizeDelta: {x: 608, y: 429}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &571060328
 MonoBehaviour:
@@ -2490,16 +2490,19 @@ MonoBehaviour:
 
     WASD - Move
 
+    Hold Shift - Sprint
+
     Space - Jump
 
-    E - Inventory
+    E
+    - Inventory
 
-    F
-    - Toggle Layer Focus
+    F - Toggle Layer Focus
 
     1-9, Scroll - Move Hotbar Slot
 
-    Right Click - Interact
+    Right
+    Click - Interact
 
 '
   m_isRightToLeft: 0
@@ -4738,6 +4741,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4f515916d235640d480d2b10b7f502af, type: 2}
   - {fileID: 11400000, guid: b7ea4b09cf0b943a9aca358bb8348256, type: 2}
   - {fileID: 11400000, guid: 09ffb8f718e624a1f9bf447ddc3404a3, type: 2}
+  - {fileID: 11400000, guid: 250906ebaf81a4de885dee5cc1e56a2e, type: 2}
   _itemDatabase:
   - {fileID: 11400000, guid: a8ba4590c8abf433dbe1aa7470e8b094, type: 2}
   - {fileID: 11400000, guid: b424afe4dee6641ca97d9b23d029ab30, type: 2}
@@ -4762,6 +4766,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 02132e62956c84c0bb16dd58284ffc00, type: 2}
   - {fileID: 11400000, guid: a76ba1086b24840afb1ba423bb9128b3, type: 2}
   - {fileID: 11400000, guid: fe977c3c6a1ac40199d63b4806e13e06, type: 2}
+  - {fileID: 11400000, guid: c29a32bad8f4a484485126bc47cc3459, type: 2}
 --- !u!114 &970924661
 MonoBehaviour:
   m_ObjectHideFlags: 0

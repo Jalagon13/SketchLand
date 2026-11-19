@@ -475,8 +475,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 42.41997, y: 200}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 40, y: 40}
+  m_SizeDelta: {x: 608, y: 429}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &2147174930
 MonoBehaviour:
@@ -502,16 +502,19 @@ MonoBehaviour:
 
     WASD - Move
 
+    Hold Shift - Sprint
+
     Space - Jump
 
-    E - Inventory
+    E
+    - Inventory
 
-    F
-    - Toggle Layer Focus
+    F - Toggle Layer Focus
 
     1-9, Scroll - Move Hotbar Slot
 
-    Right Click - Interact
+    Right
+    Click - Interact
 
 '
   m_isRightToLeft: 0

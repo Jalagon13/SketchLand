@@ -264,7 +264,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Resources_8
+      name: Mushroom_Icon
       rect:
         serializedVersion: 2
         x: 0
@@ -480,6 +480,7 @@ TextureImporter:
       Berry: -2132018790
       Cooked_Meat: 1425448261
       Dirt: -724094166
+      Mushroom_Icon: 38323398
       Ore_Iro: -1134669434
       Ore_Iron: -63505906
       Raw_Meat: 597171210
@@ -489,7 +490,6 @@ TextureImporter:
       Resources_13: 1633050589
       Resources_14: -136511233
       Resources_15: 1889336526
-      Resources_8: 38323398
       Resources_9: -1501257001
       Stone: 184825950
       Wood: -1327560853

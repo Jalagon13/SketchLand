@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3e6628b84a1d44278cce9fcc7e7ef62, type: 3}
   m_Name: TC_BerryBush
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.SpriteTileConfigSO
-  <RequiredHarvestType>k__BackingField: 2
+  <RequiredHarvestType>k__BackingField: 0
   <MaxHP>k__BackingField: 15
   <LightLevel>k__BackingField: 0
   <Indestructible>k__BackingField: 0
@@ -37,7 +37,7 @@ MonoBehaviour:
   LootDrops:
   - _item: {fileID: 11400000, guid: a76ba1086b24840afb1ba423bb9128b3, type: 2}
     _minAmount: 1
-    _maxAmount: 2
+    _maxAmount: 1
     _dropChance: 1
   <DrawTile>k__BackingField: {fileID: 11400000, guid: 782e00bcfd8ad40a68a908cd0902311b, type: 2}
   references:
