@@ -72,7 +72,8 @@ namespace SketchLand
             Vector2 direction = _armPivot.parent.TransformVector(localAim).normalized;
             float halfArc = Mathf.Clamp(tool.SwingArcAngle, 1, 360) * 0.5f;
             float reach = Mathf.Max(0.01f, tool.StrikeReach);
-            PlaySwing(tool, localAim, halfArc, reach, Mathf.Max(0.01f, tool.SwingsPerSecond), () =>
+            float swingRate = player.Food != null ? player.Food.ApplySwingSpeedBonus(tool.SwingsPerSecond) : tool.SwingsPerSecond;
+            PlaySwing(tool, localAim, halfArc, reach, Mathf.Max(0.01f, swingRate), () =>
             {
                 if (player.Character != _character || _character.Health.CurrentLifeState.Value == LifeState.Dead) return;
                 ResolveImpact(player, tool, new StrikeZone(_armPivot.position, direction, halfArc, reach));

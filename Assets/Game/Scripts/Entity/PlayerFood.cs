@@ -82,6 +82,18 @@ namespace SketchLand
 
         public int ApplyDamageBonus(int damage) => Mathf.RoundToInt(damage * (1f + BonusDamagePercentage * 0.01f));
 
+        public float BonusSwingSpeedPercentage
+        {
+            get
+            {
+                float total = 0f;
+                for (int i = 0; i < Capacity; i++) total += At(i)?.BonusSwingSpeedPercentage ?? 0f;
+                return total;
+            }
+        }
+
+        public float ApplySwingSpeedBonus(float swingsPerSecond) => swingsPerSecond * (1f + BonusSwingSpeedPercentage * 0.01f);
+
         private void Update()
         {
             if (!IsSinglePlayer) return;

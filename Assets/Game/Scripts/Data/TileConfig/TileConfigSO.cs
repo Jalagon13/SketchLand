@@ -39,7 +39,7 @@ namespace SketchLand
             int x = position.x;
             int y = position.y;
             if (!target.IsInBounds(x, y) || target.GetTileData(x, y).HasTile) return false;
-            if (isBackground && IsMultiTile) return false;
+            if (isBackground && (this is not TerrainTileConfigSO || IsMultiTile)) return false;
 
             bool solidNeighbor = HasNeighbor(target, x, y, solidOnly: true);
             bool backgroundNeighbor = HasNeighbor(background, x, y);

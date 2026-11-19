@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2241697417
+  GlobalObjectIdHash: 286423793
   InScenePlacedSourceGlobalObjectIdHash: 0
   m_InScenePlacedDisabledByDefault: 0
   DeferredDespawnTick: 0
@@ -449,16 +449,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5627571957472279314, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5627571957472279314, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5748974065935795421, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9808414
+      value: 0.983685
       objectReference: {fileID: 0}
     - target: {fileID: 5748974065935795421, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.19480784
+      value: 0.17989953
       objectReference: {fileID: 0}
     - target: {fileID: 6119604608456192249, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_Size.x
@@ -477,16 +481,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6119604608456192249, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6119604608456192249, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6193844006191117668, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9908733
+      value: 0.99436957
       objectReference: {fileID: 0}
     - target: {fileID: 6193844006191117668, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.13479687
+      value: -0.105967864
       objectReference: {fileID: 0}
     - target: {fileID: 6204369393428125544, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_Size.x
@@ -502,6 +510,10 @@ PrefabInstance:
       objectReference: {fileID: 1415531814, guid: 2b34a418d3788484eb06a0e82b114c04, type: 3}
     - target: {fileID: 6204369393428125544, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6204369393428125544, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+      propertyPath: m_SortingOrder
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6204369393428125544, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
@@ -523,6 +535,10 @@ PrefabInstance:
     - target: {fileID: 6419044314874291554, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6419044314874291554, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6419044314874291554, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_WasSpriteAssigned
@@ -549,6 +565,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6741663572377140145, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6741663572377140145, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 0
       objectReference: {fileID: 0}
@@ -569,6 +589,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6958157933393732277, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6958157933393732277, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
@@ -587,6 +611,10 @@ PrefabInstance:
     - target: {fileID: 7049208142892550515, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7049208142892550515, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7049208142892550515, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_WasSpriteAssigned
@@ -645,6 +673,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8151437857801900530, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8151437857801900530, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 0
       objectReference: {fileID: 0}
@@ -654,11 +686,11 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 188394df048594ecda65b06b1114b781, type: 2}
     - target: {fileID: 8777229000148243808, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.21690218
+      value: 0.20334779
       objectReference: {fileID: 0}
     - target: {fileID: 8777229000148243808, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.97619337
+      value: -0.9791066
       objectReference: {fileID: 0}
     - target: {fileID: 8849329897733449738, guid: bf361ee3e947e45709dae61dd5bac555, type: 3}
       propertyPath: m_Name

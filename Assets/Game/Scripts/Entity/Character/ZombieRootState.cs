@@ -21,8 +21,10 @@ namespace SketchLand
         [field: SerializeField] public float AirborneMoveSpeedMultiplier { get; private set; }
 
         [Header("AI Settings")]
-        [SerializeField, Tooltip("Seconds without forward progress before idling and wandering.")]
-        private float _stuckTime = 2f;
+        [SerializeField, Tooltip("Minimum seconds without forward progress before idling and wandering.")]
+        private float _minStuckTime = 1.5f;
+        [SerializeField, Tooltip("Maximum seconds without forward progress before idling and wandering.")]
+        private float _maxStuckTime = 3f;
         [SerializeField, Min(0.1f)] private float _minRetryTime = 5f;
         [SerializeField, Min(0.1f)] private float _maxRetryTime = 10f;
         [SerializeField, Min(0.1f)] private float _minIdleTime = 1f;
@@ -35,6 +37,7 @@ namespace SketchLand
         public bool IsPursuing { get; private set; }
 
         private float _stuckTimer;
+        private float _stuckTime;
         private float _progressX;
         private float _pursuitDirection;
         private float _retryTimer;
@@ -55,7 +58,8 @@ namespace SketchLand
                 TerminalVelocity = TerminalVelocity,
                 MinJumpSpeed = MinJumpSpeed,
                 AirborneMoveSpeedMultiplier = AirborneMoveSpeedMultiplier,
-                _stuckTime = _stuckTime,
+                _minStuckTime = _minStuckTime,
+                _maxStuckTime = _maxStuckTime,
                 _minRetryTime = _minRetryTime,
                 _maxRetryTime = _maxRetryTime,
                 _minIdleTime = _minIdleTime,
@@ -124,6 +128,7 @@ namespace SketchLand
         {
             IsPursuing = true;
             _stuckTimer = 0f;
+            _stuckTime = UnityEngine.Random.Range(_minStuckTime, Mathf.Max(_minStuckTime, _maxStuckTime));
             _progressX = _ctx.transform.position.x;
             _pursuitDirection = 0f;
         }

@@ -87,7 +87,7 @@ namespace SketchLand
                 return;
             }
 
-            WorldTextPopupManager.Instance.SpawnTextPopup(Player.Instance.Character.transform.position + new Vector3(0, 1.5f, 0), $"Targeting {ActiveLayer}");
+            WorldTextPopupManager.Instance.SpawnTextPopup(Player.Instance.Character.transform.position + new Vector3(0, 1.5f, 0), $"Targeting {ActiveLayer} terrain");
         }
 
         public void LoadGeneratedWorld(WorldGenContext context)

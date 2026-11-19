@@ -56,11 +56,12 @@ MonoBehaviour:
         <TerminalVelocity>k__BackingField: -40
         <MinJumpSpeed>k__BackingField: 11
         <AirborneMoveSpeedMultiplier>k__BackingField: 0.65
-        _stuckTime: 2
-        _minRetryTime: 8
+        _minStuckTime: 1.5
+        _maxStuckTime: 3
+        _minRetryTime: 10
         _maxRetryTime: 20
-        _minIdleTime: 3
-        _maxIdleTime: 5
-        _minWanderTime: 3
-        _maxWanderTime: 6
+        _minIdleTime: 1.5
+        _maxIdleTime: 2.5
+        _minWanderTime: 2
+        _maxWanderTime: 5
         _sightRange: 16

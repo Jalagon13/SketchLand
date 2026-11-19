@@ -80,12 +80,10 @@ namespace SketchLand
             if (distanceToPlayer > Player.Instance.InteractRange) return false;
 
             var world = WorldManager.Instance;
-            var activeLayer = world.ActiveLayer;
-            var targetGrid = world.ActiveGrid;
             var tileConfig = tileItem.PlaceTileDataSO;
-
-            // Only 1x1 non-multitile tiles can be placed on the background layer
-            if (activeLayer == WorldManager.LayerType.Background && tileConfig.IsMultiTile) return false;
+            // The layer toggle applies only to terrain; objects always occupy the foreground.
+            var activeLayer = tileConfig is TerrainTileConfigSO ? world.ActiveLayer : WorldManager.LayerType.Foreground;
+            var targetGrid = activeLayer == WorldManager.LayerType.Foreground ? world.FgGrid : world.BgGrid;
 
             // Check if the targeted layer already has a tile at this cell
             var targetTileData = targetGrid.GetTileData(mouseTilePos.x, mouseTilePos.y);
