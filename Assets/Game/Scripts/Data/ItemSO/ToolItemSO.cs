@@ -5,6 +5,8 @@ namespace SketchLand
     [CreateAssetMenu(fileName = "New ToolItemSO", menuName = "OceanGame/Item/ToolItemSO")]
     public class ToolItemSO : ItemSO
     {
+        public override bool CanStartWhilePrimaryHeld => true;
+
         public override string GetDescription()
         {
             string stats = $"Damage: {MeleeDamage}<br>Swing speed: {SwingsPerSecond:0.##} swings/sec<br>Mining damage: {(CanBreakTilesAndObjects ? MiningDamage : 0)}";

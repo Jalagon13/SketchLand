@@ -71,10 +71,13 @@ namespace SketchLand
                 StartSelectedItem(ActiveSlot);
                 return;
             }
-            if (!_cursorItemUseHeld && !ActiveSlot.IsEmpty && ActiveSlot.GetItemSO() is ToolItemSO tool)
-                tool.OnPrimaryActionHeld(player);
-            else
-                _activeItem?.OnPrimaryActionHeld(player);
+            if (_activeItem == null && !_cursorItemUseHeld && !ActiveSlot.IsEmpty &&
+                ActiveSlot.GetItemSO().CanStartWhilePrimaryHeld)
+            {
+                StartSelectedItem(ActiveSlot);
+                return;
+            }
+            _activeItem?.OnPrimaryActionHeld(player);
         }
 
         private bool CanAct()
@@ -103,6 +106,8 @@ namespace SketchLand
         private void OnSecondaryActionPressed(InputAction.CallbackContext context)
         {
             if (!context.started || !CanAct() || WorldManager.Instance.MouseOverUI) return;
+            var slot = GetActiveInvSlot();
+            if (!slot.IsEmpty && slot.GetItemSO().OnSecondaryActionStarted(Player.Instance)) return;
             if (InventoryCursorManager.Instance.CursorSlot.IsEmpty)
                 Player.Instance.TryInteractWithObject();
         }
@@ -195,7 +200,6 @@ namespace SketchLand
         {
             if (Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead) return;
 
-            CancelItemUse();
             IsInventoryOpen = !IsInventoryOpen;
 
             OnInventoryOpenChanged?.Invoke(IsInventoryOpen);
@@ -206,7 +210,6 @@ namespace SketchLand
         {
             if (Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead) return;
 
-            CancelItemUse();
             IsInventoryOpen = !IsInventoryOpen;
 
             OnInventoryOpenChanged?.Invoke(IsInventoryOpen);

@@ -6,6 +6,8 @@ namespace SketchLand
     [CreateAssetMenu(fileName = "New Bow", menuName = "OceanGame/Item/BowItemSO")]
     public class BowItemSO : ItemSO
     {
+        public override bool CanStartWhilePrimaryHeld => true;
+
         [field: Header("Bow Settings")]
         [field: SerializeField, Min(0.01f)] public float ChargeDuration { get; private set; } = 0.8f;
         [field: SerializeField, Range(0f, 1f)] public float MinimumCharge { get; private set; } = 0.15f;
@@ -27,5 +29,12 @@ namespace SketchLand
         public override void OnPrimaryActionHeld(Player player) => player.RangedHandler.HoldCharge(this);
         public override void OnPrimaryActionRelease(Player player) => player.RangedHandler.ReleaseCharge(this);
         public override void OnPrimaryActionCancelled(Player player) => player.RangedHandler.CancelCharge();
+
+        public override bool OnSecondaryActionStarted(Player player)
+        {
+            if (!player.RangedHandler.IsCharging) return false;
+            player.RangedHandler.CancelCharge();
+            return true;
+        }
     }
 }

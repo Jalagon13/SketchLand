@@ -29,9 +29,14 @@ namespace SketchLand
             return Description;
         }
 
+        // Continuous-use items can begin when selected during an existing held press.
+        public virtual bool CanStartWhilePrimaryHeld => false;
+
         public virtual void OnPrimaryActionStarted(Player player) { }
         public virtual void OnPrimaryActionHeld(Player player) { }
         public virtual void OnPrimaryActionRelease(Player player) { }
         public virtual void OnPrimaryActionCancelled(Player player) => OnPrimaryActionRelease(player);
+        // Return true when the item consumes the secondary action instead of world interaction.
+        public virtual bool OnSecondaryActionStarted(Player player) => false;
     }
 }
