@@ -25,4 +25,4 @@ MonoBehaviour:
   <MeleeDamage>k__BackingField: 3
   <KnockbackForce>k__BackingField: 1
   <HarvestType>k__BackingField: 1
-  <MiningDamage>k__BackingField: 25
+  <Tier>k__BackingField: 1

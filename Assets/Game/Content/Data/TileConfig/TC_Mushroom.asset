@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TC_Mushroom
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.SpriteTileConfigSO
   <RequiredHarvestType>k__BackingField: 0
-  <MaxHP>k__BackingField: 15
+  <BaseStrikesToBreak>k__BackingField: 1
   <LightLevel>k__BackingField: 0
   <Indestructible>k__BackingField: 0
   <IsSolid>k__BackingField: 0

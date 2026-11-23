@@ -49,12 +49,12 @@ namespace SketchLand
                 Vector2Int position = entry.Key;
                 TileData tile = grid.GetTileData(position.x, position.y);
                 TileConfigSO config = tile.HasTile ? tile.TileConfig : null;
-                if (config == null || config.MaxHP <= 0 || entry.Value.Damage <= 0
+                if (config == null || entry.Value.BreakProgress <= 0d
                     || _crackTiles == null || _crackTiles.Length == 0
                     || !new RectInt(position, config.Size).Overlaps(bounds))
                     continue;
 
-                float ratio = Mathf.Clamp01((float)entry.Value.Damage / config.MaxHP);
+                float ratio = Mathf.Clamp01((float)entry.Value.BreakProgress);
                 int stage = Mathf.Clamp(Mathf.FloorToInt(ratio * _crackTiles.Length), 0, _crackTiles.Length - 1);
                 Sprite crack = GetCrackSprite(_crackTiles[stage]);
                 if (crack == null)

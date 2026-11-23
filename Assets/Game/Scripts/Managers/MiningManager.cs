@@ -58,7 +58,7 @@ namespace SketchLand
 
             var config = tile.TileConfig;
             if (!tool.CanHarvest(config)) return false;
-            world.DamageTile(target.Cell, tool.MiningDamage, target.Layer, refreshCurrentBounds: true);
+            world.ApplyBreakProgress(target.Cell, tool.GetBreakProgressPerStrike(config), target.Layer, refreshCurrentBounds: true);
             return true;
         }
 

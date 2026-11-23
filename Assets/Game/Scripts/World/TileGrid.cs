@@ -37,37 +37,36 @@ namespace SketchLand
             return _tiles[y * _width + x];
         }
 
-        public void DamageTile(int x, int y, int damageAmount, bool refreshCurrentBounds = true)
+        public void ApplyBreakProgress(int x, int y, double progress, bool refreshCurrentBounds = true)
         {
-            if (!IsInBounds(x, y)) return;
+            if (!IsInBounds(x, y) || progress <= 0d || double.IsNaN(progress) || double.IsInfinity(progress)) return;
 
             TileData targetTile = GetTileData(x, y);
             if (targetTile.IsAir) return;
 
             TileConfigSO tc = targetTile.TileConfig;
-            if (tc == null || tc.Indestructible || tc.MaxHP <= 0) return;
+            if (tc == null || tc.Indestructible) return;
 
-            // For rigid multi-tiles that share HP across the whole structure,
-            // route damage to the root cell. (Trees won't use IsMultiTile so they route damage to (x, y)!)
+            // Every cell of a multi-tile object shares the root's break progress.
             int damageX = tc.IsMultiTile ? x - targetTile.OffsetX : x;
             int damageY = tc.IsMultiTile ? y - targetTile.OffsetY : y;
             Vector2Int damagePos = new(damageX, damageY);
 
             DamagedTiles.TryGetValue(damagePos, out TileDamageState damageState);
-            int currentDamage = damageState.Damage;
-            currentDamage += damageAmount;
+            double currentProgress = damageState.BreakProgress + progress;
 
-            if (currentDamage >= tc.MaxHP)
+            // Repeated fractions such as 1/7 must complete on the seventh strike.
+            if (currentProgress >= 1d - 1e-9d)
             {
                 // Clear damage record for this tile/root
-                DamagedTiles.Remove(damagePos);
+                ClearDamage(damageX, damageY);
 
                 // Destroy the tile via DestroyTile (which delegates to TileConfigSO)
                 DestroyTile(x, y, refreshCurrentBounds);
             }
             else
             {
-                DamagedTiles[damagePos] = new TileDamageState(currentDamage, Time.time);
+                DamagedTiles[damagePos] = new TileDamageState(currentProgress, Time.time);
                 OnDamageChanged?.Invoke();
 
                 AudioManager.Instance.PlayOneShot(tc.TileHitSFX, new(damagePos.x, damagePos.y));
@@ -333,12 +332,12 @@ namespace SketchLand
 
     public readonly struct TileDamageState
     {
-        public int Damage { get; }
+        public double BreakProgress { get; }
         public float LastDamagedTime { get; }
 
-        public TileDamageState(int damage, float lastDamagedTime)
+        public TileDamageState(double breakProgress, float lastDamagedTime)
         {
-            Damage = damage;
+            BreakProgress = breakProgress;
             LastDamagedTime = lastDamagedTime;
         }
     }
