@@ -40,12 +40,10 @@ namespace SketchLand
             if (HealthRegen > 0) lines.Add($"+{HealthRegen:0.##} HP/sec");
             if (BonusMiningSpeedPercentage > 0)
             {
-                lines.Add("<b>Tools</b>");
                 lines.Add($"+{BonusMiningSpeedPercentage:0.##}% mining speed");
             }
             if (BonusMeleeDamagePercentage > 0 || BonusMeleeSpeedPercentage > 0 || BonusMeleeRangePercentage > 0)
             {
-                lines.Add("<b>Melee Weapons</b>");
                 if (BonusMeleeDamagePercentage > 0) lines.Add($"+{BonusMeleeDamagePercentage:0.##}% melee damage");
                 if (BonusMeleeSpeedPercentage > 0) lines.Add($"+{BonusMeleeSpeedPercentage:0.##}% melee speed");
                 if (BonusMeleeRangePercentage > 0) lines.Add($"+{BonusMeleeRangePercentage:0.##}% melee range");

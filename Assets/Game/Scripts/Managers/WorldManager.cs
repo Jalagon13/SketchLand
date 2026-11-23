@@ -184,10 +184,10 @@ namespace SketchLand
             return true;
         }
 
-        public void ApplyBreakProgress(Vector2Int position, double progress, LayerType layerType, bool refreshCurrentBounds = false)
+        public void DamageTile(Vector2Int position, int damageAmount, LayerType layerType, bool refreshCurrentBounds = false)
         {
             TileGrid layer = layerType == LayerType.Foreground ? FgGrid : BgGrid;
-            layer.ApplyBreakProgress(position.x, position.y, progress, refreshCurrentBounds);
+            layer.DamageTile(position.x, position.y, damageAmount, refreshCurrentBounds);
         }
     }
     

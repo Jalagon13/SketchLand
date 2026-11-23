@@ -162,13 +162,6 @@ namespace SketchLand
                     && zone.Intersects(enemy.transform.position, enemy.ColliderSize))
                     enemy.DamageReceiver.ReceiveHit(hit);
             }
-            // Choose the hovered tile at impact, after the windup, and check its current range.
-            if (item is ToolItemSO tool)
-            {
-                Vector2 miningPoint = Camera.main.ScreenToWorldPoint(UnityEngine.InputSystem.Mouse.current.position.ReadValue());
-                var target = MiningManager.Instance.CaptureTarget(player, tool, miningPoint);
-                if (target.HasValue) MiningManager.Instance.TryPerformMine(player, tool, target.Value);
-            }
             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PlayerAirThrustSFX, transform.position);
         }
 
