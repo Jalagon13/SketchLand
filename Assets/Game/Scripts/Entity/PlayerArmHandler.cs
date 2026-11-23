@@ -58,9 +58,9 @@ namespace SketchLand
 
         // Input supplies the actor and committed world point. Only this local action
         // schedules gameplay damage; the presentation only needs its impact callback.
-        public bool TrySwing(Player player, ToolItemSO tool, Vector2 aimPoint)
+        public bool TrySwing(Player player, SwingItemSO item, Vector2 aimPoint)
         {
-            if (!isActiveAndEnabled || IsSwinging || tool == null || player == null || player.Character != _character)
+            if (!isActiveAndEnabled || IsSwinging || item == null || player == null || player.Character != _character)
                 return false;
             if (_character.Health.CurrentLifeState.Value == LifeState.Dead)
                 return false;
@@ -70,19 +70,19 @@ namespace SketchLand
             Vector2 localAim = _armPivot.parent.InverseTransformVector(aimPoint - (Vector2)_armPivot.position);
             localAim = localAim.sqrMagnitude < 0.0001f ? Vector2.right : localAim.normalized;
             Vector2 direction = _armPivot.parent.TransformVector(localAim).normalized;
-            float halfArc = Mathf.Clamp(tool.SwingArcAngle, 1, 360) * 0.5f;
-            float reach = Mathf.Max(0.01f, tool.StrikeReach);
-            float swingRate = player.Food != null ? player.Food.ApplySwingSpeedBonus(tool.SwingsPerSecond) : tool.SwingsPerSecond;
-            PlaySwing(tool, localAim, halfArc, reach, Mathf.Max(0.01f, swingRate), () =>
+            float halfArc = Mathf.Clamp(item.SwingArcAngle, 1, 360) * 0.5f;
+            float reach = Mathf.Max(0.01f, item.GetStrikeReach(player.Food));
+            float swingRate = item.GetSwingRate(player.Food);
+            PlaySwing(item, localAim, halfArc, reach, Mathf.Max(0.01f, swingRate), () =>
             {
                 if (player.Character != _character || _character.Health.CurrentLifeState.Value == LifeState.Dead) return;
-                ResolveImpact(player, tool, new StrikeZone(_armPivot.position, direction, halfArc, reach));
+                ResolveImpact(player, item, new StrikeZone(_armPivot.position, direction, halfArc, reach));
             });
             UpdateLocomotionPlayback();
             return true;
         }
 
-        private void PlaySwing(ToolItemSO tool, Vector2 localAim, float halfArc, float reach, float rate, TweenCallback onImpact)
+        private void PlaySwing(SwingItemSO item, Vector2 localAim, float halfArc, float reach, float rate, TweenCallback onImpact)
         {
             _pose.Begin(localAim);
             float centerAngle = Mathf.Atan2(localAim.y, localAim.x) * Mathf.Rad2Deg;
@@ -96,7 +96,7 @@ namespace SketchLand
             _armPivot.localRotation = Quaternion.Euler(0f, 0f, centerAngle);
             _armPivot.gameObject.SetActive(true);
 
-            _heldItemDisplay.BeginSwing(tool);
+            _heldItemDisplay.BeginSwing(item);
 
             _handGripIK.BeginGrip(rate);
             const float windUp = SwingPose.WindUp;
@@ -148,14 +148,14 @@ namespace SketchLand
             _armPivot.gameObject.SetActive(false);
         }
 
-        private void ResolveImpact(Player player, ToolItemSO tool, StrikeZone zone)
+        private void ResolveImpact(Player player, SwingItemSO item, StrikeZone zone)
         {
 #if UNITY_EDITOR
             _lastStrike = zone;
             _hideStrikeTime = Time.time + 0.18f;
 #endif
             var entities = EntityManager.Instance.Entities;
-            var hit = new SyncHitData(player.Food.ApplyDamageBonus(tool.MeleeDamage), tool.KnockbackForce, _character.transform.position);
+            var hit = new SyncHitData(item.GetMeleeDamage(player.Food), item.KnockbackForce, _character.transform.position);
             for (int i = entities.Count - 1; i >= 0; i--)
             {
                 if (entities[i] is ServerCharacter enemy && enemy != _character && enemy.DamageReceiver != null
@@ -163,9 +163,12 @@ namespace SketchLand
                     enemy.DamageReceiver.ReceiveHit(hit);
             }
             // Choose the hovered tile at impact, after the windup, and check its current range.
-            Vector2 miningPoint = Camera.main.ScreenToWorldPoint(UnityEngine.InputSystem.Mouse.current.position.ReadValue());
-            var target = MiningManager.Instance.CaptureTarget(player, tool, miningPoint);
-            if (target.HasValue) MiningManager.Instance.TryPerformMine(player, tool, target.Value);
+            if (item is ToolItemSO tool)
+            {
+                Vector2 miningPoint = Camera.main.ScreenToWorldPoint(UnityEngine.InputSystem.Mouse.current.position.ReadValue());
+                var target = MiningManager.Instance.CaptureTarget(player, tool, miningPoint);
+                if (target.HasValue) MiningManager.Instance.TryPerformMine(player, tool, target.Value);
+            }
             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PlayerAirThrustSFX, transform.position);
         }
 

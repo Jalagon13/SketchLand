@@ -81,6 +81,7 @@ namespace SketchLand
 
         public int AddItem(ushort itemId, int amount) // Returns remainder 
         {
+            if (GameDataRegistry.Instance.GetItemSOFromItemId(itemId) == null) return amount;
             if(Player.Instance.Character.Health.CurrentLifeState.Value == LifeState.Dead) return amount;
         
             // Search for existing matching stacks
@@ -188,6 +189,8 @@ namespace SketchLand
 
         public bool CanAcceptItem(int itemId, int amount)
         {
+            if (itemId <= 0 || itemId > ushort.MaxValue
+                || GameDataRegistry.Instance.GetItemSOFromItemId((ushort)itemId) == null) return false;
             int remainingAmount = amount;
 
             for (int i = 0; i < PlayerInventory.Length; i++)

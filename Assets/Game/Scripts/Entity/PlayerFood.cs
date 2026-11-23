@@ -73,29 +73,26 @@ namespace SketchLand
             }
         }
 
-        public float BonusDamagePercentage
+        public float BonusMiningSpeedPercentage => SumBonus(food => food.BonusMiningSpeedPercentage);
+        public float BonusMeleeDamagePercentage => SumBonus(food => food.BonusMeleeDamagePercentage);
+        public float BonusMeleeSpeedPercentage => SumBonus(food => food.BonusMeleeSpeedPercentage);
+        public float BonusMeleeRangePercentage => SumBonus(food => food.BonusMeleeRangePercentage);
+
+        private float SumBonus(System.Func<ConsumableItemSO, float> select)
         {
-            get
+            float total = 0f;
+            for (int i = 0; i < Capacity; i++)
             {
-                float total = 0f;
-                for (int i = 0; i < Capacity; i++) total += At(i)?.BonusDamagePercentage ?? 0f;
-                return total;
+                var food = At(i);
+                if (food != null) total += select(food);
             }
+            return total;
         }
 
-        public int ApplyDamageBonus(int damage) => Mathf.RoundToInt(damage * (1f + BonusDamagePercentage * 0.01f));
-
-        public float BonusSwingSpeedPercentage
-        {
-            get
-            {
-                float total = 0f;
-                for (int i = 0; i < Capacity; i++) total += At(i)?.BonusSwingSpeedPercentage ?? 0f;
-                return total;
-            }
-        }
-
-        public float ApplySwingSpeedBonus(float swingsPerSecond) => swingsPerSecond * (1f + BonusSwingSpeedPercentage * 0.01f);
+        public float ApplyMiningSpeedBonus(float rate) => rate * (1f + BonusMiningSpeedPercentage * 0.01f);
+        public int ApplyMeleeDamageBonus(int damage) => Mathf.RoundToInt(damage * (1f + BonusMeleeDamagePercentage * 0.01f));
+        public float ApplyMeleeSpeedBonus(float rate) => rate * (1f + BonusMeleeSpeedPercentage * 0.01f);
+        public float ApplyMeleeRangeBonus(float range) => range * (1f + BonusMeleeRangePercentage * 0.01f);
 
         private void Update()
         {

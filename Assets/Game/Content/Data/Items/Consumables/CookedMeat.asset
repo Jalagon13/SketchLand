@@ -20,10 +20,12 @@ MonoBehaviour:
   <HeldRotation>k__BackingField: 0
   <HeldScale>k__BackingField: {x: 1, y: 1, z: 1}
   <Duration>k__BackingField: 1800
-  <Health>k__BackingField: 25
+  <Health>k__BackingField: 40
   <HealthRegen>k__BackingField: 1
-  <BonusDamagePercentage>k__BackingField: 0
-  <BonusSwingSpeedPercentage>k__BackingField: 0
+  <BonusMiningSpeedPercentage>k__BackingField: 0
+  <BonusMeleeDamagePercentage>k__BackingField: 0
+  <BonusMeleeSpeedPercentage>k__BackingField: 0
+  <BonusMeleeRangePercentage>k__BackingField: 0
   <ConsumeSFX>k__BackingField:
     Guid:
       Data1: -602489371

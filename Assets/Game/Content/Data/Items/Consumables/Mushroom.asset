@@ -22,8 +22,10 @@ MonoBehaviour:
   <Duration>k__BackingField: 600
   <Health>k__BackingField: 0
   <HealthRegen>k__BackingField: 0
-  <BonusDamagePercentage>k__BackingField: 15
-  <BonusSwingSpeedPercentage>k__BackingField: 0
+  <BonusMiningSpeedPercentage>k__BackingField: 0
+  <BonusMeleeDamagePercentage>k__BackingField: 10
+  <BonusMeleeSpeedPercentage>k__BackingField: 10
+  <BonusMeleeRangePercentage>k__BackingField: 10
   <ConsumeSFX>k__BackingField:
     Guid:
       Data1: -602489371

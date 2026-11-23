@@ -49,14 +49,16 @@ namespace SketchLand
         private void OnCraftButtonClicked()
         {
             var inventory = InventoryManager.Instance;
+            var output = _recipe.OutputItem;
+            if (output == null) return;
+            var outputId = GameDataRegistry.Instance.GetItemIdFromItemSO(output);
+            if (outputId == 0) return;
         
             if(inventory.CanCraftRecipe(_recipe))
             {
                 // NTFS: Later on I need to make it so canacceptitem is true even if i do not have the space but if i craft the item and i consume the ingredients THEN I will have space
-                if (!inventory.IsInventoryFull() && inventory.CanAcceptItem(_recipe.OutputItem.GetId(), _recipe.OutputAmonut)) 
+                if (!inventory.IsInventoryFull() && inventory.CanAcceptItem(outputId, _recipe.OutputAmonut))
                 {
-                    var outputId = GameDataRegistry.Instance.GetItemIdFromItemSO(_recipe.OutputItem);
-
                     foreach (var ingredient in _recipe.Recipe)
                     {
                         inventory.RemoveItem(ingredient.Item.GetId(), ingredient.Amount);

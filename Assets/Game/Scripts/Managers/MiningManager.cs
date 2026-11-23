@@ -72,7 +72,7 @@ namespace SketchLand
 
         private bool CanMine(Player player, ToolItemSO tool, Vector2 point)
         {
-            return isActiveAndEnabled && tool != null && tool.CanBreakTilesAndObjects
+            return isActiveAndEnabled && tool != null
                 && WorldManager.Instance != null && WorldManager.Instance.IsWorldReady
                 && player != null && player.Character != null && player.Character.Health.CurrentLifeState.Value != LifeState.Dead
                 && Vector2.Distance(player.Character.transform.position, point) <= player.InteractRange;
