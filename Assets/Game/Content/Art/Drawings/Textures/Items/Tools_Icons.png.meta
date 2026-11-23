@@ -154,7 +154,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tools_4
+      name: Pickaxe_Iron
       rect:
         serializedVersion: 2
         x: 0
@@ -176,7 +176,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tools_5
+      name: Axe_Iron
       rect:
         serializedVersion: 2
         x: 256
@@ -477,7 +477,9 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":256.0,"y":256.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":true,"isAlternate":false}'
     nameFileIdTable:
+      Axe_Iron: -1876535385
       Axe_Wood: -631927366
+      Pickaxe_Iron: -1222669417
       Pickaxe_Wood: -2002231663
       Shovel_Wood: 387179986
       Tools_10: -1795917388
@@ -486,8 +488,6 @@ TextureImporter:
       Tools_13: -1627728109
       Tools_14: 43494115
       Tools_15: 1831209003
-      Tools_4: -1222669417
-      Tools_5: -1876535385
       Tools_6: 28830913
       Tools_7: -10662500
       Tools_8: -1895852302

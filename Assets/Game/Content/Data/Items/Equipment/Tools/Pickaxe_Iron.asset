@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.ToolItemSO
   <ItemName>k__BackingField: Iron Pickaxe
   <Description>k__BackingField: 
-  <DisplayIcon>k__BackingField: {fileID: 989592332, guid: 299c04dea1eaa4e78b9c26825532306e, type: 3}
+  <DisplayIcon>k__BackingField: {fileID: -1222669417, guid: 95b48bea6960f4495a1bed98908a2b81, type: 3}
   <IsStackable>k__BackingField: 0
   <HeldPosition>k__BackingField: {x: 0.264, y: -0.246, z: 0}
   <HeldRotation>k__BackingField: 178.89743

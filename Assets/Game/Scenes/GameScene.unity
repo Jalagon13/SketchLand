@@ -6466,10 +6466,6 @@ MonoBehaviour:
     _amount: 1
   - _ingredient: {fileID: 11400000, guid: 2e6df84076b2b454a9e50fd441cb468c, type: 2}
     _amount: 1
-  - _ingredient: {fileID: 11400000, guid: 05b2c14821210499698984de78e9b18a, type: 2}
-    _amount: 1
-  - _ingredient: {fileID: 11400000, guid: 8e15c7c6ace6646ff8392f4fb979c620, type: 2}
-    _amount: 1
 --- !u!114 &1178486984
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.ToolItemSO
   <ItemName>k__BackingField: Iron Axe
   <Description>k__BackingField: 
-  <DisplayIcon>k__BackingField: {fileID: 1474123889, guid: 2b34a418d3788484eb06a0e82b114c04, type: 3}
+  <DisplayIcon>k__BackingField: {fileID: -1876535385, guid: 95b48bea6960f4495a1bed98908a2b81, type: 3}
   <IsStackable>k__BackingField: 0
   <HeldPosition>k__BackingField: {x: 0.264, y: -0.246, z: 0}
   <HeldRotation>k__BackingField: 178.89743
