@@ -49,4 +49,4 @@ MonoBehaviour:
       type: {class: PlayerRootState, ns: SketchLand, asm: Assembly-CSharp}
       data:
         <FallDamageThreshold>k__BackingField: 5
-        <DamagePerExtraTile>k__BackingField: 5
+        <DamagePerExtraTile>k__BackingField: 2

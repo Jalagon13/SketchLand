@@ -3077,7 +3077,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf1342b7b2ff44a12b7e9a3f6adf1d24, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.PlayerStatsDisplayUI
   _healthBar: {fileID: 1413529815}
 --- !u!1 &753548042
@@ -5069,7 +5069,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2695e813ecb9946d381bb18cb7dcc259, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.WorldGenerationUI
   _worldGenText: {fileID: 1174531621}
   _loadingBarFg: {fileID: 1172065392}
@@ -6417,7 +6417,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed4c6497bf31e47fca22b61785b6a84f, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.HealthBarUI
   _barFg: {fileID: 815895321}
   _barText: {fileID: 1564199810}
