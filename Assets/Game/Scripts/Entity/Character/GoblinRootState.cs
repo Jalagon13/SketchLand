@@ -5,10 +5,11 @@ namespace SketchLand
 {
     #region Root State
 
+    [UnityEngine.Scripting.APIUpdating.MovedFrom(true, "SketchLand", null, "ZombieRootState")]
     [Serializable]
-    public class ZombieRootState : CharacterRootState
+    public class GoblinRootState : CharacterRootState
     {
-        private static readonly int DamagedAnimation = Animator.StringToHash("Base Layer.Zombie_Damaged");
+        private static readonly int DamagedAnimation = Animator.StringToHash("Base Layer.Goblin_Damaged");
         private static readonly int IsAirborne = Animator.StringToHash("IsAirborne");
         private static readonly int IsMoving = Animator.StringToHash("IsMoving");
 
@@ -45,14 +46,14 @@ namespace SketchLand
         private float _wanderDirection;
         private bool _playerWasVisible;
 
-        public ZombieGroundedState Grounded { get; private set; }
-        public ZombieAirborneState Airborne { get; private set; }
+        public GoblinGroundedState Grounded { get; private set; }
+        public GoblinAirborneState Airborne { get; private set; }
 
-        public ZombieRootState() : base() { }
+        public GoblinRootState() : base() { }
 
         public override CharacterRootState CreateInstance()
         {
-            return new ZombieRootState
+            return new GoblinRootState
             {
                 GravityForce = GravityForce,
                 TerminalVelocity = TerminalVelocity,
@@ -75,8 +76,8 @@ namespace SketchLand
             base.Initialize(ctx);
 
             // Construct child states once the context is available
-            Grounded = new ZombieGroundedState(null, this, ctx);
-            Airborne = new ZombieAirborneState(null, this, ctx);
+            Grounded = new GoblinGroundedState(null, this, ctx);
+            Airborne = new GoblinAirborneState(null, this, ctx);
         }
 
         protected override State GetInitialState() => Grounded;
@@ -203,7 +204,7 @@ namespace SketchLand
             Vector2 position = _ctx.transform.position;
             if ((playerPosition - position).sqrMagnitude > _sightRange * _sightRange) return false;
 
-            // Check the foreground tiles along the line between the zombie and player.
+            // Check the foreground tiles along the line between the goblin and player.
             Vector2Int tile = Vector2Int.FloorToInt(position);
             Vector2Int end = Vector2Int.FloorToInt(playerPosition);
             int dx = Mathf.Abs(end.x - tile.x), dy = Mathf.Abs(end.y - tile.y);
@@ -225,26 +226,26 @@ namespace SketchLand
 
     #region Grounded State
 
-    public class ZombieGroundedState : State
+    public class GoblinGroundedState : State
     {
-        public readonly ZombieIdleState Idle;
-        public readonly ZombieMoveState Move;
+        public readonly GoblinIdleState Idle;
+        public readonly GoblinMoveState Move;
 
         private readonly ServerCharacter _ctx;
 
-        public ZombieGroundedState(StateMachine m, State parent, ServerCharacter ctx) : base(m, parent)
+        public GoblinGroundedState(StateMachine m, State parent, ServerCharacter ctx) : base(m, parent)
         {
             _ctx = ctx;
 
-            Idle = new ZombieIdleState(m, this, ctx);
-            Move = new ZombieMoveState(m, this, ctx);
+            Idle = new GoblinIdleState(m, this, ctx);
+            Move = new GoblinMoveState(m, this, ctx);
         }
 
         protected override State GetInitialState() => Idle;
 
         protected override State GetTransition()
         {
-            var root = (ZombieRootState)Parent;
+            var root = (GoblinRootState)Parent;
 
             if (!_ctx.CollisionResult.TouchingBottom || _ctx.Velocity.y > 0f)
             {
@@ -264,12 +265,12 @@ namespace SketchLand
         {
             if (_ctx.IsKnockedBack)
             {
-                var root = (ZombieRootState)Parent;
+                var root = (GoblinRootState)Parent;
                 _ctx.ApplyGravity(root.GravityForce, root.TerminalVelocity, fixedDeltaTime);
                 return;
             }
 
-            _ctx.Velocity.y = -0.1f; // Keep the zombie pressed to the floor
+            _ctx.Velocity.y = -0.1f; // Keep the goblin pressed to the floor
         }
     }
 
@@ -277,30 +278,30 @@ namespace SketchLand
 
     #region Airborne State
 
-    public class ZombieAirborneState : State
+    public class GoblinAirborneState : State
     {
         private readonly ServerCharacter _ctx;
 
-        public ZombieAirborneState(StateMachine m, State parent, ServerCharacter ctx) : base(m, parent)
+        public GoblinAirborneState(StateMachine m, State parent, ServerCharacter ctx) : base(m, parent)
         {
             _ctx = ctx;
         }
 
         protected override void OnEnter()
         {
-            ((ZombieRootState)Parent).SetAirborneAnimation(true);
+            ((GoblinRootState)Parent).SetAirborneAnimation(true);
         }
 
         protected override void OnExit()
         {
-            ((ZombieRootState)Parent).SetAirborneAnimation(false);
+            ((GoblinRootState)Parent).SetAirborneAnimation(false);
         }
 
         protected override State GetTransition()
         {
             if (_ctx.CollisionResult.TouchingBottom && _ctx.Velocity.y <= 0f)
             {
-                return ((ZombieRootState)Parent).Grounded;
+                return ((GoblinRootState)Parent).Grounded;
             }
 
             return null;
@@ -308,7 +309,7 @@ namespace SketchLand
 
         protected override void OnFixedUpdate(float fixedDeltaTime)
         {
-            var root = (ZombieRootState)Parent;
+            var root = (GoblinRootState)Parent;
 
             if (_ctx.CollisionResult.TouchingTop && _ctx.Velocity.y > 0f)
             {
@@ -324,11 +325,11 @@ namespace SketchLand
 
     #region Idle State
 
-    public class ZombieIdleState : State
+    public class GoblinIdleState : State
     {
         private readonly ServerCharacter _ctx;
 
-        public ZombieIdleState(StateMachine m, State parent, ServerCharacter ctx) : base(m, parent)
+        public GoblinIdleState(StateMachine m, State parent, ServerCharacter ctx) : base(m, parent)
         {
             _ctx = ctx;
         }
@@ -337,7 +338,7 @@ namespace SketchLand
         {
             if (_ctx.DesiredDirection.x != 0f)
             {
-                return ((ZombieGroundedState)Parent).Move;
+                return ((GoblinGroundedState)Parent).Move;
             }
 
             return null;
@@ -345,7 +346,7 @@ namespace SketchLand
 
         protected override void OnFixedUpdate(float fixedDeltaTime)
         {
-            ((ZombieRootState)Parent.Parent).UpdateHorizontalMovement(fixedDeltaTime);
+            ((GoblinRootState)Parent.Parent).UpdateHorizontalMovement(fixedDeltaTime);
         }
     }
 
@@ -353,11 +354,11 @@ namespace SketchLand
 
     #region Move State
 
-    public class ZombieMoveState : State
+    public class GoblinMoveState : State
     {
         private readonly ServerCharacter _ctx;
 
-        public ZombieMoveState(StateMachine m, State parent, ServerCharacter ctx) : base(m, parent)
+        public GoblinMoveState(StateMachine m, State parent, ServerCharacter ctx) : base(m, parent)
         {
             _ctx = ctx;
         }
@@ -366,7 +367,7 @@ namespace SketchLand
         {
             if (_ctx.DesiredDirection.x == 0f)
             {
-                return ((ZombieGroundedState)Parent).Idle;
+                return ((GoblinGroundedState)Parent).Idle;
             }
 
             return null;
@@ -374,7 +375,7 @@ namespace SketchLand
 
         protected override void OnFixedUpdate(float fixedDeltaTime)
         {
-            ((ZombieRootState)Parent.Parent).UpdateHorizontalMovement(fixedDeltaTime);
+            ((GoblinRootState)Parent.Parent).UpdateHorizontalMovement(fixedDeltaTime);
         }
     }
 

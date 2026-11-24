@@ -2832,11 +2832,13 @@ MonoBehaviour:
     _surfacePhases: 2
     _undergroundPhases: 0
     _requireOpenBackground: 1
+    _requireSkyAccess: 0
   - _character: {fileID: 11400000, guid: e8ced5de931fd400da6f4da2853b1d16, type: 2}
     _weight: 1
-    _surfacePhases: 8
-    _undergroundPhases: 15
-    _requireOpenBackground: 0
+    _surfacePhases: 15
+    _undergroundPhases: 0
+    _requireOpenBackground: 1
+    _requireSkyAccess: 1
 --- !u!114 &653184667
 MonoBehaviour:
   m_ObjectHideFlags: 0

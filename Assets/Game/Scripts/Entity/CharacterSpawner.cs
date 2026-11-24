@@ -98,6 +98,9 @@ namespace SketchLand
                 if (!CurrentCircumstance.SpawnPool.TrySelectCharacter(zone, world.Clock.CurrentPhase, openBackground, out spawnEntry))
                     continue;
 
+                if (spawnEntry.RequireSkyAccess && !HasOpenSky(world.FgGrid, foundGroundSpot))
+                    continue;
+
                 if(!TestSpotForSpace(spawnEntry, foundGroundSpot, out Vector2 spawnPosition))
                     continue;
 
@@ -107,6 +110,15 @@ namespace SketchLand
             
             // If all attempts dont make it return false
             return false;
+        }
+
+        private static bool HasOpenSky(TileGrid grid, Vector2Int spot)
+        {
+            for (int y = spot.y + 1; y < grid.Height; y++)
+                if (grid.GetTileData(spot.x, y).IsSolid)
+                    return false;
+
+            return true;
         }
 
         private bool TestSpotForSpace(CharacterSpawnEntry spawnEntry, Vector2Int foundGroundSpot, out Vector2 spawnPosition)

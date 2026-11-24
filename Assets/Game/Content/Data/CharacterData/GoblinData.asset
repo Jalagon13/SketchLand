@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1789cce2ee3144d3f896586a04761dd0, type: 3}
-  m_Name: ZombieData
+  m_Name: GoblinData
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.CharacterSO
   RootState:
     rid: 2417915168950845619
-  <BodyColliderSize>k__BackingField: {x: 0.75, y: 1.75}
+  <BodyColliderSize>k__BackingField: {x: 0.4875, y: 1.1375}
   <BaseMaxHealth>k__BackingField: 40
   <BaseDefense>k__BackingField: 3
   <BaseDamage>k__BackingField: 5
@@ -50,11 +50,11 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: 2417915168950845619
-      type: {class: ZombieRootState, ns: SketchLand, asm: Assembly-CSharp}
+      type: {class: GoblinRootState, ns: SketchLand, asm: Assembly-CSharp}
       data:
         <GravityForce>k__BackingField: 25
         <TerminalVelocity>k__BackingField: -40
-        <MinJumpSpeed>k__BackingField: 11
+        <MinJumpSpeed>k__BackingField: 10.25
         <AirborneMoveSpeedMultiplier>k__BackingField: 0.65
         _minStuckTime: 1.5
         _maxStuckTime: 3

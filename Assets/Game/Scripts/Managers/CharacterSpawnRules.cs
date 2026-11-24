@@ -37,6 +37,10 @@ namespace SketchLand
         [SerializeField] private SpawnPhases _undergroundPhases = SpawnPhases.All;
         [Tooltip("Require an empty background tile at the spawn location just above the ground.")]
         [SerializeField] private bool _requireOpenBackground;
+        [Tooltip("Only spawn on the outdoor ground, with no solid foreground roof above the spawn column.")]
+        [SerializeField] private bool _requireSkyAccess;
+
+        public bool RequireSkyAccess => _requireSkyAccess;
 
         public bool CanSpawn(WorldZone zone, DayPhase phase, bool openBackground)
         {
