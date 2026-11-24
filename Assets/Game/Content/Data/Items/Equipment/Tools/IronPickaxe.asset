@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37c0917ac6d8e47198b62c5feb904923, type: 3}
-  m_Name: Pickaxe_Wood
+  m_Name: IronPickaxe
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.ToolItemSO
-  <ItemName>k__BackingField: Wood Pickaxe
+  <ItemName>k__BackingField: Iron Pickaxe
   <Description>k__BackingField: 
-  <DisplayIcon>k__BackingField: {fileID: -2002231663, guid: 95b48bea6960f4495a1bed98908a2b81, type: 3}
+  <DisplayIcon>k__BackingField: {fileID: -1222669417, guid: 95b48bea6960f4495a1bed98908a2b81, type: 3}
   <IsStackable>k__BackingField: 0
   <HeldPosition>k__BackingField: {x: 0.264, y: -0.246, z: 0}
   <HeldRotation>k__BackingField: 178.89743
   <HeldScale>k__BackingField: {x: 0.8, y: 0.8, z: 0.8}
-  <SwingsPerSecond>k__BackingField: 1.25
-  <SwingArcAngle>k__BackingField: 120
+  <SwingsPerSecond>k__BackingField: 1.375
+  <SwingArcAngle>k__BackingField: 100
   <StrikeReach>k__BackingField: 1.45
   <MeleeDamage>k__BackingField: 3
   <KnockbackForce>k__BackingField: 1
   <HarvestType>k__BackingField: 1
-  <MiningDamage>k__BackingField: 15
-  <MiningTicksPerSecond>k__BackingField: 2.5
+  <MiningDamage>k__BackingField: 20
+  <MiningTicksPerSecond>k__BackingField: 2.75

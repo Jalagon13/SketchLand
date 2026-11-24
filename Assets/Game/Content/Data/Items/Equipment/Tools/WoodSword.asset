@@ -9,21 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37c0917ac6d8e47198b62c5feb904923, type: 3}
-  m_Name: Axe_Wood
+  m_Script: {fileID: 11500000, guid: af10e0b298abb41258237ace04ce4dff, type: 3}
+  m_Name: WoodSword
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.ToolItemSO
-  <ItemName>k__BackingField: Wood Axe
+  <ItemName>k__BackingField: Wood Sword
   <Description>k__BackingField: 
-  <DisplayIcon>k__BackingField: {fileID: -631927366, guid: 95b48bea6960f4495a1bed98908a2b81, type: 3}
+  <DisplayIcon>k__BackingField: {fileID: 99703789, guid: 299c04dea1eaa4e78b9c26825532306e, type: 3}
   <IsStackable>k__BackingField: 0
   <HeldPosition>k__BackingField: {x: 0.264, y: -0.246, z: 0}
   <HeldRotation>k__BackingField: 178.89743
   <HeldScale>k__BackingField: {x: 0.8, y: 0.8, z: 0.8}
-  <SwingsPerSecond>k__BackingField: 1.25
-  <SwingArcAngle>k__BackingField: 120
-  <StrikeReach>k__BackingField: 1.45
-  <MeleeDamage>k__BackingField: 3
-  <KnockbackForce>k__BackingField: 1
-  <HarvestType>k__BackingField: 2
-  <MiningDamage>k__BackingField: 15
-  <MiningTicksPerSecond>k__BackingField: 2.5
+  <SwingsPerSecond>k__BackingField: 1.5
+  <SwingArcAngle>k__BackingField: 160
+  <StrikeReach>k__BackingField: 1.6
+  <MeleeDamage>k__BackingField: 9
+  <KnockbackForce>k__BackingField: 5

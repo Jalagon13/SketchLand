@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 37c0917ac6d8e47198b62c5feb904923, type: 3}
-  m_Name: Axe_Iron
+  m_Name: IronAxe
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.ToolItemSO
   <ItemName>k__BackingField: Iron Axe
   <Description>k__BackingField: 
@@ -20,7 +20,7 @@ MonoBehaviour:
   <HeldRotation>k__BackingField: 178.89743
   <HeldScale>k__BackingField: {x: 0.8, y: 0.8, z: 0.8}
   <SwingsPerSecond>k__BackingField: 1.375
-  <SwingArcAngle>k__BackingField: 120
+  <SwingArcAngle>k__BackingField: 100
   <StrikeReach>k__BackingField: 1.45
   <MeleeDamage>k__BackingField: 3
   <KnockbackForce>k__BackingField: 1
