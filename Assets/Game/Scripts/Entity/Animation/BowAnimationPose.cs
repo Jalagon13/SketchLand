@@ -3,8 +3,8 @@ using UnityEngine;
 namespace SketchLand
 {
     // Update aim and targets after the Animator, before hand blending (-20) and IK (-10).
-    [DefaultExecutionOrder(-30)]
-    public class PlayerBowPose : MonoBehaviour
+    [System.Serializable]
+    public sealed class BowAnimationPose
     {
         [Header("Rig")]
         [SerializeField] private Transform _aimRoot;
@@ -25,19 +25,18 @@ namespace SketchLand
         [SerializeField] private Transform _hip;
         [SerializeField] private Transform _spine;
         [SerializeField] private Transform _head;
-        [SerializeField, Min(0f)] private float _bodyExaggeration = 1f;
 
-        [Header("Draw Pose")]
-        [SerializeField] private Vector2 _bowPosition = new(0.55f, 0.03f);
-        [SerializeField] private Vector2 _readyHandPosition = new(0.39f, 0.03f);
-        [SerializeField] private Vector2 _drawHandControlPosition = new(0.14f, 0.16f);
-        [SerializeField] private Vector2 _drawnHandPosition = new(-0.12f, 0.13f);
-        [SerializeField] private AnimationCurve _drawCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
-        [SerializeField, Min(0.01f)] private float _raiseDuration = 0.12f;
-        [SerializeField, Min(0.01f)] private float _releaseDuration = 0.12f;
-        [SerializeField, Min(0.01f)] private float _returnDuration = 0.12f;
+        private PlayerAnimationProfile _profile;
+        private float _bodyExaggeration => _profile.Intensity;
+        private Vector2 _bowPosition => _profile.Bow.BowPosition;
+        private Vector2 _readyHandPosition => _profile.Bow.ReadyHandPosition;
+        private Vector2 _drawHandControlPosition => _profile.Bow.DrawHandControlPosition;
+        private Vector2 _drawnHandPosition => _profile.Bow.DrawnHandPosition;
+        private AnimationCurve _drawCurve => _profile.Bow.DrawCurve;
+        private float _raiseDuration => Mathf.Max(0.01f, _profile.Bow.RaiseDuration);
+        private float _releaseDuration => Mathf.Max(0.01f, _profile.Bow.ReleaseDuration);
+        private float _returnDuration => Mathf.Max(0.01f, _profile.Bow.ReturnDuration);
 
-        private ServerCharacter _character;
         private PlayerHeldItemDisplay _heldItemDisplay;
         private float _charge;
         private float _minimumCharge;
@@ -52,33 +51,25 @@ namespace SketchLand
         private bool _bodyPoseApplied;
         public bool IsActive { get; private set; }
         public Vector2 AimDirection { get; private set; } = Vector2.right;
-        public Vector2 LaunchPosition => _arrowRoot.position;
-
-        private void Awake()
+        public void Initialize(PlayerHeldItemDisplay display)
         {
-            _character = GetComponent<ServerCharacter>();
-            _heldItemDisplay = GetComponent<PlayerHeldItemDisplay>();
+            _heldItemDisplay = display;
             _aimRoot.gameObject.SetActive(false);
         }
 
-        private void OnDisable()
-        {
-            ResetPose();
-        }
+        public void RestorePose() => RestoreBodyPose();
 
-        // Remove last frame's additive pose before the Animator samples locomotion.
-        private void Update() => RestoreBodyPose();
-
-        private void LateUpdate()
+        public void Sample(PlayerActionController state)
         {
             if (!IsActive) return;
-
-            _poseTime += Time.deltaTime;
-
-            if (_isReleasing)
+            _poseTime = Time.time - state.StartedAt;
+            _charge = state.Charge;
+            AimDirection = state.AimDirection;
+            if (state.Kind == PlayerActionKind.BowReleased)
             {
-                _releaseTime += Time.deltaTime;
-
+                _isReleasing = true;
+                _releaseTime = Time.time - state.ReleasedAt;
+                _releaseCharge = state.Charge;
                 if (!_isReturning && _releaseTime >= _releaseDuration)
                 {
                     _isReturning = true;
@@ -91,12 +82,13 @@ namespace SketchLand
                     return;
                 }
             }
-
             UpdateAim();
         }
 
-        public void BeginDraw(BowItemSO bow, ArrowItemSO arrow)
+        public void BeginDraw(BowItemSO bow, ArrowItemSO arrow, PlayerAnimationProfile profile, Vector2 direction)
         {
+            _profile = profile;
+            AimDirection = direction;
             IsActive = true;
             _isReleasing = false;
             _isReturning = false;
@@ -114,7 +106,7 @@ namespace SketchLand
             _arrowSprite.transform.localRotation = source != null ? source.transform.localRotation : Quaternion.identity;
             _arrowSprite.transform.localScale = source != null ? source.transform.localScale : Vector3.one;
             _arrowSprite.transform.localPosition = source != null ? source.transform.localPosition : Vector3.zero;
-            _arrowRoot.localScale = source != null ? source.transform.parent.localScale : Vector3.one;
+            _arrowRoot.localScale = source != null && source.transform.parent != null ? source.transform.parent.localScale : Vector3.one;
             _arrowTailOffset = Vector3.zero;
             
             if (_arrowSprite.sprite != null)
@@ -142,18 +134,9 @@ namespace SketchLand
             _rightHand.BeginGrip(_drawHand, false);
         }
 
-        public void SetCharge(float charge) => _charge = Mathf.Clamp01(charge);
-
-        public void UpdateAim()
+        private void UpdateAim()
         {
             RestoreBodyPose();
-            Vector2 worldAim = WorldManager.MouseWorldPosition - (Vector2)_shoulder.position;
-            
-            if (worldAim.sqrMagnitude < 0.0001f)
-                worldAim = AimDirection;
-                
-            AimDirection = worldAim.normalized;
-            _character.SetFacingOverride(AimDirection.x);
             ApplyBodyPose();
             _aimRoot.position = _shoulder.position;
             
@@ -200,8 +183,12 @@ namespace SketchLand
             float breathFade = _isReleasing ? Mathf.SmoothStep(1f, 0f, _releaseTime / (_releaseDuration + _returnDuration)) : 1f;
             float breath = Mathf.Sin(breathTime * 3.2f) * 0.2f * draw * draw * _bodyExaggeration * breathFade;
 
-            _hip.localPosition += new Vector3(-0.075f * hips, -0.035f * Mathf.Abs(hips), 0f);
-            _hip.localRotation *= Quaternion.Euler(0f, 0f, 5f * hips);
+            if (!_profile.UpperBodyOnly)
+            {
+                _hip.localPosition += new Vector3(-0.075f * hips, -0.035f * Mathf.Abs(hips), 0f);
+                _hip.localRotation *= Quaternion.Euler(0f, 0f, 5f * hips);
+            }
+            else hips = 0f;
             _spine.localRotation *= Quaternion.Euler(0f, 0f, 14f * chest + breath);
             // Counter the torso lean so the face stays focused along the shot.
             _head.localRotation *= Quaternion.Euler(0f, 0f, -5f * hips - 14f * chest + 5f * head - breath * 0.7f);
@@ -214,14 +201,6 @@ namespace SketchLand
             _spine.localRotation = _spineBase;
             _head.localRotation = _headBase;
             _bodyPoseApplied = false;
-        }
-
-        public void ReleaseDraw()
-        {
-            _isReleasing = true;
-            _releaseTime = 0f;
-            _releaseCharge = _charge;
-            _arrowSprite.enabled = false;
         }
 
         private Vector2 GetDrawHandPosition(float charge)
@@ -279,7 +258,6 @@ namespace SketchLand
             _rightHand.ResetGrip();
             _aimRoot.gameObject.SetActive(false);
             _heldItemDisplay.SetBowPoseActive(false);
-            _character.ClearFacingOverride();
         }
     }
 }

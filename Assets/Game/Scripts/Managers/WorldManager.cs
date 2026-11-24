@@ -87,6 +87,8 @@ namespace SketchLand
                 return;
             }
 
+            Player.Instance.Character.GetComponent<PlayerActionController>().ReportCue("Wave");
+
             WorldTextPopupManager.Instance.SpawnTextPopup(Player.Instance.Character.transform.position + new Vector3(0, 1.5f, 0), $"Targeting {ActiveLayer} terrain");
         }
 

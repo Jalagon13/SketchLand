@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UpperBody
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 0
+  - m_Path: Base (Hip)
+    m_Weight: 0
+  - m_Path: Base (Hip)/Spine
+    m_Weight: 1
+  - m_Path: Base (Hip)/Spine/Left_Upper_Arm
+    m_Weight: 1
+  - m_Path: Base (Hip)/Spine/Left_Upper_Arm/Left_Forearm
+    m_Weight: 1
+  - m_Path: Base (Hip)/Spine/Left_Upper_Arm/Left_Forearm/Left_Hand
+    m_Weight: 1
+  - m_Path: Base (Hip)/Spine/Left_Upper_Arm/LeftShoulderVAP
+    m_Weight: 1
+  - m_Path: Base (Hip)/Spine/Right_Upper_Arm
+    m_Weight: 1
+  - m_Path: Base (Hip)/Spine/Right_Upper_Arm/Right_Forearm
+    m_Weight: 1
+  - m_Path: Base (Hip)/Spine/Right_Upper_Arm/Right_Forearm/Right_Hand
+    m_Weight: 1
+  - m_Path: Base (Hip)/Spine/Right_Upper_Arm/Right_Forearm/Right_Hand/HeldItemMount
+    m_Weight: 1
+  - m_Path: Base (Hip)/Spine/Right_Upper_Arm/RightShoulderVAP
+    m_Weight: 1
+  - m_Path: Base (Hip)/Spine/Head
+    m_Weight: 1
+  - m_Path: Base (Hip)/Spine/Head/Head_Fill
+    m_Weight: 1
+  - m_Path: Base (Hip)/Spine/Head/HeadVAP
+    m_Weight: 1
+  - m_Path: Base (Hip)/Spine/TorsoVAP
+    m_Weight: 1
+  - m_Path: Base (Hip)/Left_Thigh
+    m_Weight: 0
+  - m_Path: Base (Hip)/Left_Thigh/Left_Shin
+    m_Weight: 0
+  - m_Path: Base (Hip)/Left_Thigh/Left_Shin/Left_Foot
+    m_Weight: 0
+  - m_Path: Base (Hip)/Left_Thigh/Left_Shin/LeftFootVAP
+    m_Weight: 0
+  - m_Path: Base (Hip)/Left_Thigh/LeftThighVAP
+    m_Weight: 0
+  - m_Path: Base (Hip)/Right_Thigh
+    m_Weight: 0
+  - m_Path: Base (Hip)/Right_Thigh/Right_Shin
+    m_Weight: 0
+  - m_Path: Base (Hip)/Right_Thigh/Right_Shin/Right_Foot
+    m_Weight: 0
+  - m_Path: Base (Hip)/Right_Thigh/Right_Shin/RightFootVAP
+    m_Weight: 0
+  - m_Path: Base (Hip)/Right_Thigh/RightThighVAP
+    m_Weight: 0
+  - m_Path: Left_Leg_LimbSolver2D
+    m_Weight: 0
+  - m_Path: Left_Leg_LimbSolver2D/Left_Leg_LimbSolver2D_Target
+    m_Weight: 0
+  - m_Path: Right_Leg_LimbSolver2D
+    m_Weight: 0
+  - m_Path: Right_Leg_LimbSolver2D/Right_Leg_LimbSolver2D_Target
+    m_Weight: 0
+  - m_Path: Left_Hand_LimbSolver2D
+    m_Weight: 1
+  - m_Path: Left_Hand_LimbSolver2D/Left_Hand_LimbSolver2D_Target
+    m_Weight: 1
+  - m_Path: Right_Hand_LimbSolver2D
+    m_Weight: 1
+  - m_Path: Right_Hand_LimbSolver2D/Right_Hand_LimbSolver2D_Target
+    m_Weight: 1

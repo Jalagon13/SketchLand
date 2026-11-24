@@ -8,7 +8,8 @@ namespace SketchLand
     [Serializable]
     public class PlayerRootState : CharacterRootState
     {
-        private static readonly int DamagedAnimation = Animator.StringToHash("Base Layer.StickFigure_Damaged");
+        public bool IsSprinting => _isSprinting;
+        public bool IsAirborne => ActiveChild == Airborne;
 
         [field: Header("Fall Damage")]
         [field: SerializeField, Min(0f)] public float FallDamageThreshold { get; private set; } = 5f;
@@ -45,21 +46,10 @@ namespace SketchLand
 
         protected override State GetInitialState() => Grounded;
 
-        protected override void OnDamaged()
-        {
-            PlayDamageAnimation(DamagedAnimation);
-        }
-
         protected override void OnEnter()
         {
             ResetFallTracking();
             MovementSpeed = _ctx.Data.BaseSpeed;
-            _ctx.Animator.SetBool("IsSprinting", false);
-        }
-
-        protected override void OnExit()
-        {
-            _ctx.Animator.SetBool("IsSprinting", false);
         }
 
         protected override void OnFixedUpdate(float fixedDeltaTime)
@@ -68,7 +58,7 @@ namespace SketchLand
             var player = Player.Instance;
             
             bool sprintHeld = _ctx.IsOwner && GameInput.Instance.SprintHeld;
-            bool chargingBow = _ctx.IsOwner && player.RangedHandler != null && player.RangedHandler.IsCharging;
+            bool chargingBow = _ctx.IsOwner && player.Actions != null && player.Actions.IsCharging;
             bool moving = Mathf.Abs(_ctx.DesiredDirection.x) > 0.01f
                 && !(_ctx.DesiredDirection.x > 0f ? _ctx.CollisionResult.TouchingRight : _ctx.CollisionResult.TouchingLeft);
             _isSprinting = sprintHeld && !chargingBow && moving && !_ctx.IsKnockedBack;
@@ -79,8 +69,6 @@ namespace SketchLand
             MovementSpeed = Mathf.Lerp(MovementSpeed, targetSpeed, blend);
             if (chargingBow)
                 MovementSpeed = Mathf.Min(MovementSpeed, _ctx.Data.BaseSpeed);
-            
-            UpdateLocomotionAnimation(ActiveChild == Grounded);
         }
 
         public void ResetFallTracking()
@@ -113,15 +101,6 @@ namespace SketchLand
             int damage = Mathf.RoundToInt(Mathf.Max(0f, distance - FallDamageThreshold) * DamagePerExtraTile);
             if (damage > 0)
                 _ctx.DamageReceiver.ReceiveHit(new SyncHitData(damage, 0, _ctx.transform.position));
-        }
-
-        public void UpdateLocomotionAnimation(bool isGrounded)
-        {
-            float horizontalSpeedSquared = _ctx.Velocity.x * _ctx.Velocity.x;
-            _ctx.Animator.SetFloat("Velocity", horizontalSpeedSquared);
-            _ctx.Animator.SetBool("IsSprinting", isGrounded && !_ctx.IsKnockedBack
-                && _isSprinting && Mathf.Abs(_ctx.DesiredDirection.x) > 0.01f
-                && horizontalSpeedSquared > 0.8f);
         }
     }
 
@@ -178,7 +157,6 @@ namespace SketchLand
             // On Grounded Animation set here
             _player = Player.Instance;
             _ctx.ColliderSize = Player.Instance.Character.Data.BodyColliderSize;
-            ((PlayerRootState)Parent).UpdateLocomotionAnimation(true);
         }
 
         protected override void OnExit()
@@ -241,8 +219,6 @@ namespace SketchLand
             _coyoteTimer = _ctx.Velocity.y <= 0f ? _player.CoyoteTimeBufferDuration : 0f;
             _coyoteJumpRequested = false;
             _topTouchedFlag = false;
-            _ctx.Animator.SetBool("IsAirborne", true);
-            ((PlayerRootState)Parent).UpdateLocomotionAnimation(false);
 
             // On Jump Animation set here
             if (!_ctx.IsKnockedBack && GameInput.Instance.JumpHold && _ctx.Velocity.y > 0)
@@ -261,7 +237,6 @@ namespace SketchLand
             _coyoteTimer = 0;
             _coyoteJumpRequested = false;
             _topTouchedFlag = false;
-            _ctx.Animator.SetBool("IsAirborne", false);
 
             GameInput.Instance.OnJumpPressed -= OnJumpPressed;
         }

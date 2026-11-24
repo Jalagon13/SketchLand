@@ -34,8 +34,7 @@ namespace SketchLand
 
         public bool JumpPressed { get; set; }
         public Vector2 RespawnPoint { get; private set; }
-        public PlayerArmHandler ArmHandler { get; private set; }
-        public PlayerRangedHandler RangedHandler { get; private set; }
+        public PlayerActionController Actions { get; private set; }
         public ServerCharacter Character { get; private set; }
         public PlayerEquipment Equipment { get; private set; }
 
@@ -78,6 +77,7 @@ namespace SketchLand
             if (Character.Health.CurrentLifeState.Value == LifeState.Dead) return;
 
             Character.DesiredDirection = GameInput.Instance.MoveInput;
+            Actions.SetAimPoint(WorldManager.MouseWorldPosition);
         }
 
         private void InitializeSpawn()
@@ -120,8 +120,7 @@ namespace SketchLand
             Character.Health.CurrentLifeState.OnValueChanged += OnLifeStateChanged;
 
             Equipment = Character.GetComponent<PlayerEquipment>();
-            ArmHandler = Character.GetComponent<PlayerArmHandler>();
-            RangedHandler = Character.GetComponent<PlayerRangedHandler>();
+            Actions = Character.GetComponent<PlayerActionController>();
 
             InitializeSpawn();
 

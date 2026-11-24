@@ -240,13 +240,12 @@ GameObject:
   - component: {fileID: 3163120524498341536}
   - component: {fileID: 8320316462856433193}
   - component: {fileID: 8488650257111462904}
-  - component: {fileID: 4397858196725711225}
-  - component: {fileID: 8607429953159819184}
   - component: {fileID: 6867802400311796069}
-  - component: {fileID: 4744876413007893738}
   - component: {fileID: 6954809910114446498}
   - component: {fileID: 5782318190208514922}
   - component: {fileID: 4154864731561693400}
+  - component: {fileID: 6438078310334036285}
+  - component: {fileID: 2647794042453162609}
   - component: {fileID: 1783211398265835475}
   m_Layer: 3
   m_Name: Player
@@ -426,39 +425,6 @@ MonoBehaviour:
   _visuals: {fileID: 1976869152849430371}
   _animator: {fileID: 6169355257030218549}
   DesiredDirection: {x: 0, y: 0}
---- !u!114 &4397858196725711225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2708704097900981217}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca531c90d132b42cdb772f955d53805b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OceanGame.PlayerActionHandler
-  _armPivot: {fileID: 6889074860058788524}
-  _arm: {fileID: 664098095062183281}
-  _handGripIK: {fileID: 6954809910114446498}
-  _pose:
-    _hip: {fileID: 1118014484816933984}
-    _spine: {fileID: 2667306089735974453}
-    _head: {fileID: 1749056987539592646}
-    _freeHand: {fileID: 2088371580811486304}
-    _swingShoulder: {fileID: 2837138274975715104}
---- !u!114 &8607429953159819184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2708704097900981217}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14559271611c64fed924242256413626, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OceanGame.PlayerRangedHandler
 --- !u!114 &6867802400311796069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -475,66 +441,6 @@ MonoBehaviour:
   _heldItemSprite: {fileID: 3499107727543684731}
   _handMount: {fileID: 8749926837981907169}
   _handGripIK: {fileID: 6954809910114446498}
---- !u!114 &4744876413007893738
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2708704097900981217}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c99f0efb2be8145deb9b792515e07588, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.PlayerBowPose
-  _aimRoot: {fileID: 5937233316462463027}
-  _shoulder: {fileID: 8048837871493644259}
-  _bowGrip: {fileID: 3477039710397101722}
-  _drawHand: {fileID: 9000720086651818906}
-  _nock: {fileID: 1991364197365955010}
-  _leftHand: {fileID: 5782318190208514922}
-  _rightHand: {fileID: 6954809910114446498}
-  _bowSprite: {fileID: 8697260552222558295}
-  _upperStringTip: {fileID: 6475915917421675691}
-  _lowerStringTip: {fileID: 117660579417677295}
-  _string: {fileID: 2995802435420690368}
-  _arrowSprite: {fileID: 3639087330726850927}
-  _arrowRoot: {fileID: 1044706037830619179}
-  _hip: {fileID: 1118014484816933984}
-  _spine: {fileID: 2667306089735974453}
-  _head: {fileID: 1749056987539592646}
-  _bodyExaggeration: 1
-  _bowPosition: {x: 0.55, y: 0.03}
-  _readyHandPosition: {x: 0.39, y: 0.03}
-  _drawHandControlPosition: {x: 0.14, y: 0.16}
-  _drawnHandPosition: {x: -0.12, y: 0.13}
-  _drawCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _raiseDuration: 0.12
-  _releaseDuration: 0.12
-  _returnDuration: 0.12
 --- !u!114 &6954809910114446498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -634,6 +540,65 @@ MonoBehaviour:
   - Bone: {fileID: 1749056987539592646}
     Radius: 0.15
     BendLimit: 65
+--- !u!114 &6438078310334036285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2708704097900981217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b76a4e78542a64d1e9d52fae7e1e7586, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.PlayerAnimationPresenter
+  _defaultSwing: {fileID: 11400000, guid: 6ff755daf980642158be579b5d6d5e9e, type: 2}
+  _defaultBow: {fileID: 11400000, guid: f513ac9fbcdca4113a603f6aeec25eaa, type: 2}
+  _itemAnimations: []
+  _cueAnimations:
+  - Cue: Wave
+    Animation: {fileID: 11400000, guid: d2ddd000c5b844d89849280ed2325ee7, type: 2}
+  _swing:
+    _armPivot: {fileID: 6889074860058788524}
+    _arm: {fileID: 664098095062183281}
+    _handGripIK: {fileID: 6954809910114446498}
+    _pose:
+      _hip: {fileID: 1118014484816933984}
+      _spine: {fileID: 2667306089735974453}
+      _head: {fileID: 1749056987539592646}
+      _freeHand: {fileID: 2088371580811486304}
+      _swingShoulder: {fileID: 2837138274975715104}
+  _bow:
+    _aimRoot: {fileID: 5937233316462463027}
+    _shoulder: {fileID: 8048837871493644259}
+    _bowGrip: {fileID: 3477039710397101722}
+    _drawHand: {fileID: 9000720086651818906}
+    _nock: {fileID: 1991364197365955010}
+    _leftHand: {fileID: 5782318190208514922}
+    _rightHand: {fileID: 6954809910114446498}
+    _bowSprite: {fileID: 8697260552222558295}
+    _upperStringTip: {fileID: 6475915917421675691}
+    _lowerStringTip: {fileID: 117660579417677295}
+    _string: {fileID: 2995802435420690368}
+    _arrowSprite: {fileID: 3639087330726850927}
+    _arrowRoot: {fileID: 1044706037830619179}
+    _hip: {fileID: 1118014484816933984}
+    _spine: {fileID: 2667306089735974453}
+    _head: {fileID: 1749056987539592646}
+--- !u!114 &2647794042453162609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2708704097900981217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46a247c759f474635b0f2d207bf768ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.PlayerActionController
+  _projectileOriginOffset: {x: 0, y: 0.4}
+  _meleeOriginOffset: {x: 0, y: 0.55}
 --- !u!210 &1783211398265835475
 SortingGroup:
   m_ObjectHideFlags: 0

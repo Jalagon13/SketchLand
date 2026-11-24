@@ -25,15 +25,15 @@ namespace SketchLand
             return Mathf.Lerp(MinimumSpeed, MaximumSpeed, strength);
         }
 
-        public override void OnPrimaryActionStarted(Player player) => player.RangedHandler.StartCharge(this);
-        public override void OnPrimaryActionHeld(Player player) => player.RangedHandler.HoldCharge(this);
-        public override void OnPrimaryActionRelease(Player player) => player.RangedHandler.ReleaseCharge(this);
-        public override void OnPrimaryActionCancelled(Player player) => player.RangedHandler.CancelCharge();
+        public override void OnPrimaryActionStarted(Player player) => player.Actions.StartCharge(player, this, WorldManager.MouseWorldPosition);
+        public override void OnPrimaryActionHeld(Player player) { /* Gameplay advances the charge clock. */ }
+        public override void OnPrimaryActionRelease(Player player) => player.Actions.ReleaseCharge(this, WorldManager.MouseWorldPosition);
+        public override void OnPrimaryActionCancelled(Player player) => player.Actions.Cancel();
 
         public override bool OnSecondaryActionStarted(Player player)
         {
-            if (!player.RangedHandler.IsCharging) return false;
-            player.RangedHandler.CancelCharge();
+            if (!player.Actions.IsCharging) return false;
+            player.Actions.Cancel();
             return true;
         }
     }

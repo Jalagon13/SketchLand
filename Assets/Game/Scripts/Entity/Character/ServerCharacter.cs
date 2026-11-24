@@ -23,7 +23,7 @@ namespace SketchLand
         public DamageReceiver DamageReceiver { get; private set; }
         public CharacterRootState RootState { get; private set; }
         public Animator Animator => _animator;
-        public float FacingDirection => _visuals != null && _visuals.localScale.x < 0f ? -1f : 1f;
+        public float FacingDirection { get; private set; } = 1f;
 
         public const int MaxKnockbackForce = 100;
 
@@ -137,8 +137,9 @@ namespace SketchLand
         {
             horizontal = _facingOverride ?? horizontal;
 
-            if (_visuals == null || Mathf.Abs(horizontal) < 0.01f)
-                return;
+            if (Mathf.Abs(horizontal) < 0.01f) return;
+            FacingDirection = Mathf.Sign(horizontal);
+            if (_visuals == null) return;
 
             Vector3 scale = _visuals.localScale;
             scale.x = Mathf.Abs(scale.x) * (horizontal > 0f ? 1f : -1f);
@@ -147,12 +148,10 @@ namespace SketchLand
 
         public void SetFacingOverride(float horizontal)
         {
-            if (_visuals == null) return;
-
             // A vertical swing keeps the current facing, but still locks it
             // against movement until the swing finishes.
             _facingOverride = Mathf.Abs(horizontal) < 0.01f
-                ? Mathf.Sign(_visuals.localScale.x)
+                ? FacingDirection
                 : Mathf.Sign(horizontal);
             SetFacing(horizontal);
         }

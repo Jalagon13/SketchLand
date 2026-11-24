@@ -64,7 +64,7 @@ namespace SketchLand
 
             if (WorldManager.Instance.MouseOverUI) return;
             if (!GameInput.Instance.PrimaryActionHeld) return;
-            if (player.ArmHandler.IsSwinging) return;
+            if (player.Actions.IsSwinging) return;
             if (_startAfterSwing)
             {
                 _startAfterSwing = false;
@@ -150,7 +150,7 @@ namespace SketchLand
 
             if (!context.started || !CanAct() || WorldManager.Instance.MouseOverUI) return;
 
-            if (Player.Instance.ArmHandler.IsSwinging)
+            if (Player.Instance.Actions.IsSwinging)
             {
                 _startAfterSwing = true;
                 return;
@@ -275,7 +275,7 @@ namespace SketchLand
 
             CancelItemUse();
             // Keep only the held press. Resolve the latest slot when recovery ends.
-            _startAfterSwing = Player.Instance.ArmHandler.IsSwinging && GameInput.Instance.PrimaryActionHeld;
+            _startAfterSwing = Player.Instance.Actions.IsSwinging && GameInput.Instance.PrimaryActionHeld;
             ActiveHotbarIndex = newIndex;
             OnActiveHotbarIndexChanged?.Invoke(ActiveHotbarIndex);
             // Debug.Log($"Active Hotbar Index is: {newIndex}");
