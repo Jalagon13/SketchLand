@@ -12,7 +12,7 @@ namespace SketchLand
         [SerializeField] private Transform _freeHand;
         [SerializeField] private Transform _swingShoulder;
 
-        internal const float Exaggeration = 0.765f;
+        internal const float Exaggeration = 0.612f;
         internal const float WindUp = 0.42f;
         private const float BodySway = Exaggeration * 0.85f;
         private Transform _arm, _armPivot;

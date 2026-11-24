@@ -26,4 +26,4 @@ MonoBehaviour:
   <KnockbackForce>k__BackingField: 1
   <HarvestType>k__BackingField: 2
   <MiningDamage>k__BackingField: 15
-  <MiningTicksPerSecond>k__BackingField: 2.5
+  <MiningTicksPerSecond>k__BackingField: 2.25
