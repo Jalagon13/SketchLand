@@ -8,6 +8,10 @@ namespace SketchLand
     [CreateAssetMenu(fileName = "Food", menuName = "OceanGame/Item/Food")]
     public class ConsumableItemSO : ItemSO
     {
+        [field: Header("Eating")]
+        [field: Tooltip("Hold primary action continuously for this many seconds to consume one item.")]
+        [field: SerializeField, Min(0.01f)] public float EatDuration { get; private set; } = 1.5f;
+
         [field: Header("Food contributions (zero leaves a stat unchanged)")]
         [field: SerializeField, Min(0.01f)] public float Duration { get; private set; } = 200;
         [field: SerializeField, Min(0)] public int Health { get; private set; }
@@ -27,9 +31,14 @@ namespace SketchLand
 
         public override void OnPrimaryActionStarted(Player player)
         {
-            if (player == null || player.Food == null) return;
-            var slot = InventoryInputManager.Instance.GetActiveInvSlot();
-            player.Food.Eat(slot, this);
+            if (player == null || player.Actions == null) return;
+            player.Actions.StartEating(player, this);
+        }
+
+        public override void OnPrimaryActionRelease(Player player)
+        {
+            if (player != null && player.Actions != null && player.Actions.IsEating && player.Actions.Item == this)
+                player.Actions.Cancel();
         }
 
         public override string GetDescription()
@@ -50,7 +59,7 @@ namespace SketchLand
             }
             int durationSeconds = Mathf.CeilToInt(Duration);
             lines.Add($"Duration: {durationSeconds / 60}:{durationSeconds % 60:00}");
-            lines.Add("Use primary action to eat");
+            lines.Add($"Hold primary action for {EatDuration:0.##}s to eat");
             return string.Join("<br>", lines);
         }
     }

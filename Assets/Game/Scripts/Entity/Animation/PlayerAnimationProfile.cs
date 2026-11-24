@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SketchLand
 {
-    public enum PlayerAnimationStyle { Swing, Bow, Clip }
+    public enum PlayerAnimationStyle { Swing, Bow, Clip, Eating }
 
     /// <summary>Presentation data only. Editing this asset never changes damage, charge, or cooldown.</summary>
     [CreateAssetMenu(menuName = "SketchLand/Animation/Player Animation", fileName = "PlayerAnimation")]
@@ -15,6 +15,7 @@ namespace SketchLand
         [Min(0f)] public float Intensity = 1f;
         public SwingVisualSettings Swing = new();
         public BowVisualSettings Bow = new();
+        public EatingVisualSettings Eating = new();
         public AnimationClip Clip;
         [Tooltip("Use the supplied UpperBody mask for gestures while moving. Null allows a full-body clip.")]
         public AvatarMask Mask;
@@ -22,6 +23,17 @@ namespace SketchLand
         [Min(0.001f)] public float Speed = 1f;
         [Min(0f)] public float BlendIn = 0.08f;
         [Min(0f)] public float BlendOut = 0.12f;
+    }
+
+    [Serializable]
+    public sealed class EatingVisualSettings
+    {
+        [Tooltip("Mouth position relative to the Animator root, aligned to the head bone.")]
+        public Vector2 MouthOffset = new(0.19f, 0.15f);
+        [Min(0.01f)] public float RaiseDuration = 0.18f;
+        [Min(0f)] public float BiteFrequency = 4.5f;
+        [Min(0f)] public float HandBob = 0.025f;
+        [Range(0f, 20f)] public float HeadNod = 4f;
     }
 
     [Serializable]

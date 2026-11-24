@@ -19,6 +19,9 @@ namespace SketchLand
         private ServerCharacter _character;
         private ItemSO _selectedItem;
         private bool _bowPoseActive;
+        private bool _eatingPoseActive;
+        private float _eatingTilt;
+        private Transform _spriteParent;
         private Vector3 _defaultSpritePosition;
         private Quaternion _defaultSpriteRotation;
         private Vector3 _defaultSpriteScale;
@@ -39,6 +42,7 @@ namespace SketchLand
             // Item adjustments affect only the sprite, leaving the grip, hand IK,
             // and authored resting/swing poses independent of the item's artwork.
             Transform spriteTransform = _heldItemSprite.transform;
+            _spriteParent = spriteTransform.parent;
             _defaultSpritePosition = spriteTransform.localPosition;
             _defaultSpriteRotation = spriteTransform.localRotation;
             _defaultSpriteScale = spriteTransform.localScale;
@@ -94,6 +98,15 @@ namespace SketchLand
             ShowItem(_selectedItem);
         }
 
+        public void SetEatingPose(bool active, float tilt = 0f)
+        {
+            if (active != _eatingPoseActive)
+                _heldItemSprite.transform.SetParent(active ? _character.Animator.transform : _spriteParent, false);
+            _eatingPoseActive = active;
+            _eatingTilt = tilt;
+            if (!active) ShowItem(_selectedItem);
+        }
+
         public void BeginSwing(ItemSO item)
         {
             // Detach BEFORE enabling grip IK: a target beneath R_Hand would
@@ -142,6 +155,15 @@ namespace SketchLand
 
         private void LateUpdate()
         {
+            if (_eatingPoseActive && _selectedItem != null)
+            {
+                // Keep food upright near the mouth while the hand bends independently beneath it.
+                Transform rig = _character.Animator.transform;
+                _heldItemSprite.transform.position = _handMount.position + rig.TransformVector(_selectedItem.HeldPosition);
+                _heldItemSprite.transform.localRotation = Quaternion.Euler(0f, 0f, _selectedItem.HeldRotation + _eatingTilt);
+                _heldItemSprite.transform.localScale = _selectedItem.HeldScale;
+                return;
+            }
             if (_swingItem == null) return;
 
             // Keep the authored swing rotation and anchor the artwork to the solved palm.

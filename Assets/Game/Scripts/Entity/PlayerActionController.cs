@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SketchLand
 {
-    public enum PlayerActionKind { None, Swing, BowCharge, BowReleased }
+    public enum PlayerActionKind { None, Swing, BowCharge, BowReleased, Eating }
 
     /// <summary>Gameplay only. No Animator, bones, IK, tween, or animation profile dependencies.</summary>
     [DefaultExecutionOrder(-50)]
@@ -33,6 +33,10 @@ namespace SketchLand
         public bool IsCharging => Kind == PlayerActionKind.BowCharge;
         public bool IsSwinging => Kind == PlayerActionKind.Swing;
         public bool IsAiming => IsCharging || IsSwinging;
+        public bool IsEating => Kind == PlayerActionKind.Eating;
+        public bool BlocksSprint => IsCharging || IsEating;
+        public float EatingProgress => IsEating && Item is ConsumableItemSO food
+            ? Mathf.Clamp01((Time.time - StartedAt) / Mathf.Max(0.01f, food.EatDuration)) : 0f;
 
         // Optional semantic gameplay cues, e.g. "Interact". Presentation chooses how to show them.
         public event Action<string> Cue;
@@ -82,7 +86,32 @@ namespace SketchLand
                 var bow = (BowItemSO)Item;
                 Charge = Mathf.Clamp01((Time.time - StartedAt) / Mathf.Max(0.01f, bow.ChargeDuration));
             }
+            else if (IsEating)
+            {
+                var food = (ConsumableItemSO)Item;
+                if (!GameInput.Instance.PrimaryActionHeld || WorldManager.Instance.MouseOverUI
+                    || !WorldManager.Instance.IsWorldReady || !IsSameItemSelected() || !_actor.Food.CanEat(food))
+                { Cancel(); return; }
+                if (EatingProgress >= 1f)
+                {
+                    _actor.Food.Eat(_sourceSlot, food);
+                    Cancel();
+                }
+            }
             else if (!IsSameItemSelected()) Cancel();
+        }
+
+        public void StartEating(Player actor, ConsumableItemSO food)
+        {
+            if (!CanAct || IsSwinging || IsEating || actor == null || actor.Character != _character
+                || actor.Food == null || !actor.Food.CanEat(food)) return;
+            var slot = InventoryInputManager.Instance.GetActiveInvSlot();
+            if (slot == null || slot.IsEmpty || slot.GetItemSO() != food) return;
+            Cancel();
+            _actor = actor;
+            Item = food;
+            _sourceSlot = slot;
+            Begin(PlayerActionKind.Eating);
         }
 
         public bool TrySwing(Player actor, SwingItemSO item, Vector2 aimPoint)
@@ -209,7 +238,7 @@ namespace SketchLand
         }
 
         private void OnDisable() => Cancel();
-        private void OnApplicationFocus(bool focused) { if (!focused && IsCharging) Cancel(); }
+        private void OnApplicationFocus(bool focused) { if (!focused && (IsCharging || IsEating)) Cancel(); }
 #if UNITY_EDITOR
         private void OnDrawGizmosSelected()
         {

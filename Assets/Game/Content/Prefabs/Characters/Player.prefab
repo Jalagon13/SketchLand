@@ -554,6 +554,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.PlayerAnimationPresenter
   _defaultSwing: {fileID: 11400000, guid: 6ff755daf980642158be579b5d6d5e9e, type: 2}
   _defaultBow: {fileID: 11400000, guid: f513ac9fbcdca4113a603f6aeec25eaa, type: 2}
+  _defaultEating: {fileID: 11400000, guid: 5df3da6e7dcb04ab78760f964d283dd7, type: 2}
   _itemAnimations: []
   _cueAnimations:
   - Cue: Wave
@@ -585,6 +586,9 @@ MonoBehaviour:
     _hip: {fileID: 1118014484816933984}
     _spine: {fileID: 2667306089735974453}
     _head: {fileID: 1749056987539592646}
+  _eating:
+    _head: {fileID: 1749056987539592646}
+    _hand: {fileID: 6954809910114446498}
 --- !u!114 &2647794042453162609
 MonoBehaviour:
   m_ObjectHideFlags: 0

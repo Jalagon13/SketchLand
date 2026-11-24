@@ -21,7 +21,7 @@ namespace SketchLand.EditorTools
             else
             {
                 Draw("UpperBodyOnly"); Draw("Intensity");
-                Draw(style == PlayerAnimationStyle.Swing ? "Swing" : "Bow");
+                Draw(style == PlayerAnimationStyle.Swing ? "Swing" : style == PlayerAnimationStyle.Bow ? "Bow" : "Eating");
             }
             serializedObject.ApplyModifiedProperties();
         }

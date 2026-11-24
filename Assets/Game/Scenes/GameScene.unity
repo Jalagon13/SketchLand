@@ -5644,6 +5644,8 @@ MonoBehaviour:
     _amount: 1
   - _ingredient: {fileID: 11400000, guid: dbcbcd20bffa749e2920a1db8a6a1792, type: 2}
     _amount: 333
+  - _ingredient: {fileID: 11400000, guid: fe977c3c6a1ac40199d63b4806e13e06, type: 2}
+    _amount: 22
 --- !u!114 &1178486984
 MonoBehaviour:
   m_ObjectHideFlags: 0

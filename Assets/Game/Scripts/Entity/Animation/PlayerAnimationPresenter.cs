@@ -10,10 +10,12 @@ namespace SketchLand
     {
         [SerializeField] private PlayerAnimationProfile _defaultSwing;
         [SerializeField] private PlayerAnimationProfile _defaultBow;
+        [SerializeField] private PlayerAnimationProfile _defaultEating;
         [SerializeField] private ItemAnimationBinding[] _itemAnimations = Array.Empty<ItemAnimationBinding>();
         [SerializeField] private CueAnimationBinding[] _cueAnimations = Array.Empty<CueAnimationBinding>();
         [SerializeField] private SwingAnimationPose _swing = new();
         [SerializeField] private BowAnimationPose _bow = new();
+        [SerializeField] private EatingAnimationPose _eating = new();
         private PlayerActionController _actions;
         private ServerCharacter _character;
         private PlayerClipLayer _clips;
@@ -31,6 +33,7 @@ namespace SketchLand
             var display = GetComponent<PlayerHeldItemDisplay>();
             _swing.Initialize(display);
             _bow.Initialize(display);
+            _eating.Initialize(display, _character.Animator.transform);
             _initialized = true;
             Connect();
         }
@@ -55,12 +58,13 @@ namespace SketchLand
             // Remove only our last additive offsets before the Animator samples the next frame.
             _swing.RestorePose();
             _bow.RestorePose();
+            _eating.RestorePose();
             var root = _character.RootState as PlayerRootState;
             bool airborne = root != null ? root.IsAirborne : !_character.CollisionResult.TouchingBottom;
             float speedSquared = _character.Velocity.x * _character.Velocity.x;
             _clips.SetFloat("Velocity", speedSquared);
             _clips.SetBool("IsAirborne", airborne);
-            _clips.SetBool("IsSprinting", !airborne && !_character.IsKnockedBack && root != null
+            _clips.SetBool("IsSprinting", !airborne && !_actions.BlocksSprint && !_character.IsKnockedBack && root != null
                 && root.IsSprinting && Mathf.Abs(_character.DesiredDirection.x) > 0.01f && speedSquared > 0.8f);
             _clips.SetFloat("LocomotionPlayback", _actions.IsAiming
                 && _character.Velocity.x * _character.FacingDirection < -0.05f ? -1f : 1f);
@@ -74,7 +78,7 @@ namespace SketchLand
                 foreach (var binding in _cueAnimations)
                     if (binding.Cue == cue && binding.Animation != null && binding.Animation.Style == PlayerAnimationStyle.Clip)
                     {
-                        if (!_actions.IsAiming) _clips.Play(binding.Animation);
+                        if (!_actions.IsAiming && !_actions.IsEating) _clips.Play(binding.Animation);
                         handled = true;
                         break;
                     }
@@ -88,8 +92,9 @@ namespace SketchLand
             {
                 _swing.ResetPose();
                 _bow.ResetPose();
+                _eating.ResetPose();
                 _revision = _actions.Revision;
-                if (_actions.IsAiming) _clips.Stop();
+                if (_actions.IsAiming || _actions.IsEating) _clips.Stop();
                 if (_actions.Kind == PlayerActionKind.Swing)
                 {
                     var profile = ProfileFor(_actions.Item, _defaultSwing);
@@ -100,8 +105,14 @@ namespace SketchLand
                     var profile = ProfileFor(_actions.Item, _defaultBow);
                     if (profile != null) _bow.BeginDraw((BowItemSO)_actions.Item, _actions.Arrow, profile, _actions.AimDirection);
                 }
+                else if (_actions.IsEating)
+                {
+                    var profile = ProfileFor(_actions.Item, _defaultEating);
+                    if (profile != null) _eating.Begin(profile);
+                }
             }
             if (_actions.Kind == PlayerActionKind.Swing) _swing.Sample(_actions);
+            else if (_actions.IsEating) _eating.Sample(_actions);
             else _bow.Sample(_actions);
             if (_impact != _actions.ImpactSequence)
             {
@@ -118,7 +129,8 @@ namespace SketchLand
         private PlayerAnimationProfile ProfileFor(ItemSO item, PlayerAnimationProfile fallback)
         {
             foreach (var binding in _itemAnimations)
-                if (binding.Item == item && binding.Animation != null && binding.Animation.Style == (item is BowItemSO ? PlayerAnimationStyle.Bow : PlayerAnimationStyle.Swing))
+                if (binding.Item == item && binding.Animation != null && binding.Animation.Style ==
+                    (item is ConsumableItemSO ? PlayerAnimationStyle.Eating : item is BowItemSO ? PlayerAnimationStyle.Bow : PlayerAnimationStyle.Swing))
                     return binding.Animation;
             return fallback;
         }
@@ -129,6 +141,7 @@ namespace SketchLand
             _character.Health.OnDamaged -= OnDamaged;
             _swing.ResetPose();
             _bow.ResetPose();
+            _eating.ResetPose();
             _clips.Dispose();
             _cues.Clear();
         }
