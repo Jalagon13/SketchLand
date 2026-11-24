@@ -5955,7 +5955,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.Player
   <InteractRange>k__BackingField: 3
-  <SprintSpeed>k__BackingField: 5
+  <SprintSpeed>k__BackingField: 4.5
   <SprintTransitionSharpness>k__BackingField: 8
   <MinJumpSpeed>k__BackingField: 6.666667
   <MaxJumpHoldDuration>k__BackingField: 0.19
