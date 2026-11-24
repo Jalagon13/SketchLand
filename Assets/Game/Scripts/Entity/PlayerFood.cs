@@ -6,8 +6,6 @@ namespace SketchLand
     [RequireComponent(typeof(ServerCharacter))]
     public class PlayerFood : MonoBehaviour
     {
-        public event System.Action<ConsumableItemSO> OnFoodEaten;
-
         public const int Capacity = 3;
         public int BaseHealth => _character.Data.BaseMaxHealth;
         private readonly Meal[] _meals = new Meal[Capacity];
@@ -50,7 +48,6 @@ namespace SketchLand
             if (slot == null || slot.IsEmpty || slot.GetItemSO() != food || !CanEat(food)) return;
             _meals[AvailableSlot(food)] = new Meal { Food = food, End = Time.time + food.Duration };
             slot.RemoveFromCurrentAmount(1);
-            OnFoodEaten?.Invoke(food);
             ApplyLimits();
             InventoryManager.Instance.RefreshInventory();
             if (!food.ConsumeSFX.IsNull) AudioManager.Instance.PlayOneShot(food.ConsumeSFX, transform.position);

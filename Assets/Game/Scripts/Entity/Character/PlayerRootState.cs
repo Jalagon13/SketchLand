@@ -11,7 +11,7 @@ namespace SketchLand
         private static readonly int DamagedAnimation = Animator.StringToHash("Base Layer.StickFigure_Damaged");
 
         [field: Header("Fall Damage")]
-        [field: SerializeField, Min(0f)] public float FallDamageThreshold { get; private set; } = 10f;
+        [field: SerializeField, Min(0f)] public float FallDamageThreshold { get; private set; } = 5f;
         [field: SerializeField, Min(0f)] public float DamagePerExtraTile { get; private set; } = 5f;
 
         public PlayerGroundedState Grounded { get; private set; }

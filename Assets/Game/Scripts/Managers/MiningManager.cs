@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace SketchLand
 {
@@ -12,70 +11,6 @@ namespace SketchLand
             Instance = this;
         }
         
-        private Player _miningPlayer;
-        private ToolItemSO _miningTool;
-        private double _lastUpdateTime;
-        private double _tickProgress;
-
-        public bool IsMining => _miningTool != null;
-
-        public void StartMining(Player player, ToolItemSO tool)
-        {
-            if (!isActiveAndEnabled || player == null || tool == null) return;
-            if (_miningPlayer == player && _miningTool == tool) return;
-            _miningPlayer = player;
-            _miningTool = tool;
-            _tickProgress = 0d;
-            _lastUpdateTime = Time.timeAsDouble;
-        }
-
-        public void StopMining(Player player, ToolItemSO tool)
-        {
-            if (_miningPlayer == player && _miningTool == tool) ClearMining();
-        }
-
-        private void ClearMining()
-        {
-            _miningPlayer = null;
-            _miningTool = null;
-            _tickProgress = 0d;
-        }
-
-        private void OnDisable() => ClearMining();
-
-        private void Update()
-        {
-            if (!IsMining) return;
-            var input = InventoryInputManager.Instance;
-            if (_miningPlayer == null || _miningPlayer.Character == null
-                || _miningPlayer.Character.Health.CurrentLifeState.Value == LifeState.Dead
-                || GameInput.Instance == null || !GameInput.Instance.PrimaryActionHeld
-                || input == null || !input.isActiveAndEnabled
-                || input.GetActiveInvSlot()?.GetItemSO() != _miningTool
-                || WorldManager.Instance == null || !WorldManager.Instance.IsWorldReady)
-            {
-                ClearMining();
-                return;
-            }
-
-            double now = Time.timeAsDouble;
-            _tickProgress += (now - _lastUpdateTime) * Mathf.Max(0.01f, _miningTool.GetMiningTickRate(_miningPlayer.Food));
-            _lastUpdateTime = now;
-            while (_tickProgress >= 1d)
-            {
-                _tickProgress -= 1d;
-                MineHoveredTile();
-            }
-        }
-
-        private void MineHoveredTile()
-        {
-            if (Camera.main == null || Mouse.current == null) return;
-            Vector2 point = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-            var target = CaptureTarget(_miningPlayer, _miningTool, point);
-            if (target.HasValue) TryPerformMine(_miningPlayer, _miningTool, target.Value);
-        }
-
         public readonly struct MiningTarget
         {
             public readonly Vector2Int Cell;
@@ -123,7 +58,7 @@ namespace SketchLand
 
             var config = tile.TileConfig;
             if (!tool.CanHarvest(config) || config.Indestructible) return false;
-            world.DamageTile(target.Cell, tool.MiningDamage, target.Layer, refreshCurrentBounds: true);
+            world.ApplyBreakProgress(target.Cell, tool.GetBreakProgressPerStrike(config), target.Layer, refreshCurrentBounds: true);
             return true;
         }
 

@@ -64,7 +64,7 @@ namespace SketchLand
 
             if (WorldManager.Instance.MouseOverUI) return;
             if (!GameInput.Instance.PrimaryActionHeld) return;
-            if (player.ArmHandler.IsSwinging && ActiveSlot.GetItemSO() is not ToolItemSO) return;
+            if (player.ArmHandler.IsSwinging) return;
             if (_startAfterSwing)
             {
                 _startAfterSwing = false;
@@ -150,7 +150,7 @@ namespace SketchLand
 
             if (!context.started || !CanAct() || WorldManager.Instance.MouseOverUI) return;
 
-            if (Player.Instance.ArmHandler.IsSwinging && GetActiveInvSlot().GetItemSO() is not ToolItemSO)
+            if (Player.Instance.ArmHandler.IsSwinging)
             {
                 _startAfterSwing = true;
                 return;

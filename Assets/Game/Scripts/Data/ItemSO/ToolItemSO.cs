@@ -7,33 +7,22 @@ namespace SketchLand
     {
         [field: Header("Tool Settings")]
         [field: SerializeField] public HarvestType HarvestType { get; private set; } = HarvestType.None;
-        [field: SerializeField, Min(1)] public int MiningDamage { get; private set; } = 15;
-        [field: Tooltip("Mining damage ticks per second, independent of swing animation speed.")]
-        [field: SerializeField, Min(0.01f)] public float MiningTicksPerSecond { get; private set; } = 2f;
+        [field: Tooltip("Each tier above 1 reduces the target's required strikes by one, to a minimum of one strike.")]
+        [field: SerializeField, Min(1)] public int Tier { get; private set; } = 1;
 
         public bool CanHarvest(TileConfigSO tile) => tile != null
             && (tile.RequiredHarvestType == HarvestType.None || HarvestType == tile.RequiredHarvestType);
 
-        public float GetMiningTickRate(PlayerFood food) => food != null
-            ? food.ApplyMiningSpeedBonus(MiningTicksPerSecond) : MiningTicksPerSecond;
+        public int GetRequiredStrikes(TileConfigSO tile) => Mathf.Max(1,
+            tile.BaseStrikesToBreak - (Mathf.Max(1, Tier) - 1));
 
-        public override void OnPrimaryActionStarted(Player player)
-        {
-            MiningManager.Instance.StartMining(player, this);
-            base.OnPrimaryActionStarted(player);
-        }
+        public double GetBreakProgressPerStrike(TileConfigSO tile) => 1d / GetRequiredStrikes(tile);
 
-        public override void OnPrimaryActionHeld(Player player)
-        {
-            MiningManager.Instance.StartMining(player, this);
-            base.OnPrimaryActionHeld(player);
-        }
-
-        public override void OnPrimaryActionRelease(Player player) => MiningManager.Instance?.StopMining(player, this);
-        public override void OnPrimaryActionCancelled(Player player) => MiningManager.Instance?.StopMining(player, this);
+        public override float GetSwingRate(PlayerFood food) => food != null
+            ? food.ApplyMiningSpeedBonus(SwingsPerSecond) : SwingsPerSecond;
 
         public override string GetDescription() => DescribeStats(
-            $"Mining damage: {MiningDamage}<br>Mining speed: {MiningTicksPerSecond:0.##} ticks/sec"
+            $"Mining tier: {Tier}<br>Mining speed: {SwingsPerSecond:0.##} swings/sec"
             + $"<br>Damage: {MeleeDamage}<br>Knockback: {KnockbackForce}");
     }
 }

@@ -162,6 +162,13 @@ namespace SketchLand
                     && zone.Intersects(enemy.transform.position, enemy.ColliderSize))
                     enemy.DamageReceiver.ReceiveHit(hit);
             }
+            // Mining resolves once at the swing's impact, against the current mouse target.
+            if (item is ToolItemSO tool)
+            {
+                Vector2 point = Camera.main.ScreenToWorldPoint(UnityEngine.InputSystem.Mouse.current.position.ReadValue());
+                var target = MiningManager.Instance.CaptureTarget(player, tool, point);
+                if (target.HasValue) MiningManager.Instance.TryPerformMine(player, tool, target.Value);
+            }
             AudioManager.Instance.PlayOneShot(FMODEvents.Instance.PlayerAirThrustSFX, transform.position);
         }
 

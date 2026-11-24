@@ -22,7 +22,7 @@ MonoBehaviour:
   <Duration>k__BackingField: 600
   <Health>k__BackingField: 0
   <HealthRegen>k__BackingField: 0
-  <BonusMiningSpeedPercentage>k__BackingField: 10
+  <BonusMiningSpeedPercentage>k__BackingField: 15
   <BonusMeleeDamagePercentage>k__BackingField: 0
   <BonusMeleeSpeedPercentage>k__BackingField: 0
   <BonusMeleeRangePercentage>k__BackingField: 0

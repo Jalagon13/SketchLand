@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,8 +6,6 @@ namespace SketchLand
 {
     public class CraftingSlotUI : MonoBehaviour
     {
-        public static event Action<RecipeSO> OnRecipeCrafted;
-
         [SerializeField] private Button _craftButton;
         [SerializeField] private Image _itemIcon;
         [SerializeField] private Image _greyOverlay;
@@ -64,8 +61,7 @@ namespace SketchLand
                         inventory.RemoveItem(ingredient.Item.GetId(), ingredient.Amount);
                     }
 
-                    int remainder = inventory.CollectItem(outputId, _recipe.OutputAmonut);
-                    if (remainder < _recipe.OutputAmonut) OnRecipeCrafted?.Invoke(_recipe);
+                    inventory.CollectItem(outputId, _recipe.OutputAmonut);
                     AudioManager.Instance.PlayOneShot(FMODEvents.Instance.SlotClickedSFX, default);
                 }
             }

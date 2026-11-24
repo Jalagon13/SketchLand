@@ -51,6 +51,7 @@ namespace SketchLand
         public override TileBase GetTileForRendering(TileGrid grid, TileGrid background, Vector2Int position, byte state)
         {
             Attachment attachment = GetAttachment(grid, background, position);
+            if (attachment == Attachment.None) return null;
             Sprite sprite = attachment switch
             {
                 Attachment.Floor => FloorSprite,
@@ -72,6 +73,9 @@ namespace SketchLand
                 _drawTiles[index] = tile;
             }
 
+            // The tile owns its attachment transform. Otherwise Tilemap retains the
+            // cell's previous transform when support changes to the opposite wall.
+            tile.flags = TileFlags.LockAll;
             tile.sprite = sprite;
             tile.transform = attachment == Attachment.RightWall
                 ? Matrix4x4.Scale(new Vector3(-1f, 1f, 1f))
