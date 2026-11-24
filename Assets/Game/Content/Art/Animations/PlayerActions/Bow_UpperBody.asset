@@ -137,8 +137,14 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     RaiseDuration: 0.12
-    ReleaseDuration: 0.12
-    ReturnDuration: 0.12
+    ReleaseDuration: 0.092307694
+    ReturnDuration: 0.092307694
+  Eating:
+    MouthOffset: {x: 0.19, y: 0.15}
+    RaiseDuration: 0.18
+    BiteFrequency: 4.5
+    HandBob: 0.025
+    HeadNod: 4
   Clip: {fileID: 0}
   Mask: {fileID: 31900000, guid: 719ceec4926214b1980eb751c05d1350, type: 2}
   Additive: 0
