@@ -2825,7 +2825,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.CharacterSpawnRules
   _maxCharacterCount: 6
-  _perSecondSpawnChance: 0.08
+  _perSecondSpawnChance: 0.04
   _spawnEntries:
   - _character: {fileID: 11400000, guid: 2a9db1f511b6a4888a49dd1d2f56bd26, type: 2}
     _weight: 0
