@@ -216,7 +216,7 @@ GameObject:
   - component: {fileID: 5168990399976695253}
   - component: {fileID: 6462342026707339598}
   m_Layer: 0
-  m_Name: sprite
+  m_Name: GoblinRig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
