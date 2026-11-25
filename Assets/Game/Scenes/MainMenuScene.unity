@@ -501,9 +501,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Controls:
 
-    WASD - Move
+    WASD - Walk
 
-    Hold Shift - Walk
+    Hold Shift - Sprint
 
     Space - Jump
 

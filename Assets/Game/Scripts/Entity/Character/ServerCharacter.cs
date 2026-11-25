@@ -14,6 +14,10 @@ namespace SketchLand
         [SerializeField] private Transform _visuals;
         [SerializeField] private Animator _animator;
 
+        [Header("Gizmos")]
+        [SerializeField, Tooltip("Draw the CharacterSO body collision box in Scene and Game views when Gizmos are enabled.")]
+        private bool _showBodyCollider = true;
+
         [HideInInspector] public Vector2 DesiredDirection;
         public bool IsKnockedBack => _knockbackTimer > 0f;
 
@@ -36,6 +40,21 @@ namespace SketchLand
 
         private float _knockbackTimer;
         private float? _facingOverride;
+
+        private void OnDrawGizmos()
+        {
+            if (!_showBodyCollider || _data == null) return;
+
+            var previousColor = Gizmos.color;
+            var previousMatrix = Gizmos.matrix;
+            // Grid physics uses an axis-aligned box in world units, independent of visual scale or rotation.
+            Gizmos.matrix = Matrix4x4.identity;
+            Gizmos.color = Color.cyan;
+            Vector2 size = _data.BodyColliderSize;
+            Gizmos.DrawWireCube(transform.position, new Vector3(size.x, size.y, 0f));
+            Gizmos.matrix = previousMatrix;
+            Gizmos.color = previousColor;
+        }
 
         private void Awake()
         {

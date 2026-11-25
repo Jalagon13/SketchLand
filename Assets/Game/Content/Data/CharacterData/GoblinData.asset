@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.CharacterSO
   RootState:
     rid: 2417915168950845619
-  <BodyColliderSize>k__BackingField: {x: 0.4875, y: 1.1375}
+  <BodyColliderSize>k__BackingField: {x: 0.65, y: 1.34}
   <BaseMaxHealth>k__BackingField: 40
   <BaseDefense>k__BackingField: 3
   <BaseDamage>k__BackingField: 5

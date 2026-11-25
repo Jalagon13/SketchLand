@@ -57,11 +57,11 @@ namespace SketchLand
             TrackFall();
             var player = Player.Instance;
             
-            bool walkHeld = GameInput.Instance.SprintHeld;
+            bool sprintHeld = GameInput.Instance.SprintHeld;
             bool walkOnly = _ctx.IsOwner && player.Actions != null && player.Actions.BlocksSprint;
             bool moving = Mathf.Abs(_ctx.DesiredDirection.x) > 0.01f
                 && !(_ctx.DesiredDirection.x > 0f ? _ctx.CollisionResult.TouchingRight : _ctx.CollisionResult.TouchingLeft);
-            _isSprinting = _ctx.IsOwner && !walkHeld && !walkOnly && moving && !_ctx.IsKnockedBack;
+            _isSprinting = _ctx.IsOwner && sprintHeld && !walkOnly && moving && !_ctx.IsKnockedBack;
 
             float targetSpeed = _isSprinting ? player.SprintSpeed : _ctx.Data.BaseSpeed;
             float blend = 1f - Mathf.Exp(-player.SprintTransitionSharpness * fixedDeltaTime);
