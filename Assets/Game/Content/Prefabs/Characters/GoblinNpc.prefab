@@ -406,7 +406,7 @@ MonoBehaviour:
   _debugStateOn: 0
   _data: {fileID: 11400000, guid: e8ced5de931fd400da6f4da2853b1d16, type: 2}
   _visuals: {fileID: 5907841507912977926}
-  _animator: {fileID: 0}
+  _animator: {fileID: 8174457425895898332}
   _showBodyCollider: 0
   DesiredDirection: {x: 0, y: 0}
 --- !u!114 &8585951149107295518
@@ -968,9 +968,9 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5667059423710271617}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 188394df048594ecda65b06b1114b781, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

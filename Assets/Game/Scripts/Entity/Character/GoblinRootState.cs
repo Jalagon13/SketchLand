@@ -84,7 +84,9 @@ namespace SketchLand
 
         protected override void OnDamaged()
         {
-            PlayDamageAnimation(DamagedAnimation);
+            // The controller can contain only the clips that have been authored so far.
+            if (_ctx.Animator != null && _ctx.Animator.HasState(0, DamagedAnimation))
+                PlayDamageAnimation(DamagedAnimation);
         }
 
         protected override void OnEnter()
