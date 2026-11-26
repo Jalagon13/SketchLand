@@ -10,7 +10,8 @@ namespace SketchLand
 
         [SerializeField] private bool _enableSpawning = true;
         
-        [SerializeField] private int _globalMaxCharacterCap = 200;
+        [SerializeField, Tooltip("Maximum total Spawn Cost across all spawned NPCs.")]
+        private int _globalMaxCharacterCap = 200;
         public int GlobalMaxCharCap => _globalMaxCharacterCap;
         
         [SerializeField] private float _durationTillCharacterDespawns = 20f;
@@ -29,16 +30,16 @@ namespace SketchLand
             }
         }
 
-        public int CurrentCharacterCount
+        public float CurrentCharacterCount
         {
             get
             {
-                int count = 0;
+                float count = 0f;
 
-                foreach (CharacterSpawner spawner in _spawners)
-                {
-                    count += spawner.LocalCurrentCharCount;
-                }
+                // Track every managed NPC, even if its original host has left.
+                foreach (var character in _characterDespawnTimers.Keys)
+                    if (character != null && character.Data != null)
+                        count += character.Data.SpawnCost;
 
                 return count;
             }
@@ -74,8 +75,7 @@ namespace SketchLand
             if (owner == null) return;
 
             Vector2 position = camera.ScreenToWorldPoint(mouse.position.ReadValue());
-            if (TrySpawnCharacter(owner, _cursorSpawnCharacter.CharacterPrefab, position, out var character))
-                owner.RegisterOwnedCharacter(character);
+            TrySpawnCharacter(owner, _cursorSpawnCharacter.CharacterPrefab, position, out _);
         }
 #endif
         
@@ -191,7 +191,7 @@ namespace SketchLand
         {
             spawnedCharacter = null;
             
-            if (!CanSpawnCharacter() || prefab == null)
+            if (owner == null || prefab == null || !owner.CanSpawnCharacter(prefab.Data))
                 return false;
 
             // Instantiate the prefab on the server
@@ -210,6 +210,7 @@ namespace SketchLand
             spawnedCharacter = character;
             CharacterLifetime lifetime = new(owner, _durationTillCharacterDespawns);
             _characterDespawnTimers.Add(spawnedCharacter, lifetime);
+            owner.RegisterOwnedCharacter(spawnedCharacter);
             Debug.Log($"Spawned {spawnedCharacter.name} at {spawnPosition}!");
             return true;
         }
@@ -270,9 +271,11 @@ namespace SketchLand
             }
         }
 
-        public bool CanSpawnCharacter()
+        public bool CanSpawnCharacter(float spawnCost = 0f)
         { 
-            return _enableSpawning && CurrentCharacterCount < _globalMaxCharacterCap;
+            float current = CurrentCharacterCount;
+            return _enableSpawning && current < _globalMaxCharacterCap
+                && current + spawnCost <= _globalMaxCharacterCap;
         }
 
         private void DrawRectIntGizmo(RectInt rect)

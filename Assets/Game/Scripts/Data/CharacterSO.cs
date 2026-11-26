@@ -28,6 +28,10 @@ namespace SketchLand
         [field: SerializeField] public bool CanDamagePlayerOnTouch { get; private set; }
         [field: SerializeField] public ServerCharacter CharacterPrefab { get; private set; }
 
+        [field: Header("Spawning")]
+        [field: Tooltip("Amount this NPC contributes to local and global population limits. Supports fractions, e.g. 0.5 for small creatures or 3 for large monsters.")]
+        [field: SerializeField] public float SpawnCost { get; private set; } = 1f;
+
         [field: Header("Game Feel")]
         [field: SerializeField] public EventReference CharacterDamagedSFX { get; private set; }
         [field: SerializeField] public EventReference CharacterDeathSFX { get; private set; }

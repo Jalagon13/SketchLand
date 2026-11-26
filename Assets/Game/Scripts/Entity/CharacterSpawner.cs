@@ -21,7 +21,17 @@ namespace SketchLand
         public ServerCharacter Host => _host;
 
         private readonly HashSet<ServerCharacter> _ownedCharacters = new();
-        public int LocalCurrentCharCount => _ownedCharacters.Count;
+        public float LocalCurrentCharCount
+        {
+            get
+            {
+                float count = 0f;
+                foreach (var character in _ownedCharacters)
+                    if (character != null && character.Data != null)
+                        count += character.Data.SpawnCost;
+                return count;
+            }
+        }
 
         public CharacterSpawnCircumstance CurrentCircumstance { get; private set; }
 
@@ -61,10 +71,9 @@ namespace SketchLand
             if (!TryToFindSpawnSpot(out CharacterSpawnEntry spawnEntry, out Vector2 spawnSpot))
                 return;
             
-            if(!CharacterManager.Instance.TrySpawnCharacter(this, spawnEntry.Character.CharacterPrefab, spawnSpot, out ServerCharacter spawnedCharacter))
+            if(!CharacterManager.Instance.TrySpawnCharacter(this, spawnEntry.Character.CharacterPrefab, spawnSpot, out _))
                 return;
                 
-            RegisterOwnedCharacter(spawnedCharacter);
             // Debug.Log($"Host's local char count: {LocalCurrentCharCount}/{CurrentCircumstance.MaxCharacterCount}");
             // Debug.Log($"Global Character count: {CharacterManager.Instance.CurrentCharacterCount}/{CharacterManager.Instance.GlobalMaxCharCap}");
         }
@@ -92,7 +101,8 @@ namespace SketchLand
                     
                 bool hasGround = TryFindGround(candidate, out Vector2Int foundGroundSpot);
                 if (!CurrentCircumstance.SpawnPool.TrySelectCharacter(
-                    entry => TryGetSpawnPosition(entry, candidate, hasGround, foundGroundSpot, out _), out spawnEntry))
+                    entry => CanSpawnCharacter(entry.Character)
+                        && TryGetSpawnPosition(entry, candidate, hasGround, foundGroundSpot, out _), out spawnEntry))
                     continue;
 
                 if (!TryGetSpawnPosition(spawnEntry, candidate, hasGround, foundGroundSpot, out Vector2 spawnPosition))
@@ -201,6 +211,14 @@ namespace SketchLand
             return false;
         }
 
+        public bool CanSpawnCharacter(CharacterSO character)
+        {
+            if (character == null) return false;
+            var circumstance = CharacterSpawnRules.Instance.GetCircumstances(_host);
+            return LocalCurrentCharCount + character.SpawnCost <= circumstance.MaxCharacterCount
+                && CharacterManager.Instance.CanSpawnCharacter(character.SpawnCost);
+        }
+
         public void RegisterOwnedCharacter(ServerCharacter character)
         {
             if (character != null)
@@ -228,7 +246,7 @@ namespace SketchLand
         private float CalculatePerSecondSpawnChance()
         {
             float perSecondChance = CurrentCircumstance.PerSecondSpawnChance;
-            float populationRatio = CurrentCircumstance.MaxCharacterCount > 0 ? (float)LocalCurrentCharCount / CurrentCircumstance.MaxCharacterCount : 1f;
+            float populationRatio = CurrentCircumstance.MaxCharacterCount > 0 ? LocalCurrentCharCount / CurrentCircumstance.MaxCharacterCount : 1f;
             float chanceMultiplier;
 
             // Increase the odds of spawning when this spawner's owned population is low.

@@ -11,7 +11,8 @@ namespace SketchLand
     {
         public static CharacterSpawnRules Instance { get; private set; }
         
-        [SerializeField] private int _maxCharacterCount = 6;
+        [SerializeField, Tooltip("Maximum total Spawn Cost owned by each player's spawner.")]
+        private int _maxCharacterCount = 6;
         [SerializeField] private float _perSecondSpawnChance = 0.1f;
         [SerializeField] private List<CharacterSpawnEntry> _spawnEntries = new();
         

@@ -47,6 +47,13 @@ namespace SketchLand
         private InventorySlot _sourceSlot;
         private readonly PlayerActionClock _swingClock = new();
 
+#if UNITY_EDITOR
+        private const float StrikeGizmoDuration = 0.18f;
+        private StrikeZone _strikeGizmoZone;
+        private float _strikeGizmoUntil;
+        private float _strikeGizmoZ;
+#endif
+
         private void Awake() => _character = GetComponent<ServerCharacter>();
 
         public void SetAimPoint(Vector2 point)
@@ -184,6 +191,12 @@ namespace SketchLand
         {
             var item = (SwingItemSO)Item;
             var zone = new StrikeZone(MeleeOrigin, AimDirection, SwingHalfArc, SwingReach);
+#if UNITY_EDITOR
+            // Capture the exact hit-test sector; do not follow the player after impact.
+            _strikeGizmoZone = zone;
+            _strikeGizmoZ = transform.position.z;
+            _strikeGizmoUntil = Time.unscaledTime + StrikeGizmoDuration;
+#endif
             var hit = new SyncHitData(item.GetMeleeDamage(_actor.Food), item.KnockbackForce, _character.transform.position);
             var entities = EntityManager.Instance.Entities;
             for (int i = entities.Count - 1; i >= 0; i--)
@@ -240,6 +253,39 @@ namespace SketchLand
         private void OnDisable() => Cancel();
         private void OnApplicationFocus(bool focused) { if (!focused && (IsCharging || IsEating)) Cancel(); }
 #if UNITY_EDITOR
+        private void OnDrawGizmos()
+        {
+            if (!Application.isPlaying || Time.unscaledTime >= _strikeGizmoUntil) return;
+
+            var zone = _strikeGizmoZone;
+            Vector3 origin = new(zone.Origin.x, zone.Origin.y, _strikeGizmoZ);
+            Vector3 start = Quaternion.Euler(0f, 0f, -zone.HalfAngle) * zone.Direction;
+            Vector3 end = Quaternion.Euler(0f, 0f, zone.HalfAngle) * zone.Direction;
+            var previousColor = UnityEditor.Handles.color;
+            var previousMatrix = UnityEditor.Handles.matrix;
+            var previousDepthTest = UnityEditor.Handles.zTest;
+            try
+            {
+                UnityEditor.Handles.matrix = Matrix4x4.identity;
+                UnityEditor.Handles.zTest = UnityEngine.Rendering.CompareFunction.Always;
+                UnityEditor.Handles.color = new Color(0f, 1f, 1f, 0.2f);
+                UnityEditor.Handles.DrawSolidArc(origin, Vector3.forward, start, zone.HalfAngle * 2f, zone.Reach);
+                UnityEditor.Handles.color = new Color(0f, 1f, 1f, 0.7f);
+                UnityEditor.Handles.DrawWireArc(origin, Vector3.forward, start, zone.HalfAngle * 2f, zone.Reach);
+                if (zone.HalfAngle < 180f)
+                {
+                    UnityEditor.Handles.DrawLine(origin, origin + start * zone.Reach);
+                    UnityEditor.Handles.DrawLine(origin, origin + end * zone.Reach);
+                }
+            }
+            finally
+            {
+                UnityEditor.Handles.color = previousColor;
+                UnityEditor.Handles.matrix = previousMatrix;
+                UnityEditor.Handles.zTest = previousDepthTest;
+            }
+        }
+
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.cyan;
