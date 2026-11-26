@@ -37,6 +37,56 @@ namespace SketchLand
             return _tiles[y * _width + x];
         }
 
+        public bool HasLineOfSight(Vector2 from, Vector2 to)
+        {
+            // Traverse every foreground tile touched by the actual world-space segment.
+            Vector2Int cell = Vector2Int.FloorToInt(from);
+            Vector2Int end = Vector2Int.FloorToInt(to);
+            Vector2 direction = to - from;
+            int stepX = direction.x > 0f ? 1 : direction.x < 0f ? -1 : 0;
+            int stepY = direction.y > 0f ? 1 : direction.y < 0f ? -1 : 0;
+            float deltaX = stepX == 0 ? float.PositiveInfinity : Mathf.Abs(1f / direction.x);
+            float deltaY = stepY == 0 ? float.PositiveInfinity : Mathf.Abs(1f / direction.y);
+            float nextX = stepX == 0 ? float.PositiveInfinity
+                : ((stepX > 0 ? cell.x + 1f : cell.x) - from.x) / direction.x;
+            float nextY = stepY == 0 ? float.PositiveInfinity
+                : ((stepY > 0 ? cell.y + 1f : cell.y) - from.y) / direction.y;
+
+            while (true)
+            {
+                if (BlocksLineOfSight(cell.x, cell.y)) return false;
+                if (cell == end) return true;
+                if (Mathf.Min(nextX, nextY) >= 1f)
+                    return !BlocksLineOfSight(end.x, end.y);
+                if (nextX < nextY)
+                {
+                    cell.x += stepX;
+                    nextX += deltaX;
+                }
+                else if (nextY < nextX)
+                {
+                    cell.y += stepY;
+                    nextY += deltaY;
+                }
+                else
+                {
+                    // A diagonal touching two solid corners is not an opening.
+                    if (BlocksLineOfSight(cell.x + stepX, cell.y)
+                        || BlocksLineOfSight(cell.x, cell.y + stepY)) return false;
+                    cell.x += stepX;
+                    cell.y += stepY;
+                    nextX += deltaX;
+                    nextY += deltaY;
+                }
+            }
+        }
+
+        private bool BlocksLineOfSight(int x, int y)
+        {
+            var tile = GetTileData(x, y);
+            return tile.IsOutOfBounds || (tile.HasTile && tile.IsSolid);
+        }
+
         public void ApplyBreakProgress(int x, int y, double progress, bool refreshCurrentBounds = true)
         {
             if (!IsInBounds(x, y) || progress <= 0d || double.IsNaN(progress) || double.IsInfinity(progress)) return;

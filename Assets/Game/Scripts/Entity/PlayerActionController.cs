@@ -214,6 +214,8 @@ namespace SketchLand
 
         private void QueueStrikeHits(StrikeZone zone, SyncHitData hit)
         {
+            var terrain = WorldManager.Instance.FgGrid;
+            Vector2 lineOfSightOrigin = ProjectileOrigin;
             // Snapshot targets before dealing damage, which can despawn entities.
             var targets = new List<ServerCharacter>(MaxStrikeTargets);
             var entities = EntityManager.Instance.Entities;
@@ -221,13 +223,15 @@ namespace SketchLand
                 if (entities[i] is ServerCharacter enemy && enemy != _character
                     && enemy.gameObject.activeInHierarchy && enemy.DamageReceiver != null && enemy.Health != null
                     && enemy.Health.CurrentLifeState.Value == LifeState.Alive
-                    && zone.Intersects(enemy.transform.position, enemy.ColliderSize))
+                    && zone.Intersects(enemy.transform.position, enemy.ColliderSize)
+                    && terrain.HasLineOfSight(lineOfSightOrigin, enemy.transform.position))
                     targets.Add(enemy);
 
-            if (targets.Count > 0) StartCoroutine(ApplyStrikeHits(targets, hit));
+            if (targets.Count > 0) StartCoroutine(ApplyStrikeHits(targets, hit, terrain, lineOfSightOrigin));
         }
 
-        private IEnumerator ApplyStrikeHits(List<ServerCharacter> targets, SyncHitData hit)
+        private IEnumerator ApplyStrikeHits(List<ServerCharacter> targets, SyncHitData hit,
+            TileGrid terrain, Vector2 lineOfSightOrigin)
         {
             var delay = new WaitForSeconds(StrikeHitDelay);
             for (int i = 0; i < targets.Count; i++)
@@ -236,7 +240,8 @@ namespace SketchLand
                 if (!CanAct) yield break;
 
                 var target = targets[i];
-                if (target != null && target.gameObject.activeInHierarchy && target.DamageReceiver != null)
+                if (target != null && target.gameObject.activeInHierarchy && target.DamageReceiver != null
+                    && terrain.HasLineOfSight(lineOfSightOrigin, target.transform.position))
                     target.DamageReceiver.ReceiveHit(hit);
             }
         }

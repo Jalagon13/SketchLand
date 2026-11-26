@@ -11,8 +11,6 @@ namespace SketchLand
         [SerializeField] private Vector2 _circlingHeight = new(5f, 8f);
         [SerializeField] private Vector2 _circlingHorizontalRange = new(4f, 6f);
         [SerializeField] private float _velocitySteering = 3f;
-        [SerializeField, Min(0.1f), Tooltip("Distance in world units at which a patrolling bat notices a living player. An existing chase continues until the target is lost.")]
-        private float _targetDetectionRange = 16f;
 
         [Header("Knockback Recovery")]
         [SerializeField, Tooltip("How quickly hit velocity blends back toward intended flight during knockback. Independent of normal flight steering; higher values recover faster.")]
@@ -83,12 +81,6 @@ namespace SketchLand
             if (_target != player)
             {
                 ReleaseTarget();
-                float range = Mathf.Max(0.1f, Settings._targetDetectionRange);
-                if (((Vector2)player.transform.position - (Vector2)_ctx.transform.position).sqrMagnitude > range * range)
-                {
-                    player = null;
-                    return false;
-                }
                 _target = player;
                 _targetHealth = player.Health;
                 _targetHealth.CurrentLifeState.OnValueChanged += OnTargetLifeStateChanged;

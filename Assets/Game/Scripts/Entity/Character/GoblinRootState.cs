@@ -40,7 +40,13 @@ namespace SketchLand
         [SerializeField, Min(0f), Tooltip("Seeing the player again within this range can restart pursuit early.")]
         private float _sightRange = 16f;
 
+        [Header("Departure")]
+        [SerializeField, Min(0.1f), Tooltip("Seconds without dealing or receiving damage before walking away and despawning.")]
+        private float _combatInactivityTimeout = 120f;
+        private const float MaximumDepartureDuration = 10f;
+
         public bool IsPursuing { get; private set; }
+        public bool IsLeaving { get; private set; }
         public bool RandomJumpReady => _jumpTimer <= 0f;
 
         private float _jumpTimer;
@@ -52,6 +58,9 @@ namespace SketchLand
         private float _wanderTimer;
         private float _wanderDirection;
         private bool _playerWasVisible;
+        private float _timeSinceCombat;
+        private float _departureTimer;
+        private float _departureDirection;
 
         public GoblinGroundedState Grounded { get; private set; }
         public GoblinAirborneState Airborne { get; private set; }
@@ -76,7 +85,8 @@ namespace SketchLand
                 _maxIdleTime = _maxIdleTime,
                 _minWanderTime = _minWanderTime,
                 _maxWanderTime = _maxWanderTime,
-                _sightRange = _sightRange
+                _sightRange = _sightRange,
+                _combatInactivityTimeout = _combatInactivityTimeout
             };
         }
 
@@ -101,6 +111,9 @@ namespace SketchLand
         protected override void OnEnter()
         {
             SetAirborneAnimation(false);
+            IsLeaving = false;
+            _timeSinceCombat = 0f;
+            _departureTimer = 0f;
             ResetJumpTimer();
             BeginPursuit();
             UpdateAI(0f);
@@ -123,6 +136,43 @@ namespace SketchLand
             UpdateAI(deltaTime);
             if (_ctx.Animator != null)
                 _ctx.Animator.SetBool(IsMoving, Mathf.Abs(_ctx.Velocity.x) > 0.1f);
+        }
+
+        protected override void OnFixedUpdate(float fixedDeltaTime)
+        {
+            if (!_ctx.IsServer || _ctx.Health.CurrentLifeState.Value == LifeState.Dead) return;
+            _timeSinceCombat += fixedDeltaTime;
+            if (!IsLeaving && _timeSinceCombat >= Mathf.Max(0.1f, _combatInactivityTimeout))
+            {
+                IsLeaving = true;
+                IsPursuing = false;
+                var player = Player.Instance != null ? Player.Instance.Character : null;
+                float away = player != null ? _ctx.transform.position.x - player.transform.position.x : _ctx.FacingDirection;
+                _departureDirection = Mathf.Abs(away) > 0.01f ? Mathf.Sign(away) : _ctx.FacingDirection;
+                _ctx.DesiredDirection = Vector2.right * _departureDirection;
+            }
+            if (!IsLeaving) return;
+
+            _departureTimer += fixedDeltaTime;
+            var camera = Camera.main;
+            float viewportX = camera != null ? camera.WorldToViewportPoint(_ctx.transform.position).x : 0.5f;
+            bool offscreen = viewportX < -0.15f || viewportX > 1.15f;
+            // Match bats: a trapped NPC eventually leaves without a death or loot event.
+            if (offscreen || _departureTimer >= MaximumDepartureDuration)
+                CharacterManager.Instance.DespawnCharacter(_ctx);
+        }
+
+        public override void OnDamageReceived() => RecordCombatActivity();
+        public override void OnContactDamageDealt(ServerCharacter target) => RecordCombatActivity();
+
+        private void RecordCombatActivity()
+        {
+            if (!_ctx.IsServer || _ctx.Health.CurrentLifeState.Value == LifeState.Dead) return;
+            _timeSinceCombat = 0f;
+            if (!IsLeaving) return;
+            IsLeaving = false;
+            _departureTimer = 0f;
+            BeginPursuit();
         }
 
         public void UpdateHorizontalMovement(float fixedDeltaTime, float speedMultiplier = 1f)
@@ -155,6 +205,11 @@ namespace SketchLand
 
         private void UpdateAI(float deltaTime)
         {
+            if (IsLeaving)
+            {
+                _ctx.DesiredDirection = Vector2.right * _departureDirection;
+                return;
+            }
             var player = Player.Instance != null ? Player.Instance.Character : null;
             if (player == null)
             {
@@ -275,7 +330,7 @@ namespace SketchLand
                 || (_ctx.DesiredDirection.x > 0f && _ctx.CollisionResult.TouchingRight);
             if (!_ctx.IsKnockedBack && !_ctx.CollisionResult.TouchingTop
                 && _ctx.Health.CurrentLifeState.Value != LifeState.Dead && root.MinJumpSpeed > 0f
-                && (root.RandomJumpReady || (root.IsPursuing && blockedAhead)))
+                && (root.RandomJumpReady || ((root.IsPursuing || root.IsLeaving) && blockedAhead)))
             {
                 _ctx.Velocity.y = root.MinJumpSpeed;
                 root.ResetJumpTimer();

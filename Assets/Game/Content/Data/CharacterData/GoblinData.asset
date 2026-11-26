@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1789cce2ee3144d3f896586a04761dd0, type: 3}
   m_Name: GoblinData
   m_EditorClassIdentifier: Assembly-CSharp::OceanGame.CharacterSO
-  RootState:
-    rid: 2417915168950845619
   <BodyColliderSize>k__BackingField: {x: 0.65, y: 1.35}
   <BaseMaxHealth>k__BackingField: 35
   <BaseDefense>k__BackingField: 3
@@ -45,6 +43,8 @@ MonoBehaviour:
       Data3: -2133570171
       Data4: -1438792589
     Path: event:/Character/DeepOneDeathSFX
+  RootState:
+    rid: 2417915168950845619
   LootDrops:
   - _item: {fileID: 11400000, guid: 7bf33d186c10b416c8333f3b3665a663, type: 2}
     _minAmount: 1
@@ -71,3 +71,4 @@ MonoBehaviour:
         _minWanderTime: 2
         _maxWanderTime: 5
         _sightRange: 16
+        _combatInactivityTimeout: 120

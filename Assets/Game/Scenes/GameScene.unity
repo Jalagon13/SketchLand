@@ -2836,7 +2836,7 @@ MonoBehaviour:
     _requireOpenBackground: 1
     _requireSkyAccess: 0
   - _character: {fileID: 11400000, guid: e8ced5de931fd400da6f4da2853b1d16, type: 2}
-    _weight: 0.5
+    _weight: 0.4
     _surfacePhases: 7
     _undergroundPhases: 0
     _spawnLocation: 0

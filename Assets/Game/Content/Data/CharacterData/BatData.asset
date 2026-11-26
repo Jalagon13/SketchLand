@@ -55,7 +55,6 @@ MonoBehaviour:
         _circlingHeight: {x: 7, y: 9}
         _circlingHorizontalRange: {x: 3, y: 5}
         _velocitySteering: 1
-        _targetDetectionRange: 16
         _knockbackRecoverySteering: 3
         _swoopInterval: {x: 4, y: 9}
         _retreatAscentDuration: {x: 0.75, y: 1.5}

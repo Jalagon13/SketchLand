@@ -20,7 +20,7 @@ MonoBehaviour:
   <HeldRotation>k__BackingField: 0
   <HeldScale>k__BackingField: {x: 0.5, y: 0.5, z: 0.5}
   <EatDuration>k__BackingField: 1
-  <Duration>k__BackingField: 600
+  <Duration>k__BackingField: 300
   <Health>k__BackingField: 0
   <HealthRegen>k__BackingField: 0
   <BonusMiningSpeedPercentage>k__BackingField: 15
