@@ -126,7 +126,9 @@ namespace SketchLand
                 SetFacing(DesiredDirection.x);
 
             Machine.FixedTick(fixedDeltaTime);
+            Vector2 incomingVelocity = Velocity;
             base.FixedTick(fixedDeltaTime);
+            RootState?.OnTileCollision(CollisionResult, incomingVelocity);
 
             // Grid physics resolves position; discard momentum into the surfaces it hit.
             if ((CollisionResult.TouchingLeft && Velocity.x < 0f) || (CollisionResult.TouchingRight && Velocity.x > 0f))
@@ -149,7 +151,8 @@ namespace SketchLand
             var receiver = target.DamageReceiver;
             var hitData = new SyncHitData(_data.BaseDamage, _data.KnockbackForce, transform.position);
             
-            receiver.ReceiveHit(hitData);
+            if (receiver.ReceiveHit(hitData))
+                RootState?.OnContactDamageDealt(target);
         }
 
         public void SetFacing(float horizontal)

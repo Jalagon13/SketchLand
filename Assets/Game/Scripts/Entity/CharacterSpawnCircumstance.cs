@@ -30,11 +30,16 @@ namespace SketchLand
 
         public bool TrySelectCharacter(WorldZone zone, DayPhase phase, bool openBackground, out CharacterSpawnEntry selectedEntry)
         {
+            return TrySelectCharacter(entry => entry.CanSpawn(zone, phase, openBackground), out selectedEntry);
+        }
+
+        public bool TrySelectCharacter(System.Func<CharacterSpawnEntry, bool> canSpawn, out CharacterSpawnEntry selectedEntry)
+        {
             float totalWeight = 0f;
 
             foreach (CharacterSpawnEntry entry in _entries)
             {
-                if (entry.CanSpawn(zone, phase, openBackground))
+                if (entry != null && canSpawn(entry))
                     totalWeight += entry.Weight;
             }
 
@@ -48,7 +53,7 @@ namespace SketchLand
 
             foreach (CharacterSpawnEntry entry in _entries)
             {
-                if (!entry.CanSpawn(zone, phase, openBackground))
+                if (entry == null || !canSpawn(entry))
                     continue;
 
                 roll -= entry.Weight;

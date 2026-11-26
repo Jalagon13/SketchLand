@@ -5,6 +5,8 @@ using UnityEngine.Serialization;
 
 namespace SketchLand
 {
+    public enum CharacterSpawnLocation { Ground, OpenAir }
+
     public class CharacterSpawnRules : MonoBehaviour
     {
         public static CharacterSpawnRules Instance { get; private set; }
@@ -39,8 +41,10 @@ namespace SketchLand
         [SerializeField] private bool _requireOpenBackground;
         [Tooltip("Only spawn on the outdoor ground, with no solid foreground roof above the spawn column.")]
         [SerializeField] private bool _requireSkyAccess;
+        [SerializeField] private CharacterSpawnLocation _spawnLocation = CharacterSpawnLocation.Ground;
 
         public bool RequireSkyAccess => _requireSkyAccess;
+        public CharacterSpawnLocation SpawnLocation => _spawnLocation;
 
         public bool CanSpawn(WorldZone zone, DayPhase phase, bool openBackground)
         {

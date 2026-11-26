@@ -90,18 +90,12 @@ namespace SketchLand
                 if (fgTd.HasTile)
                     continue; // If has tile, try again
                     
-                if(!TryFindGround(candidate, out Vector2Int foundGroundSpot))
-                    continue;
-                    
-                var zone = world.GetZoneAtY(foundGroundSpot.y);
-                bool openBackground = world.BgGrid.GetTileData(foundGroundSpot.x, foundGroundSpot.y).IsAir;
-                if (!CurrentCircumstance.SpawnPool.TrySelectCharacter(zone, world.Clock.CurrentPhase, openBackground, out spawnEntry))
+                bool hasGround = TryFindGround(candidate, out Vector2Int foundGroundSpot);
+                if (!CurrentCircumstance.SpawnPool.TrySelectCharacter(
+                    entry => TryGetSpawnPosition(entry, candidate, hasGround, foundGroundSpot, out _), out spawnEntry))
                     continue;
 
-                if (spawnEntry.RequireSkyAccess && !HasOpenSky(world.FgGrid, foundGroundSpot))
-                    continue;
-
-                if(!TestSpotForSpace(spawnEntry, foundGroundSpot, out Vector2 spawnPosition))
+                if (!TryGetSpawnPosition(spawnEntry, candidate, hasGround, foundGroundSpot, out Vector2 spawnPosition))
                     continue;
 
                 spawnSpot = spawnPosition;
@@ -110,6 +104,23 @@ namespace SketchLand
             
             // If all attempts dont make it return false
             return false;
+        }
+
+        private bool TryGetSpawnPosition(CharacterSpawnEntry entry, Vector2Int candidate, bool hasGround,
+            Vector2Int ground, out Vector2 position)
+        {
+            var world = WorldManager.Instance;
+            bool flying = entry.SpawnLocation == CharacterSpawnLocation.OpenAir;
+            Vector2Int tile = flying ? candidate : ground;
+            position = (Vector2)tile + Vector2.one * 0.5f;
+            if (flying ? _noSpawnArea.Contains(candidate) : !hasGround) return false;
+            var zone = world.GetZoneAtY(tile.y);
+            bool openBackground = world.BgGrid.GetTileData(tile.x, tile.y).IsAir;
+            if (!entry.CanSpawn(zone, world.Clock.CurrentPhase, openBackground)) return false;
+            if (entry.RequireSkyAccess && !HasOpenSky(world.FgGrid, tile)) return false;
+            if (flying)
+                return CharacterSpawnSpace.IsOpenSurfaceAir(world.FgGrid, world.BgGrid, zone, position, entry.Character.BodyColliderSize);
+            return TestSpotForSpace(entry, ground, out position);
         }
 
         private static bool HasOpenSky(TileGrid grid, Vector2Int spot)

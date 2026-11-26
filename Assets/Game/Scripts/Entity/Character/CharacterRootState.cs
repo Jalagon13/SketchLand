@@ -31,6 +31,12 @@ namespace SketchLand
 
         protected virtual void OnDamaged() { }
 
+        public virtual void OnTileCollision(GridPhysics.CollisionResult collision, UnityEngine.Vector2 incomingVelocity) { }
+
+        public virtual void OnContactDamageDealt(ServerCharacter target) { }
+
+        public virtual void OnDamageReceived() { }
+
         protected void PlayDamageAnimation(int stateHash)
         {
             var animator = _ctx.Animator;

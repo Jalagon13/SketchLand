@@ -48,6 +48,32 @@ namespace SketchLand
         {
             Instance = this;
         }
+
+#if UNITY_EDITOR
+        // Temporary playtest shortcut. Remove this block when cursor spawning is no longer needed.
+        private void Update()
+        {
+            var keyboard = UnityEngine.InputSystem.Keyboard.current;
+            var mouse = UnityEngine.InputSystem.Mouse.current;
+            if (keyboard == null || mouse == null || !keyboard.gKey.wasPressedThisFrame || Time.timeScale <= 0f)
+                return;
+            if (WorldManager.Instance == null || !WorldManager.Instance.IsWorldReady
+                || NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer)
+                return;
+
+            var player = Player.Instance != null ? Player.Instance.Character : null;
+            var camera = Camera.main;
+            if (player == null || camera == null) return;
+            var owner = _spawners.Find(spawner => spawner.Host == player);
+            if (owner == null) return;
+
+            var prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(
+                "Assets/Game/Content/Prefabs/Characters/BatNpc.prefab");
+            Vector2 position = camera.ScreenToWorldPoint(mouse.position.ReadValue());
+            if (prefab != null && TrySpawnCharacter(owner, prefab.GetComponent<ServerCharacter>(), position, out var bat))
+                owner.RegisterOwnedCharacter(bat);
+        }
+#endif
         
         private void OnDrawGizmos()
         {

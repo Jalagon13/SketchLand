@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: BatData
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.CharacterSO
   RootState:
-    rid: 2417915714338816132
-  <BodyColliderSize>k__BackingField: {x: 1.5, y: 0.75}
+    rid: 2417915714338816140
+  <BodyColliderSize>k__BackingField: {x: 0.9, y: 0.65}
   <BaseMaxHealth>k__BackingField: 18
   <BaseDefense>k__BackingField: 0
   <BaseDamage>k__BackingField: 5
@@ -45,6 +45,17 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 2417915714338816132
+    - rid: 2417915714338816140
       type: {class: BatRootState, ns: SketchLand, asm: Assembly-CSharp}
-      data: 
+      data:
+        _velocitySteering: 3
+        _circlingHeight: {x: 7, y: 9}
+        _circlingHorizontalRange: {x: 5, y: 8}
+        _swoopInterval: {x: 7, y: 9}
+        _swoopSteering: 0.65
+        _maximumSwoopDuration: 9
+        _retreatAscentDuration: {x: 4, y: 5}
+        _bounceDamping: 0.75
+        _postCollisionSteeringDelay: {x: 0.3, y: 0.5}
+        _postCollisionSteeringRecovery: 1
+        _combatInactivityTimeout: 120

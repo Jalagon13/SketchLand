@@ -15,17 +15,26 @@ namespace SketchLand
         }
 
         // Any damage enters through here
-        public void ReceiveHit(SyncHitData hit)
+        public bool ReceiveHit(SyncHitData hit)
         {
-            if(_character.Health.CurrentLifeState.Value != LifeState.Alive) return;
+            if(_character.Health.CurrentLifeState.Value != LifeState.Alive) return false;
+
+            // Contact attackers need confirmation of a real hit, including iframe rejection.
+            if (IsServer) return ApplyHit(hit);
             
             ReceiveHitServerRpc(hit);
+            return false;
         }
         
         [Rpc(SendTo.Server)]
         private void ReceiveHitServerRpc(SyncHitData hit)
         {
-            if(_character.Health.CurrentLifeState.Value != LifeState.Alive) return;
+            ApplyHit(hit);
+        }
+
+        private bool ApplyHit(SyncHitData hit)
+        {
+            if (!IsServer || _character.Health.CurrentLifeState.Value != LifeState.Alive) return false;
         
             float difficultyMult = 0.5f; // Placeholder for difficulty multiplier, 0.5 for normal, 0.75 for hard, 1 for insane TENT mults
             int defense = Mathf.RoundToInt(_character.Stats.Defense.GetValue() * difficultyMult);
@@ -37,7 +46,10 @@ namespace SketchLand
                 Vector2 knockback = _character.CalculateKnockbackVelocity(hit.KnockbackForce, hit.SourcePosition, _character.FacingDirection);
                 deathVelocity = knockback.sqrMagnitude > 0f ? knockback : _character.Velocity;
             }
+            int previousHealth = _character.Health.CurrentHealth.Value;
             _character.Health.TakeDamage(netDamage, deathVelocity: deathVelocity);
+            bool damaged = _character.Health.CurrentHealth.Value < previousHealth;
+            if (damaged) _character.RootState?.OnDamageReceived();
             
             // TEMP: Spawn damage number popup. I will put this code in a client side game feel system later. Same with the SFX
             if(_character == Player.Instance.Character)
@@ -50,6 +62,7 @@ namespace SketchLand
             }
             
             _character.ApplyKnockback(hit.KnockbackForce, hit.SourcePosition);
+            return damaged;
         }
 
     }
