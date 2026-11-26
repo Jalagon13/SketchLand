@@ -9850,10 +9850,10 @@ MonoBehaviour:
   - {fileID: 2037069669}
   <Clock>k__BackingField:
     _runTimeOfDay: 1
-    _sunriseMinutes: 2
-    _dayMinutes: 8
-    _sunsetMinutes: 2
-    _nightMinutes: 6
+    _sunriseMinutes: 0.1
+    _dayMinutes: 0.1
+    _sunsetMinutes: 0.1
+    _nightMinutes: 10
   _tileRepairDelay: 15
 --- !u!114 &2043979316
 MonoBehaviour:

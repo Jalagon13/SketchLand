@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1789cce2ee3144d3f896586a04761dd0, type: 3}
+  m_Name: BatData
+  m_EditorClassIdentifier: Assembly-CSharp::SketchLand.CharacterSO
+  RootState:
+    rid: 2417915714338816132
+  <BodyColliderSize>k__BackingField: {x: 1.5, y: 0.75}
+  <BaseMaxHealth>k__BackingField: 18
+  <BaseDefense>k__BackingField: 0
+  <BaseDamage>k__BackingField: 5
+  <KnockbackForce>k__BackingField: 10
+  <BaseKbResist>k__BackingField: 0
+  <BaseSpeed>k__BackingField: 3
+  <BaseIFrameDuration>k__BackingField: 0.17
+  <BaseTurnSharpness>k__BackingField: 5
+  <CanBeKnockedBacked>k__BackingField: 1
+  <CanDie>k__BackingField: 1
+  <CanDamagePlayerOnTouch>k__BackingField: 1
+  <CharacterPrefab>k__BackingField: {fileID: 391777062886237613, guid: d595bd01f7a8e4a66adaa8291de191cc, type: 3}
+  <CharacterDamagedSFX>k__BackingField:
+    Guid:
+      Data1: -1489350017
+      Data2: 1203981027
+      Data3: 1870255023
+      Data4: -422337342
+    Path: event:/Character/DeepOneDamagedSFX
+  <CharacterDeathSFX>k__BackingField:
+    Guid:
+      Data1: -1325172787
+      Data2: 1191774288
+      Data3: -2133570171
+      Data4: -1438792589
+    Path: event:/Character/DeepOneDeathSFX
+  LootDrops: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 2417915714338816132
+      type: {class: BatRootState, ns: SketchLand, asm: Assembly-CSharp}
+      data: 
