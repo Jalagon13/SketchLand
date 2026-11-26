@@ -2812,6 +2812,7 @@ MonoBehaviour:
   _enableSpawning: 1
   _globalMaxCharacterCap: 200
   _durationTillCharacterDespawns: 15
+  _cursorSpawnCharacter: {fileID: 11400000, guid: e8ced5de931fd400da6f4da2853b1d16, type: 2}
 --- !u!114 &653184666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2828,26 +2829,26 @@ MonoBehaviour:
   _perSecondSpawnChance: 0.04
   _spawnEntries:
   - _character: {fileID: 11400000, guid: 2a9db1f511b6a4888a49dd1d2f56bd26, type: 2}
-    _weight: 0
+    _weight: 1
     _surfacePhases: 2
     _undergroundPhases: 0
+    _spawnLocation: 0
     _requireOpenBackground: 1
     _requireSkyAccess: 0
-    _spawnLocation: 0
   - _character: {fileID: 11400000, guid: e8ced5de931fd400da6f4da2853b1d16, type: 2}
-    _weight: 0
-    _surfacePhases: 15
+    _weight: 0.75
+    _surfacePhases: 7
     _undergroundPhases: 0
+    _spawnLocation: 0
     _requireOpenBackground: 1
     _requireSkyAccess: 1
-    _spawnLocation: 0
   - _character: {fileID: 11400000, guid: e0524bfc9bbc8440991875cb8dab0a36, type: 2}
     _weight: 1
     _surfacePhases: 8
     _undergroundPhases: 0
+    _spawnLocation: 1
     _requireOpenBackground: 1
     _requireSkyAccess: 1
-    _spawnLocation: 1
 --- !u!114 &653184667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5651,18 +5652,6 @@ MonoBehaviour:
     _amount: 1
   - _ingredient: {fileID: 11400000, guid: 2e6df84076b2b454a9e50fd441cb468c, type: 2}
     _amount: 1
-  - _ingredient: {fileID: 11400000, guid: 56e413806c6d64ffa868bcf95d2c3967, type: 2}
-    _amount: 1
-  - _ingredient: {fileID: 11400000, guid: e7abd829c61264bd08d0508539b98356, type: 2}
-    _amount: 1
-  - _ingredient: {fileID: 11400000, guid: dbcbcd20bffa749e2920a1db8a6a1792, type: 2}
-    _amount: 333
-  - _ingredient: {fileID: 11400000, guid: fe977c3c6a1ac40199d63b4806e13e06, type: 2}
-    _amount: 22
-  - _ingredient: {fileID: 11400000, guid: a76ba1086b24840afb1ba423bb9128b3, type: 2}
-    _amount: 222
-  - _ingredient: {fileID: 11400000, guid: 81a74ab6b5b314aa5a95260481a734d8, type: 2}
-    _amount: 222
 --- !u!114 &1178486984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9859,10 +9848,10 @@ MonoBehaviour:
   - {fileID: 2037069669}
   <Clock>k__BackingField:
     _runTimeOfDay: 1
-    _sunriseMinutes: 2
-    _dayMinutes: 8
-    _sunsetMinutes: 2
-    _nightMinutes: 8
+    _sunriseMinutes: 1.5
+    _dayMinutes: 10
+    _sunsetMinutes: 1.5
+    _nightMinutes: 7
   _tileRepairDelay: 15
 --- !u!114 &2043979316
 MonoBehaviour:

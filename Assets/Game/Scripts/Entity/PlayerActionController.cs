@@ -155,7 +155,7 @@ namespace SketchLand
             Vector2 origin = ProjectileOrigin;
             if (SpawnOverlapsTerrain(origin, Arrow.Projectile)) { Cancel(); return; }
             int damage = Mathf.RoundToInt(Mathf.Lerp(Arrow.Projectile.MinBaseDamage, Arrow.Projectile.MaxBaseDamage, Charge));
-            int knockback = Mathf.RoundToInt(Mathf.Lerp(Arrow.Projectile.MinBaseKnockbackForce, Arrow.Projectile.MaxBaseKnockbackForce, Charge));
+            float knockback = Mathf.Lerp(Arrow.Projectile.MinBaseKnockbackForce, Arrow.Projectile.MaxBaseKnockbackForce, Charge);
             var projectile = ProjectileManager.SpawnProjectile(Arrow.Projectile, origin,
                 AimDirection * bow.GetLaunchSpeed(Charge), _character, damage, knockback);
             if (projectile == null) { Cancel(); return; }

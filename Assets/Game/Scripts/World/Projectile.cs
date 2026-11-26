@@ -16,7 +16,7 @@ namespace SketchLand
         public ProjectileFaction Faction { get; private set; }
         public Entity SourceEntity { get; private set; }
         public int Damage { get; private set; }
-        public int KnockbackForce { get; private set; }
+        public float KnockbackForce { get; private set; }
         public int PenetrationRemaining { get; private set; }
         public float LifetimeRemaining { get; private set; }
 
@@ -42,7 +42,7 @@ namespace SketchLand
         }
 
         // Called right after instantiation by ProjectileManager to configure this projectile.
-        public virtual void Initialize(ProjectileSO so, Vector2 initialVelocity, Entity source, int damage, int knockback, ProjectileFaction faction)
+        public virtual void Initialize(ProjectileSO so, Vector2 initialVelocity, Entity source, int damage, float knockback, ProjectileFaction faction)
         {
             _data = so;
             SourceEntity = source;

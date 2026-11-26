@@ -11,7 +11,7 @@ namespace SketchLand
             Vector2 initialVelocity,
             Entity sourceEntity = null,
             int? damageOverride = null,
-            int? knockbackOverride = null,
+            float? knockbackOverride = null,
             ProjectileFaction? factionOverride = null)
         {
             if (projectileSO == null || projectileSO.ProjectilePrefab == null)

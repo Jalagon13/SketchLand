@@ -22,7 +22,8 @@ MonoBehaviour:
   <SwingsPerSecond>k__BackingField: 1.25
   <SwingArcAngle>k__BackingField: 100
   <StrikeReach>k__BackingField: 1.45
+  <ImpactFraction>k__BackingField: 0.47
   <MeleeDamage>k__BackingField: 3
-  <KnockbackForce>k__BackingField: 1
+  <KnockbackForce>k__BackingField: 0.2
   <HarvestType>k__BackingField: 1
   <Tier>k__BackingField: 1

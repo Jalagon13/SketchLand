@@ -17,9 +17,11 @@ namespace SketchLand
         [field: SerializeField] public int MinBaseDamage { get; private set; } = 10;
         [field: SerializeField] public int MaxBaseDamage { get; private set; } = 10;
         [field: SerializeField] public int BasePenetration { get; private set; } = 1; // 1 = dies on first hit, -1 = infinite
-        [field: SerializeField, Range(0, ServerCharacter.MaxKnockbackForce)] public int MinBaseKnockbackForce { get; private set; } = 7;
+        [field: Tooltip("Minimum fraction of global knockback speed, used at minimum bow charge.")]
+        [field: SerializeField, Range(0f, 1f)] public float MinBaseKnockbackForce { get; private set; } = 0.07f;
+        [field: Tooltip("Maximum fraction of global knockback speed, used at full bow charge or for uncharged projectiles.")]
         [field: FormerlySerializedAs("<BaseKnockbackForce>k__BackingField")]
-        [field: SerializeField, Range(0, ServerCharacter.MaxKnockbackForce)] public int MaxBaseKnockbackForce { get; private set; } = 7;
+        [field: SerializeField, Range(0f, 1f)] public float MaxBaseKnockbackForce { get; private set; } = 0.07f;
 
         [field: Header("Feel")]
         [field: SerializeField] public GameObject HitImpactPrefab { get; private set; }
@@ -32,8 +34,8 @@ namespace SketchLand
         {
             MinBaseDamage = Mathf.Max(0, MinBaseDamage);
             MaxBaseDamage = Mathf.Max(MinBaseDamage, MaxBaseDamage);
-            MinBaseKnockbackForce = Mathf.Clamp(MinBaseKnockbackForce, 0, ServerCharacter.MaxKnockbackForce);
-            MaxBaseKnockbackForce = Mathf.Clamp(MaxBaseKnockbackForce, MinBaseKnockbackForce, ServerCharacter.MaxKnockbackForce);
+            MinBaseKnockbackForce = Mathf.Clamp01(MinBaseKnockbackForce);
+            MaxBaseKnockbackForce = Mathf.Clamp(MaxBaseKnockbackForce, MinBaseKnockbackForce, 1f);
         }
     }
 }

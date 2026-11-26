@@ -15,11 +15,11 @@ MonoBehaviour:
   RootState:
     rid: 2417915168950845608
   <BodyColliderSize>k__BackingField: {x: 1.4, y: 1.4}
-  <BaseMaxHealth>k__BackingField: 25
-  <BaseDefense>k__BackingField: 2
+  <BaseMaxHealth>k__BackingField: 40
+  <BaseDefense>k__BackingField: 3
   <BaseDamage>k__BackingField: 0
   <KnockbackForce>k__BackingField: 0
-  <BaseKbResist>k__BackingField: 0.1
+  <BaseKbResist>k__BackingField: 0.5
   <BaseSpeed>k__BackingField: 1
   <BaseIFrameDuration>k__BackingField: 0.17
   <BaseTurnSharpness>k__BackingField: 5

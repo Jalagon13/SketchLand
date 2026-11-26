@@ -17,7 +17,8 @@ namespace SketchLand
 
         [field: Header("Hit Settings")]
         [field: SerializeField] public int MeleeDamage { get; private set; } = 10;
-        [field: SerializeField, Range(0, ServerCharacter.MaxKnockbackForce)] public int KnockbackForce { get; private set; } = 4;
+        [field: Tooltip("Fraction of the global maximum knockback speed. 0 = none, 1 = full strength before target resistance.")]
+        [field: SerializeField, Range(0f, 1f)] public float KnockbackForce { get; private set; } = 0.04f;
 
         public virtual float GetSwingRate(PlayerFood food) => SwingsPerSecond;
         public virtual float GetStrikeReach(PlayerFood food) => StrikeReach;

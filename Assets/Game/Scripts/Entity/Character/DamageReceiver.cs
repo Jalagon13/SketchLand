@@ -70,10 +70,10 @@ namespace SketchLand
     public struct SyncHitData : IEquatable<SyncHitData>, INetworkSerializable
     {
         public int Damage;
-        [Range(0, ServerCharacter.MaxKnockbackForce)] public int KnockbackForce;
+        [Range(0f, 1f)] public float KnockbackForce;
         public Vector2 SourcePosition;
         
-        public SyncHitData(int damage, int knockbackForce, Vector2 sourcePosition)
+        public SyncHitData(int damage, float knockbackForce, Vector2 sourcePosition)
         {
             Damage = damage;
             KnockbackForce = knockbackForce;

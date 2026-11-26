@@ -29,9 +29,12 @@ namespace SketchLand
         public Animator Animator => _animator;
         public float FacingDirection { get; private set; } = 1f;
 
-        public const int MaxKnockbackForce = 100;
+        // Global speed scale in world units per second, before horizontal/upward ratios.
+        // Inspector knockback values are fractions of this maximum (0..1).
+        private const float MaxKnockbackSpeed = 40f;
 
-        // Shared by every character. Duration scales with strength after resistance.
+        // Shared by every character. Duration uses normalized strength after resistance,
+        // so tuning MaxKnockbackSpeed changes velocity without changing duration.
         private const float MinKnockbackDuration = 0.15f;
         private const float MaxKnockbackDuration = 0.5f;
         private const float HorizontalKnockbackRatio = 0.55f;
@@ -198,11 +201,11 @@ namespace SketchLand
             Velocity.y = Mathf.Max(Velocity.y - gravityForce * fixedDeltaTime, terminalVelocity);
         }
 
-        public void ApplyKnockback(int force, Vector2 sourcePosition)
+        public void ApplyKnockback(float force, Vector2 sourcePosition)
         {
             if (!Data.CanBeKnockedBacked || Health.CurrentLifeState.Value == LifeState.Dead) return;
 
-            float strength = Mathf.Clamp(force, 0, MaxKnockbackForce) * (1f - Mathf.Clamp01(Data.BaseKbResist));
+            float strength = Mathf.Clamp01(force) * (1f - Mathf.Clamp01(Data.BaseKbResist));
             if (strength <= 0f) return;
 
             float horizontalDistance = transform.position.x - sourcePosition.x;
@@ -211,17 +214,18 @@ namespace SketchLand
                 : Mathf.Sign(horizontalDistance);
 
             Velocity = CalculateKnockbackVelocity(force, sourcePosition, direction);
-            _knockbackTimer = Mathf.Lerp(MinKnockbackDuration, MaxKnockbackDuration, strength / MaxKnockbackForce);
+            _knockbackTimer = Mathf.Lerp(MinKnockbackDuration, MaxKnockbackDuration, strength);
         }
 
         // Also used to give a visual corpse the killing hit's impulse without moving a dead Entity.
-        public Vector2 CalculateKnockbackVelocity(int force, Vector2 sourcePosition, float fallbackDirection)
+        public Vector2 CalculateKnockbackVelocity(float force, Vector2 sourcePosition, float fallbackDirection)
         {
             if (!Data.CanBeKnockedBacked) return Vector2.zero;
-            float strength = Mathf.Clamp(force, 0, MaxKnockbackForce) * (1f - Mathf.Clamp01(Data.BaseKbResist));
+            float strength = Mathf.Clamp01(force) * (1f - Mathf.Clamp01(Data.BaseKbResist));
             float distance = transform.position.x - sourcePosition.x;
             float direction = Mathf.Abs(distance) <= KnockbackDirectionEpsilon ? fallbackDirection : Mathf.Sign(distance);
-            return new Vector2(strength * HorizontalKnockbackRatio * direction, strength * UpwardKnockbackRatio);
+            float speed = strength * MaxKnockbackSpeed;
+            return new Vector2(speed * HorizontalKnockbackRatio * direction, speed * UpwardKnockbackRatio);
         }
 
         public void ClearKnockback()

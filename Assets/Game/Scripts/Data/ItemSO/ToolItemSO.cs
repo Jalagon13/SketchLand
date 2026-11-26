@@ -23,6 +23,6 @@ namespace SketchLand
 
         public override string GetDescription() => DescribeStats(
             $"Mining tier: {Tier}<br>Mining speed: {SwingsPerSecond:0.##} swings/sec"
-            + $"<br>Damage: {MeleeDamage}<br>Knockback: {KnockbackForce}");
+            + $"<br>Damage: {MeleeDamage}<br>Knockback: {KnockbackForce:P0}");
     }
 }

@@ -37,11 +37,11 @@ namespace SketchLand
 
         [SerializeField] private SpawnPhases _surfacePhases = SpawnPhases.All;
         [SerializeField] private SpawnPhases _undergroundPhases = SpawnPhases.All;
+        [SerializeField] private CharacterSpawnLocation _spawnLocation = CharacterSpawnLocation.Ground;
         [Tooltip("Require an empty background tile at the spawn location just above the ground.")]
         [SerializeField] private bool _requireOpenBackground;
         [Tooltip("Only spawn on the outdoor ground, with no solid foreground roof above the spawn column.")]
         [SerializeField] private bool _requireSkyAccess;
-        [SerializeField] private CharacterSpawnLocation _spawnLocation = CharacterSpawnLocation.Ground;
 
         public bool RequireSkyAccess => _requireSkyAccess;
         public CharacterSpawnLocation SpawnLocation => _spawnLocation;

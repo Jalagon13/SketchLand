@@ -15,7 +15,7 @@ namespace SketchLand
             ? food.ApplyMeleeDamageBonus(MeleeDamage) : MeleeDamage;
 
         public override string GetDescription() => DescribeStats(
-            $"Damage: {MeleeDamage}<br>Knockback: {KnockbackForce}"
+            $"Damage: {MeleeDamage}<br>Knockback: {KnockbackForce:P0}"
             + $"<br>Swing speed: {SwingsPerSecond:0.##} swings/sec");
     }
 }

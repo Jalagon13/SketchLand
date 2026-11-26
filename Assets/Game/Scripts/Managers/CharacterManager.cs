@@ -50,6 +50,10 @@ namespace SketchLand
         }
 
 #if UNITY_EDITOR
+        [Header("Playtest Spawning")]
+        [SerializeField, Tooltip("Press G in Play Mode to spawn this character at the mouse cursor. Leave empty to disable the shortcut.")]
+        private CharacterSO _cursorSpawnCharacter;
+
         // Temporary playtest shortcut. Remove this block when cursor spawning is no longer needed.
         private void Update()
         {
@@ -60,6 +64,8 @@ namespace SketchLand
             if (WorldManager.Instance == null || !WorldManager.Instance.IsWorldReady
                 || NetworkManager.Singleton == null || !NetworkManager.Singleton.IsServer)
                 return;
+            if (_cursorSpawnCharacter == null || _cursorSpawnCharacter.CharacterPrefab == null)
+                return;
 
             var player = Player.Instance != null ? Player.Instance.Character : null;
             var camera = Camera.main;
@@ -67,11 +73,9 @@ namespace SketchLand
             var owner = _spawners.Find(spawner => spawner.Host == player);
             if (owner == null) return;
 
-            var prefab = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(
-                "Assets/Game/Content/Prefabs/Characters/BatNpc.prefab");
             Vector2 position = camera.ScreenToWorldPoint(mouse.position.ReadValue());
-            if (prefab != null && TrySpawnCharacter(owner, prefab.GetComponent<ServerCharacter>(), position, out var bat))
-                owner.RegisterOwnedCharacter(bat);
+            if (TrySpawnCharacter(owner, _cursorSpawnCharacter.CharacterPrefab, position, out var character))
+                owner.RegisterOwnedCharacter(character);
         }
 #endif
         
