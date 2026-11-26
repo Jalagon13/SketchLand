@@ -21,6 +21,11 @@ namespace SketchLand
         [field: SerializeField] public float MinJumpSpeed { get; private set; }
         [field: SerializeField] public float AirborneMoveSpeedMultiplier { get; private set; }
 
+        [SerializeField, Min(0.1f), Tooltip("Minimum seconds between random jump attempts.")]
+        private float _minJumpTimerDuration = 2f;
+        [SerializeField, Min(0.1f), Tooltip("Maximum seconds between random jump attempts.")]
+        private float _maxJumpTimerDuration = 6f;
+
         [Header("AI Settings")]
         [SerializeField, Tooltip("Minimum seconds without forward progress before idling and wandering.")]
         private float _minStuckTime = 1.5f;
@@ -36,7 +41,9 @@ namespace SketchLand
         private float _sightRange = 16f;
 
         public bool IsPursuing { get; private set; }
+        public bool RandomJumpReady => _jumpTimer <= 0f;
 
+        private float _jumpTimer;
         private float _stuckTimer;
         private float _stuckTime;
         private float _progressX;
@@ -59,6 +66,8 @@ namespace SketchLand
                 TerminalVelocity = TerminalVelocity,
                 MinJumpSpeed = MinJumpSpeed,
                 AirborneMoveSpeedMultiplier = AirborneMoveSpeedMultiplier,
+                _minJumpTimerDuration = _minJumpTimerDuration,
+                _maxJumpTimerDuration = _maxJumpTimerDuration,
                 _minStuckTime = _minStuckTime,
                 _maxStuckTime = _maxStuckTime,
                 _minRetryTime = _minRetryTime,
@@ -92,6 +101,7 @@ namespace SketchLand
         protected override void OnEnter()
         {
             SetAirborneAnimation(false);
+            ResetJumpTimer();
             BeginPursuit();
             UpdateAI(0f);
         }
@@ -109,6 +119,7 @@ namespace SketchLand
 
         protected override void OnUpdate(float deltaTime)
         {
+            _jumpTimer = Mathf.Max(0f, _jumpTimer - deltaTime);
             UpdateAI(deltaTime);
             if (_ctx.Animator != null)
                 _ctx.Animator.SetBool(IsMoving, Mathf.Abs(_ctx.Velocity.x) > 0.1f);
@@ -125,6 +136,12 @@ namespace SketchLand
             {
                 _ctx.Velocity.x = 0f;
             }
+        }
+
+        public void ResetJumpTimer()
+        {
+            float minimum = Mathf.Max(0.1f, _minJumpTimerDuration);
+            _jumpTimer = UnityEngine.Random.Range(minimum, Mathf.Max(minimum, _maxJumpTimerDuration));
         }
 
         private void BeginPursuit()
@@ -254,9 +271,14 @@ namespace SketchLand
                 return root.Airborne;
             }
 
-            if (!_ctx.IsKnockedBack && root.IsPursuing && ((_ctx.DesiredDirection.x < 0f && _ctx.CollisionResult.TouchingLeft) || (_ctx.DesiredDirection.x > 0f && _ctx.CollisionResult.TouchingRight)))
+            bool blockedAhead = (_ctx.DesiredDirection.x < 0f && _ctx.CollisionResult.TouchingLeft)
+                || (_ctx.DesiredDirection.x > 0f && _ctx.CollisionResult.TouchingRight);
+            if (!_ctx.IsKnockedBack && !_ctx.CollisionResult.TouchingTop
+                && _ctx.Health.CurrentLifeState.Value != LifeState.Dead && root.MinJumpSpeed > 0f
+                && (root.RandomJumpReady || (root.IsPursuing && blockedAhead)))
             {
                 _ctx.Velocity.y = root.MinJumpSpeed;
+                root.ResetJumpTimer();
                 return root.Airborne;
             }
 

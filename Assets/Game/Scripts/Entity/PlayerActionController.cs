@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace SketchLand
@@ -9,6 +11,9 @@ namespace SketchLand
     [DefaultExecutionOrder(-50)]
     public sealed class PlayerActionController : MonoBehaviour
     {
+        private const int MaxStrikeTargets = 5;
+        private const float StrikeHitDelay = 0.05f;
+
         [Tooltip("World-space offset from the character root. Never follows animated bones.")]
         [SerializeField] private Vector2 _projectileOriginOffset = new(0f, 0.4f);
         [SerializeField] private Vector2 _meleeOriginOffset = new(0f, 0.55f);
@@ -198,16 +203,42 @@ namespace SketchLand
             _strikeGizmoUntil = Time.unscaledTime + StrikeGizmoDuration;
 #endif
             var hit = new SyncHitData(item.GetMeleeDamage(_actor.Food), item.KnockbackForce, _character.transform.position);
-            var entities = EntityManager.Instance.Entities;
-            for (int i = entities.Count - 1; i >= 0; i--)
-                if (entities[i] is ServerCharacter enemy && enemy != _character && enemy.DamageReceiver != null
-                    && zone.Intersects(enemy.transform.position, enemy.ColliderSize)) enemy.DamageReceiver.ReceiveHit(hit);
+            QueueStrikeHits(zone, hit);
             if (item is ToolItemSO tool)
             {
                 var target = MiningManager.Instance.CaptureTarget(_actor, tool, AimPoint);
                 if (target.HasValue) MiningManager.Instance.TryPerformMine(_actor, tool, target.Value);
             }
             ImpactSequence++;
+        }
+
+        private void QueueStrikeHits(StrikeZone zone, SyncHitData hit)
+        {
+            // Snapshot targets before dealing damage, which can despawn entities.
+            var targets = new List<ServerCharacter>(MaxStrikeTargets);
+            var entities = EntityManager.Instance.Entities;
+            for (int i = entities.Count - 1; i >= 0 && targets.Count < MaxStrikeTargets; i--)
+                if (entities[i] is ServerCharacter enemy && enemy != _character
+                    && enemy.gameObject.activeInHierarchy && enemy.DamageReceiver != null && enemy.Health != null
+                    && enemy.Health.CurrentLifeState.Value == LifeState.Alive
+                    && zone.Intersects(enemy.transform.position, enemy.ColliderSize))
+                    targets.Add(enemy);
+
+            if (targets.Count > 0) StartCoroutine(ApplyStrikeHits(targets, hit));
+        }
+
+        private IEnumerator ApplyStrikeHits(List<ServerCharacter> targets, SyncHitData hit)
+        {
+            var delay = new WaitForSeconds(StrikeHitDelay);
+            for (int i = 0; i < targets.Count; i++)
+            {
+                if (i > 0) yield return delay;
+                if (!CanAct) yield break;
+
+                var target = targets[i];
+                if (target != null && target.gameObject.activeInHierarchy && target.DamageReceiver != null)
+                    target.DamageReceiver.ReceiveHit(hit);
+            }
         }
 
         private void Begin(PlayerActionKind kind)
@@ -250,7 +281,11 @@ namespace SketchLand
             return null;
         }
 
-        private void OnDisable() => Cancel();
+        private void OnDisable()
+        {
+            StopAllCoroutines();
+            Cancel();
+        }
         private void OnApplicationFocus(bool focused) { if (!focused && (IsCharging || IsEating)) Cancel(); }
 #if UNITY_EDITOR
         private void OnDrawGizmos()
