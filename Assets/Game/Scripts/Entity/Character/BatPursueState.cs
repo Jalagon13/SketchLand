@@ -39,9 +39,11 @@ namespace SketchLand
                 _root.Steer(Vector2.zero, deltaTime);
                 return;
             }
-            if (_ctx.IsKnockedBack) return;
-            _untilSwoop -= deltaTime;
-            _ascentTime = Mathf.Max(0f, _ascentTime - deltaTime);
+            if (!_ctx.IsKnockedBack)
+            {
+                _untilSwoop -= deltaTime;
+                _ascentTime = Mathf.Max(0f, _ascentTime - deltaTime);
+            }
             Vector2 position = _ctx.transform.position;
             Vector2 playerPosition = player.transform.position;
             float targetX = playerPosition.x + _side * _range;

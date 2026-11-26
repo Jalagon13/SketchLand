@@ -23,5 +23,5 @@ MonoBehaviour:
   <SwingArcAngle>k__BackingField: 140
   <StrikeReach>k__BackingField: 1.7
   <ImpactFraction>k__BackingField: 0.47
-  <MeleeDamage>k__BackingField: 6
+  <MeleeDamage>k__BackingField: 7
   <KnockbackForce>k__BackingField: 0.33

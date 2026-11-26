@@ -2812,7 +2812,7 @@ MonoBehaviour:
   _enableSpawning: 1
   _globalMaxCharacterCap: 200
   _durationTillCharacterDespawns: 15
-  _cursorSpawnCharacter: {fileID: 11400000, guid: e8ced5de931fd400da6f4da2853b1d16, type: 2}
+  _cursorSpawnCharacter: {fileID: 11400000, guid: e0524bfc9bbc8440991875cb8dab0a36, type: 2}
 --- !u!114 &653184666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2984,7 +2984,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.SurfaceBackgroundTint
   _dayTint: {r: 1, g: 1, b: 1, a: 1}
-  _nightTint: {r: 0.056870773, g: 0.08659196, b: 0.16981131, a: 1}
+  _nightTint: {r: 0.041607328, g: 0.043461487, b: 0.047169805, a: 1}
   _renderers:
   - {fileID: 656673142}
   - {fileID: 1694196015}
@@ -4479,7 +4479,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.SurfaceBackgroundTint
   _dayTint: {r: 1, g: 1, b: 1, a: 1}
-  _nightTint: {r: 0.056870773, g: 0.09268118, b: 0.16981131, a: 1}
+  _nightTint: {r: 0.041607328, g: 0.043461487, b: 0.047169805, a: 1}
   _renderers:
   - {fileID: 922802891}
   - {fileID: 147665142}
@@ -5654,6 +5654,8 @@ MonoBehaviour:
     _amount: 1
   - _ingredient: {fileID: 11400000, guid: 56e413806c6d64ffa868bcf95d2c3967, type: 2}
     _amount: 1
+  - _ingredient: {fileID: 11400000, guid: 1c2c9103005254e2096a71428bc94070, type: 2}
+    _amount: 222
 --- !u!114 &1178486984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8969,7 +8971,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.SurfaceBackgroundTint
   _dayTint: {r: 1, g: 1, b: 1, a: 1}
-  _nightTint: {r: 0.050062295, g: 0.078940354, b: 0.14150941, a: 1}
+  _nightTint: {r: 0.041607328, g: 0.043461487, b: 0.047169805, a: 1}
   _renderers:
   - {fileID: 1885410711}
   - {fileID: 298503626}
@@ -9789,7 +9791,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SketchLand.SurfaceBackgroundTint
   _dayTint: {r: 0.495283, g: 0.7968022, b: 1, a: 1}
-  _nightTint: {r: 0.016776435, g: 0.042527396, b: 0.122641504, a: 1}
+  _nightTint: {r: 0.041607328, g: 0.043461487, b: 0.047169805, a: 1}
   _renderers:
   - {fileID: 2037069670}
   - {fileID: 1982496194}
@@ -9850,9 +9852,9 @@ MonoBehaviour:
   - {fileID: 2037069669}
   <Clock>k__BackingField:
     _runTimeOfDay: 1
-    _sunriseMinutes: 1.5
-    _dayMinutes: 10
-    _sunsetMinutes: 1.5
+    _sunriseMinutes: 0.01
+    _dayMinutes: 0.01
+    _sunsetMinutes: 0.01
     _nightMinutes: 7
   _tileRepairDelay: 15
 --- !u!114 &2043979316

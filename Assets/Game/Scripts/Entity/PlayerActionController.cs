@@ -12,7 +12,7 @@ namespace SketchLand
     public sealed class PlayerActionController : MonoBehaviour
     {
         private const int MaxStrikeTargets = 5;
-        private const float StrikeHitDelay = 0.05f;
+        private const float StrikeHitDelay = 0.04f;
 
         [Tooltip("World-space offset from the character root. Never follows animated bones.")]
         [SerializeField] private Vector2 _projectileOriginOffset = new(0f, 0.4f);

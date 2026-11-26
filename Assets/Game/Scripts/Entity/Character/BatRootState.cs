@@ -8,15 +8,19 @@ namespace SketchLand
     public class BatRootState : CharacterRootState
     {
         [Header("Pursue Flight")]
-        [SerializeField, Min(0.01f)] private float _velocitySteering = 3f;
         [SerializeField] private Vector2 _circlingHeight = new(5f, 8f);
         [SerializeField] private Vector2 _circlingHorizontalRange = new(4f, 6f);
+        [SerializeField] private float _velocitySteering = 3f;
+
+        [Header("Knockback Recovery")]
+        [SerializeField, Tooltip("How quickly hit velocity blends back toward intended flight during knockback. Independent of normal flight steering; higher values recover faster.")]
+        private float _knockbackRecoverySteering = 10f;
 
         [Header("Swoop")]
         [SerializeField] private Vector2 _swoopInterval = new(5f, 8f);
+        [SerializeField] private Vector2 _retreatAscentDuration = new(1f, 2f);
         [SerializeField, Min(0f)] private float _swoopSteering = 0.65f;
         [SerializeField, Min(0.1f)] private float _maximumSwoopDuration = 4.5f;
-        [SerializeField] private Vector2 _retreatAscentDuration = new(1f, 2f);
 
         [Header("Tile Collision")]
         [SerializeField, Range(0f, 1f)] private float _bounceDamping = 0.75f;
@@ -25,11 +29,12 @@ namespace SketchLand
         private float _postCollisionSteeringRecovery = 1.2f;
 
         [Header("Departure")]
-        [SerializeField, Min(0.1f), Tooltip("Seconds without dealing or receiving damage before flying away.")]
+        [SerializeField, Tooltip("Seconds without dealing or receiving damage before flying away.")]
         private float _combatInactivityTimeout = 120f;
 
         // Runtime instances read the asset settings live, including Inspector edits during play.
         [NonSerialized] private BatRootState _settingsSource;
+
         private BatRootState Settings => _settingsSource ?? this;
         private FlyingNpcMovement _movement;
         private bool _recoverAfterSwoop;
@@ -85,8 +90,16 @@ namespace SketchLand
 
         public void Steer(Vector2 desiredVelocity, float deltaTime)
         {
-            if (!_ctx.IsServer || _ctx.IsKnockedBack || _ctx.Health.CurrentLifeState.Value == LifeState.Dead) return;
-            _ctx.Velocity = _movement.Steer(_ctx.Velocity, desiredVelocity, Settings._velocitySteering, deltaTime);
+            if (!_ctx.IsServer || _ctx.Health.CurrentLifeState.Value == LifeState.Dead) return;
+            if (_ctx.IsKnockedBack)
+            {
+                // Keep the full hit impulse, then ease toward flight without gravity,
+                // a flight-speed clamp, or the tile-bounce steering delay.
+                float blend = 1f - Mathf.Exp(-Mathf.Max(0f, Settings._knockbackRecoverySteering) * deltaTime);
+                _ctx.Velocity = Vector2.Lerp(_ctx.Velocity, desiredVelocity, blend);
+            }
+            else
+                _ctx.Velocity = _movement.Steer(_ctx.Velocity, desiredVelocity, Settings._velocitySteering, deltaTime);
             _ctx.DesiredDirection = _ctx.Velocity.normalized;
         }
 
