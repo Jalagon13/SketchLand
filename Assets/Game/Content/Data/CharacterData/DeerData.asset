@@ -27,6 +27,9 @@ MonoBehaviour:
   <CanDie>k__BackingField: 1
   <CanDamagePlayerOnTouch>k__BackingField: 0
   <CharacterPrefab>k__BackingField: {fileID: 3454599396775519568, guid: 97551924553cd4e8a94609e9d830e17f, type: 3}
+  <CanTakeFallDamage>k__BackingField: 1
+  <FallDamageThreshold>k__BackingField: 5
+  <DamagePerExtraTile>k__BackingField: 2
   <SpawnCost>k__BackingField: 0.5
   <CharacterDamagedSFX>k__BackingField:
     Guid:

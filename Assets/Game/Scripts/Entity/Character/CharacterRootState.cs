@@ -21,7 +21,7 @@ namespace SketchLand
             _ctx.Health.OnDamaged += OnDamaged;
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             if (_ctx != null && _ctx.Health != null)
                 _ctx.Health.OnDamaged -= OnDamaged;

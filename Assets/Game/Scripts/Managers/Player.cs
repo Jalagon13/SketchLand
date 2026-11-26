@@ -92,7 +92,7 @@ namespace SketchLand
                 Character.Velocity = Vector2.zero;
                 Character.DesiredDirection = Vector2.zero;
                 Character.ClearKnockback();
-                if (Character.RootState is PlayerRootState fallbackState) fallbackState.ResetFallTracking();
+                Character.ResetFallTracking();
 
                 RespawnPoint = Character.transform.position;
                 _hasInitialSpawn = true;
@@ -103,7 +103,7 @@ namespace SketchLand
             Character.Velocity = Vector2.zero;
             Character.DesiredDirection = Vector2.zero;
             Character.ClearKnockback();
-            if (Character.RootState is PlayerRootState state) state.ResetFallTracking();
+            Character.ResetFallTracking();
 
             RespawnPoint = spawnPosition;
             _hasInitialSpawn = true;
@@ -140,7 +140,7 @@ namespace SketchLand
             {
                 // respawn
                 Character.transform.position = RespawnPoint;
-                if (Character.RootState is PlayerRootState state) state.ResetFallTracking();
+                Character.ResetFallTracking();
                 Character.Health.CurrentHealth.Value = Character.Health.Maximum;
             }
         }

@@ -7,9 +7,6 @@ namespace SketchLand
     [CreateAssetMenu(fileName = "New Character SO", menuName = "OceanGame/CharacterSO")]
     public class CharacterSO : ScriptableObject
     {
-        [Header("AI State Machine")]
-        [SerializeReference]
-        public CharacterRootState RootState;
 
         [Header("Core Stats")]
         [field: SerializeField] public Vector2 BodyColliderSize { get; private set; } = Vector2.one;
@@ -28,6 +25,12 @@ namespace SketchLand
         [field: SerializeField] public bool CanDamagePlayerOnTouch { get; private set; }
         [field: SerializeField] public ServerCharacter CharacterPrefab { get; private set; }
 
+        [field: Header("Fall Damage")]
+        [field: Tooltip("When disabled, this character skips fall tracking and takes no fall damage. Disable for permanently flying NPCs.")]
+        [field: SerializeField] public bool CanTakeFallDamage { get; private set; } = true;
+        [field: SerializeField, Min(0f)] public float FallDamageThreshold { get; private set; } = 5f;
+        [field: SerializeField, Min(0f)] public float DamagePerExtraTile { get; private set; } = 2f;
+
         [field: Header("Spawning")]
         [field: Tooltip("Amount this NPC contributes to local and global population limits. Supports fractions, e.g. 0.5 for small creatures or 3 for large monsters.")]
         [field: SerializeField] public float SpawnCost { get; private set; } = 1f;
@@ -35,9 +38,12 @@ namespace SketchLand
         [field: Header("Game Feel")]
         [field: SerializeField] public EventReference CharacterDamagedSFX { get; private set; }
         [field: SerializeField] public EventReference CharacterDeathSFX { get; private set; }
+        
+        [Header("AI State Machine")]
+        [SerializeReference]
+        public CharacterRootState RootState;
 
         [field: Header("Drops")]
-
         [field: SerializeField] public List<LootDropEntry> LootDrops = new();
 
         public void DropLoot(Vector2 position)

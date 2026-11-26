@@ -43,6 +43,7 @@ namespace SketchLand
 
         private float _knockbackTimer;
         private float? _facingOverride;
+        private CharacterFallDamage _fallDamage;
 
         private void OnDrawGizmos()
         {
@@ -76,6 +77,7 @@ namespace SketchLand
                 Player.Instance.BindCharacter(this);
 
             ClearKnockback();
+            ResetFallTracking();
             RootState?.Dispose();
             RootState = _data.RootState?.CreateInstance();
             Machine = null;
@@ -90,6 +92,7 @@ namespace SketchLand
         public override void OnNetworkDespawn()
         {
             ClearKnockback();
+            ResetFallTracking();
             RootState?.Dispose();
             RootState = null;
             Machine = null;
@@ -106,6 +109,7 @@ namespace SketchLand
 
         private void OnDisable()
         {
+            ResetFallTracking();
             if (EntityManager.Instance != null)
             {
                 EntityManager.Instance.UnRegister(this);
@@ -130,7 +134,9 @@ namespace SketchLand
 
             Machine.FixedTick(fixedDeltaTime);
             Vector2 incomingVelocity = Velocity;
+            float previousY = transform.position.y;
             base.FixedTick(fixedDeltaTime);
+            UpdateFallDamage(previousY, incomingVelocity.y);
             RootState?.OnTileCollision(CollisionResult, incomingVelocity);
 
             // Grid physics resolves position; discard momentum into the surfaces it hit.
@@ -142,6 +148,29 @@ namespace SketchLand
 
             // Keep the final knockback tick intact. Movement resumes next tick from this velocity.
             _knockbackTimer = Mathf.Max(0f, _knockbackTimer - fixedDeltaTime);
+        }
+
+        public void ResetFallTracking() => _fallDamage = null;
+
+        private void UpdateFallDamage(float previousY, float incomingVerticalVelocity)
+        {
+            // Disabled characters never allocate a tracker or perform fall detection.
+            if (!Data.CanTakeFallDamage || !IsServer || Health.CurrentLifeState.Value == LifeState.Dead)
+            {
+                ResetFallTracking();
+                return;
+            }
+
+            if (_fallDamage == null)
+            {
+                _fallDamage = new CharacterFallDamage();
+                _fallDamage.Reset(previousY);
+            }
+
+            int damage = _fallDamage.Track(previousY, transform.position.y, CollisionResult.TouchingBottom,
+                incomingVerticalVelocity, Data.FallDamageThreshold, Data.DamagePerExtraTile);
+            if (damage > 0)
+                DamageReceiver.ReceiveHit(new SyncHitData(damage, 0f, transform.position));
         }
 
         public override void OnEntityOverlap(Entity other)

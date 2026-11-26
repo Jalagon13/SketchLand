@@ -11,6 +11,8 @@ namespace SketchLand
         [SerializeField] private Vector2 _circlingHeight = new(5f, 8f);
         [SerializeField] private Vector2 _circlingHorizontalRange = new(4f, 6f);
         [SerializeField] private float _velocitySteering = 3f;
+        [SerializeField, Min(0.1f), Tooltip("Distance in world units at which a patrolling bat notices a living player. An existing chase continues until the target is lost.")]
+        private float _targetDetectionRange = 16f;
 
         [Header("Knockback Recovery")]
         [SerializeField, Tooltip("How quickly hit velocity blends back toward intended flight during knockback. Independent of normal flight steering; higher values recover faster.")]
@@ -24,8 +26,7 @@ namespace SketchLand
 
         [Header("Tile Collision")]
         [SerializeField, Range(0f, 1f)] private float _bounceDamping = 0.75f;
-        [SerializeField] private Vector2 _postCollisionSteeringDelay = new(0.35f, 0.55f);
-        [SerializeField, Min(0f), Tooltip("Seconds to gradually restore steering after the bounce coast ends.")]
+        [SerializeField, Min(0f), Tooltip("Seconds to gradually restore full steering immediately after a bounce.")]
         private float _postCollisionSteeringRecovery = 1.2f;
 
         [Header("Departure")]
@@ -41,9 +42,13 @@ namespace SketchLand
         private bool _leaving;
         private float _departureTimer;
         private float _timeSinceCombat;
+        private ServerCharacter _target;
+        private CharacterHealth _targetHealth;
+        private Vector2 _patrolCenter;
 
         public BatPursueState Pursue { get; private set; }
         public BatSwoopState Swoop { get; private set; }
+        public Vector2 PatrolCenter => _patrolCenter;
         public bool IsLeaving => _leaving || WorldManager.Instance.Clock.CurrentPhase != DayPhase.Night
             || _timeSinceCombat >= Mathf.Max(0.1f, Settings._combatInactivityTimeout);
         public float FlightSpeed => Mathf.Max(0, _ctx.Stats.MoveSpeed.GetValue());
@@ -55,6 +60,7 @@ namespace SketchLand
         public override void Initialize(ServerCharacter ctx)
         {
             base.Initialize(ctx);
+            _patrolCenter = ctx.transform.position;
             _movement = new FlyingNpcMovement();
             Pursue = new BatPursueState(this, ctx);
             Swoop = new BatSwoopState(this, ctx);
@@ -65,7 +71,52 @@ namespace SketchLand
         public bool TryGetTarget(out ServerCharacter player)
         {
             player = Player.Instance != null ? Player.Instance.Character : null;
-            return player != null && player.Health != null && player.Health.CurrentLifeState.Value != LifeState.Dead;
+            if (player == null || !player.gameObject.activeInHierarchy || player.Health == null
+                || player.Health.CurrentLifeState.Value == LifeState.Dead)
+            {
+                if (_target != null) _patrolCenter = _target.transform.position;
+                ReleaseTarget();
+                player = null;
+                return false;
+            }
+
+            if (_target != player)
+            {
+                ReleaseTarget();
+                float range = Mathf.Max(0.1f, Settings._targetDetectionRange);
+                if (((Vector2)player.transform.position - (Vector2)_ctx.transform.position).sqrMagnitude > range * range)
+                {
+                    player = null;
+                    return false;
+                }
+                _target = player;
+                _targetHealth = player.Health;
+                _targetHealth.CurrentLifeState.OnValueChanged += OnTargetLifeStateChanged;
+            }
+
+            _patrolCenter = player.transform.position;
+            return true;
+        }
+
+        private void OnTargetLifeStateChanged(LifeState previous, LifeState current)
+        {
+            if (current != LifeState.Dead) return;
+            if (_target != null) _patrolCenter = _target.transform.position;
+            ReleaseTarget();
+        }
+
+        private void ReleaseTarget()
+        {
+            if (_targetHealth != null)
+                _targetHealth.CurrentLifeState.OnValueChanged -= OnTargetLifeStateChanged;
+            _targetHealth = null;
+            _target = null;
+        }
+
+        public override void Dispose()
+        {
+            ReleaseTarget();
+            base.Dispose();
         }
 
         public float RandomCirclingHeight() => Sample(Settings._circlingHeight);
@@ -94,7 +145,7 @@ namespace SketchLand
             if (_ctx.IsKnockedBack)
             {
                 // Keep the full hit impulse, then ease toward flight without gravity,
-                // a flight-speed clamp, or the tile-bounce steering delay.
+                // a flight-speed clamp, or the tile-bounce recovery ramp.
                 float blend = 1f - Mathf.Exp(-Mathf.Max(0f, Settings._knockbackRecoverySteering) * deltaTime);
                 _ctx.Velocity = Vector2.Lerp(_ctx.Velocity, desiredVelocity, blend);
             }
@@ -129,7 +180,7 @@ namespace SketchLand
         {
             if (!_ctx.IsServer || _ctx.Health.CurrentLifeState.Value == LifeState.Dead) return;
             if (_movement.Bounce(incomingVelocity, collision, Settings._bounceDamping,
-                Sample(Settings._postCollisionSteeringDelay), out Vector2 reflected,
+                out Vector2 reflected,
                 steeringRecoveryDuration: Settings._postCollisionSteeringRecovery))
                 _ctx.Velocity = reflected;
         }
