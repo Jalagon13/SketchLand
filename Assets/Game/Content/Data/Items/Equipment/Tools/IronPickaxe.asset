@@ -20,7 +20,7 @@ MonoBehaviour:
   <HeldRotation>k__BackingField: 178.89743
   <HeldScale>k__BackingField: {x: 0.8, y: 0.8, z: 0.8}
   <SwingsPerSecond>k__BackingField: 1.375
-  <SwingArcAngle>k__BackingField: 100
+  <SwingArcAngle>k__BackingField: 90
   <StrikeReach>k__BackingField: 1.45
   <ImpactFraction>k__BackingField: 0.47
   <MeleeDamage>k__BackingField: 3
