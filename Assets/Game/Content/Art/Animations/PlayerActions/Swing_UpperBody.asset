@@ -100,10 +100,10 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    Exaggeration: 0.612
-    TorsoRotation: 43
-    HeadCounterRotation: 25
-    FreeHandTravel: {x: 0.44, y: 0.24}
+    Exaggeration: 0.5
+    TorsoRotation: 26
+    HeadCounterRotation: 18
+    FreeHandTravel: {x: 0.2, y: 0.12}
     WindUpEnd: 0.42
     StrikeEnd: 0.52
     ReturnStart: 0.82
@@ -139,6 +139,12 @@ MonoBehaviour:
     RaiseDuration: 0.12
     ReleaseDuration: 0.12
     ReturnDuration: 0.12
+  Eating:
+    MouthOffset: {x: 0.19, y: 0.15}
+    RaiseDuration: 0.18
+    BiteFrequency: 4.5
+    HandBob: 0.025
+    HeadNod: 4
   Clip: {fileID: 0}
   Mask: {fileID: 31900000, guid: 719ceec4926214b1980eb751c05d1350, type: 2}
   Additive: 0

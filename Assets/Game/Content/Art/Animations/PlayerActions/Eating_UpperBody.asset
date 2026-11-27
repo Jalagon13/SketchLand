@@ -140,7 +140,7 @@ MonoBehaviour:
     ReleaseDuration: 0.12
     ReturnDuration: 0.12
   Eating:
-    MouthOffset: {x: 0.19, y: 0.15}
+    MouthOffset: {x: 0.14, y: 0.18}
     RaiseDuration: 0.252
     BiteFrequency: 3.5
     HandBob: 0.01

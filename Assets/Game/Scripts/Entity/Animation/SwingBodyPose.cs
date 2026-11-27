@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.U2D.IK;
 
 namespace SketchLand
 {
@@ -14,25 +15,24 @@ namespace SketchLand
 
         private PlayerAnimationProfile _profile;
         private float Exaggeration => _profile.Swing.Exaggeration * _profile.Intensity;
-        internal const float WindUp = 0.42f;
         private float BodySway => Exaggeration * 0.85f;
-        private Transform _arm, _armPivot;
+        private Transform _arm;
         private Vector3 _armRestPosition, _hipBase, _handBase;
         private Quaternion _hipRotationBase, _spineBase, _headBase;
         private bool _poseApplied;
-        private float _overheadWeight;
+        private LimbSolver2D _freeHandSolver;
 
-        public void Initialize(Transform arm, Transform pivot)
+        public void Initialize(Transform arm)
         {
             _arm = arm;
-            _armPivot = pivot;
             _armRestPosition = arm.localPosition;
+            _freeHandSolver = _freeHand.GetComponentInParent<LimbSolver2D>();
         }
 
-        public void Begin(Vector2 localDirection, PlayerAnimationProfile profile)
+        public void Begin(PlayerAnimationProfile profile)
         {
             _profile = profile;
-            _overheadWeight = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(0.5f, 0.95f, localDirection.y));
+            _arm.position = _swingShoulder.position;
         }
 
         public void End()
@@ -69,15 +69,21 @@ namespace SketchLand
             _head.localRotation *= Quaternion.Euler(0f, 0f, -_profile.Swing.HeadCounterRotation * shoulders + 12f * head);
 
             _freeHand.position += _hip.parent.TransformVector((Vector3)(_profile.Swing.FreeHandTravel * hand));
-
-            // Let the overhead grip arc travel with the posed shoulder. The
-            // gameplay pivot stays fixed so the strike zone keeps its origin.
-            if (_overheadWeight > 0f)
+            if (_freeHandSolver != null)
             {
-                float blend = _overheadWeight * Mathf.SmoothStep(0f, 1f, time / WindUp);
-                _arm.localPosition = Vector3.Lerp(_armRestPosition,
-                    _armPivot.InverseTransformPoint(_swingShoulder.position), blend);
+                var effector = _freeHandSolver.GetChain(0).effector;
+                var elbow = effector.parent;
+                var shoulder = elbow.parent;
+                float reach = (Vector3.Distance(shoulder.position, elbow.position)
+                    + Vector3.Distance(elbow.position, effector.position)) * 0.985f;
+                var offset = _freeHand.position - shoulder.position;
+                if (offset.sqrMagnitude > reach * reach)
+                    _freeHand.position = shoulder.position + offset.normalized * reach;
             }
+
+            // Let the grip arc travel with the posed shoulder at every aim angle. The
+            // gameplay pivot stays fixed so the strike zone keeps its origin.
+            _arm.position = _swingShoulder.position;
         }
 
         public void RestorePose()

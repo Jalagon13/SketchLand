@@ -20,7 +20,7 @@ namespace SketchLand
         public void Initialize(PlayerHeldItemDisplay display)
         {
             _display = display;
-            _pose.Initialize(_arm, _armPivot);
+            _pose.Initialize(_arm);
             _slash = new SwingSlashEffect(_armPivot, display.HeldItemSprite);
             _armPivot.gameObject.SetActive(false);
         }
@@ -31,10 +31,10 @@ namespace SketchLand
             _raised = _returning = false;
             IsActive = true;
             Vector2 localAim = _armPivot.parent.InverseTransformVector(state.AimDirection);
-            _pose.Begin(localAim, profile);
             _arm.localScale = new Vector3(-1f, 1f, 1f);
             _arm.localRotation = Quaternion.Euler(0f, 0f, 180f);
             _armPivot.localRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(localAim.y, localAim.x) * Mathf.Rad2Deg);
+            _pose.Begin(profile);
             _armPivot.gameObject.SetActive(true);
             _display.BeginSwing(state.Item);
             _handGripIK.BeginGrip(state.SwingRate);

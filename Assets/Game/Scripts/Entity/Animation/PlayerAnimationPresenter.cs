@@ -62,10 +62,13 @@ namespace SketchLand
             var root = _character.RootState as PlayerRootState;
             bool airborne = root != null ? root.IsAirborne : !_character.CollisionResult.TouchingBottom;
             float speedSquared = _character.Velocity.x * _character.Velocity.x;
+            bool sprinting = !airborne && !_actions.BlocksSprint && !_character.IsKnockedBack && root != null
+                && root.IsSprinting && Mathf.Abs(_character.DesiredDirection.x) > 0.01f && speedSquared > 0.8f;
             _clips.SetFloat("Velocity", speedSquared);
+            _clips.SetFloat("VerticalVelocity", _character.Velocity.y);
             _clips.SetBool("IsAirborne", airborne);
-            _clips.SetBool("IsSprinting", !airborne && !_actions.BlocksSprint && !_character.IsKnockedBack && root != null
-                && root.IsSprinting && Mathf.Abs(_character.DesiredDirection.x) > 0.01f && speedSquared > 0.8f);
+            _clips.SetBool("IsSprinting", sprinting);
+            // Locomotion keeps its authored cadence, matching the Animation window preview.
             _clips.SetFloat("LocomotionPlayback", _actions.IsAiming
                 && _character.Velocity.x * _character.FacingDirection < -0.05f ? -1f : 1f);
             if (airborne != _wasAirborne) _cues.Enqueue(airborne ? "Airborne" : "Landed");
