@@ -212,6 +212,16 @@ namespace SketchLand
             if (Application.isPlaying) Destroy(value); else DestroyImmediate(value);
         }
 
+        private static float WeightFor(BoneWeight weight, int bone)
+        {
+            float amount = 0f;
+            if (weight.boneIndex0 == bone) amount += weight.weight0;
+            if (weight.boneIndex1 == bone) amount += weight.weight1;
+            if (weight.boneIndex2 == bone) amount += weight.weight2;
+            if (weight.boneIndex3 == bone) amount += weight.weight3;
+            return amount;
+        }
+
         private struct Anchor
         {
             public Transform Transform;
@@ -400,7 +410,7 @@ namespace SketchLand
                 for (int v = 0; v < _restPositions.Length; v++)
                 {
                     var weight = _restWeights[v];
-                    if (weight.boneIndex0 != bone || weight.weight0 < 0.5f) continue;
+                    if (WeightFor(weight, bone) < 0.5f) continue;
                     var p = _bind[bone].MultiplyPoint3x4(_restPositions[v]);
                     minY = Mathf.Min(minY, p.y); maxY = Mathf.Max(maxY, p.y);
                     minX = Mathf.Min(minX, p.x); maxX = Mathf.Max(maxX, p.x); count++;
@@ -408,7 +418,11 @@ namespace SketchLand
                 _widths[bone] = count > 0 ? maxY - minY : 0f;
                 float length = Mathf.Max(_metadata[bone].length, maxX - minX);
                 if (IsMarker(bone) || count < 3 || length < Epsilon || _widths[bone] / length > 0.65f) return;
-                _strokeBones[bone] = probe.TryUniformFill(bone, _restTriangles, _restWeights, _restUV, out _fillUV[bone]);
+                _strokeBones[bone] = probe.TryUniformFill(bone, _restTriangles, _restWeights, _restUV,
+                    _restPositions, _bind[bone], out _fillUV[bone], out float paintedWidth);
+                // Mesh cells include transparent padding, especially on diagonal cut-out limbs.
+                // Measure the opaque artwork so those cells do not inflate the generated stroke.
+                if (_strokeBones[bone] && paintedWidth > Epsilon) _widths[bone] = paintedWidth;
             }
             private int Continuation(int bone)
             {
@@ -672,27 +686,60 @@ namespace SketchLand
                 catch (UnityException) { if (_owned) DestroyOwned(_readable); _readable = null; _owned = false; return false; }
                 finally { RenderTexture.active = previous; if (temporary != null) RenderTexture.ReleaseTemporary(temporary); }
             }
-            public bool TryUniformFill(int bone, ushort[] triangles, BoneWeight[] weights, Vector2[] uv, out Vector2 fillUV)
+            public bool TryUniformFill(int bone, ushort[] triangles, BoneWeight[] weights, Vector2[] uv,
+                Vector3[] positions, Matrix4x4 bind, out Vector2 fillUV, out float paintedWidth)
             {
-                fillUV = Vector2.zero; if (!Prepare()) return false;
-                Color first = default; int samples = 0;
+                fillUV = Vector2.zero; paintedWidth = 0f; if (!Prepare()) return false;
+                Color first = default; int samples = 0; bool hasSolidUV = false;
+                float minY = float.PositiveInfinity, maxY = float.NegativeInfinity;
                 for (int i = 0; i < triangles.Length; i += 3)
                 {
                     int a = triangles[i], b = triangles[i + 1], c = triangles[i + 2];
-                    if (weights[a].boneIndex0 != bone || weights[b].boneIndex0 != bone || weights[c].boneIndex0 != bone) continue;
+                    if (WeightFor(weights[a], bone) < 0.5f || WeightFor(weights[b], bone) < 0.5f
+                        || WeightFor(weights[c], bone) < 0.5f) continue;
                     for (int point = 0; point < 4; point++)
                     {
                         var sample = point == 0 ? (uv[a] + uv[b] + uv[c]) / 3f : point == 1 ? (uv[a] * 2f + uv[b] + uv[c]) / 4f
                             : point == 2 ? (uv[a] + uv[b] * 2f + uv[c]) / 4f : (uv[a] + uv[b] + uv[c] * 2f) / 4f;
                         var color = _readable.GetPixelBilinear(sample.x, sample.y);
                         if (color.a < 0.98f) continue;
-                        if (samples == 0) { first = color; fillUV = sample; }
+                        if (samples == 0) first = color;
                         else if (Mathf.Abs(color.r - first.r) > 0.025f || Mathf.Abs(color.g - first.g) > 0.025f
                             || Mathf.Abs(color.b - first.b) > 0.025f) return false;
+                        // CPU bilinear reads and GPU texel-center sampling differ at sprite edges.
+                        // Use a texel center surrounded by opaque matching pixels, so the constant
+                        // UV used by a whole stroke cannot pick up transparent edge filtering.
+                        if (!hasSolidUV)
+                        {
+                            int x = Mathf.FloorToInt(sample.x * _readable.width);
+                            int yIndex = Mathf.FloorToInt(sample.y * _readable.height);
+                            bool solid = x > 0 && x < _readable.width - 1
+                                && yIndex > 0 && yIndex < _readable.height - 1;
+                            for (int dy = -1; dy <= 1 && solid; dy++)
+                                for (int dx = -1; dx <= 1 && solid; dx++)
+                                {
+                                    var pixel = _readable.GetPixel(x + dx, yIndex + dy);
+                                    solid = pixel.a >= 0.98f && Mathf.Abs(pixel.r - first.r) <= 0.025f
+                                        && Mathf.Abs(pixel.g - first.g) <= 0.025f && Mathf.Abs(pixel.b - first.b) <= 0.025f;
+                                }
+                            if (solid)
+                            {
+                                fillUV = new Vector2((x + 0.5f) / _readable.width, (yIndex + 0.5f) / _readable.height);
+                                hasSolidUV = true;
+                            }
+                        }
+                        var position = point == 0 ? (positions[a] + positions[b] + positions[c]) / 3f
+                            : point == 1 ? (positions[a] * 2f + positions[b] + positions[c]) / 4f
+                            : point == 2 ? (positions[a] + positions[b] * 2f + positions[c]) / 4f
+                            : (positions[a] + positions[b] + positions[c] * 2f) / 4f;
+                        float y = bind.MultiplyPoint3x4(position).y;
+                        minY = Mathf.Min(minY, y); maxY = Mathf.Max(maxY, y);
                         samples++;
                     }
                 }
-                return samples >= 3;
+                if (samples < 3 || !hasSolidUV) return false;
+                paintedWidth = maxY - minY;
+                return true;
             }
             public void Dispose() { if (_owned) DestroyOwned(_readable); }
         }
