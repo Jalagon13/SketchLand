@@ -1028,7 +1028,17 @@ MonoBehaviour:
   _widthScale: 0.85
   _samplesPerSegment: 12
   _rigRoot: {fileID: 0}
-  _widthOverrides: []
+  _widthOverrides:
+  - Start: {fileID: 5361130212179195387}
+    Width: 0.117
+  - Start: {fileID: 4228354317461350605}
+    Width: 0.117
+  - Start: {fileID: 5203312306138639149}
+    Width: 0.117
+  - Start: {fileID: 1358779249093178043}
+    Width: 0.117
+  - Start: {fileID: 902980743264321676}
+    Width: 0.117
   _textureSubdivisions: 2
 --- !u!1 &5862384656619399784
 GameObject:
